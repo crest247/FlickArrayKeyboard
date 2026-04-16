@@ -1,11 +1,10 @@
 package com.crest247.flickarraykeyboard.core
 
-sealed class ChineseAction {
-    data class InputZhuyin(val zhuyin: String) : ChineseAction()
-    object Backspace : ChineseAction()
-}
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
 
 interface InputProcessor<T> {
     fun onAction(action: T)
+    fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {}
 }
 

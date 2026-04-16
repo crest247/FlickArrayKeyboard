@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.modes.english
 
+import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.compose.runtime.getValue
@@ -14,9 +15,21 @@ class EnglishProcessor : InputProcessor<EnglishAction> {
     var shiftState by mutableStateOf(ShiftState.LOWERCASE)
         private set
     var variant by mutableStateOf(EnglishVariant.Default)
-    fun updateConnection(ic: InputConnection, info: EditorInfo) {
-        this.inputConnection = ic
-        this.editorInfo = info
+    override fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {
+        this.inputConnection = inputConnection
+        this.editorInfo = editorInfo
+
+        val inputClass = editorInfo.inputType and InputType.TYPE_MASK_CLASS
+        val inputVariation = editorInfo.inputType and InputType.TYPE_MASK_VARIATION
+
+        variant = if (inputClass == InputType.TYPE_CLASS_TEXT) {
+            when (inputVariation) {
+                InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS -> EnglishVariant.Email
+                InputType.TYPE_TEXT_VARIATION_URI -> EnglishVariant.Url
+                else -> EnglishVariant.Default
+            }
+        } else
+            EnglishVariant.Default
     }
 
     override fun onAction(action: EnglishAction) {

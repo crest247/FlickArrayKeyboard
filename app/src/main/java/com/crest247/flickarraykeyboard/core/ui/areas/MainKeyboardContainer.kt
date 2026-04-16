@@ -41,8 +41,7 @@ fun MainKeyboardContainer(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
             ) {
-                SpellingAreaRouter(
-                    state = state,
+                state.currentModule.SpellingAreaLayout(
                     onRadicalLayoutChanged = onRadicalLayoutChanged
                 )
             }
@@ -52,8 +51,8 @@ fun MainKeyboardContainer(
                     .keyboardBackgroundStyle()
                     .onGloballyPositioned { onKeyboardLayoutChanged(it) }
             ) {
-                SuggestionAreaRouter(state = state)
-                KeyAreaRouter(state = state)
+                state.currentModule.SuggestionAreaLayout()
+                state.currentModule.KeyAreaLayout()
             }
             Spacer(
                 Modifier

@@ -2,9 +2,7 @@ package com.crest247.flickarraykeyboard.core.ui.areas
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.layout.LayoutCoordinates
-import com.crest247.flickarraykeyboard.core.KeyboardMode
 import com.crest247.flickarraykeyboard.core.KeyboardState
-import com.crest247.flickarraykeyboard.modes.english.EnglishKeyLayout
 
 @Composable
 fun SpellingAreaRouter(
@@ -34,19 +32,4 @@ fun SpellingAreaRouter(
 //            DisposableEffect(Unit) { onDispose { onRadicalLayoutChanged(null) } }
 //        }
 //    }
-}
-@Composable
-fun SuggestionAreaRouter(state: KeyboardState) {
-    when (state.currentMode) {
-        KeyboardMode.English -> {
-        }
-    }
-}
-@Composable
-fun KeyAreaRouter(state: KeyboardState) {
-    when (state.currentMode) {
-        KeyboardMode.English -> {
-            EnglishKeyLayout(processor = state.englishProcessor)
-        }
-    }
 }
