@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,21 +30,23 @@ import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.preview.KeyboardPreviewWrapper
 import com.crest247.flickarraykeyboard.core.ui.preview.ThemePreviews
 
-fun Modifier.keyboardBackgroundStyle() = composed {
-    val colors = LocalKeyboardColors.current
-    this.background(colors.background)
-}
-
-fun Modifier.keyboardRowStyle() = composed {
-    val dimens = LocalKeyboardDimens.current
-    this
-        .fillMaxWidth()
-        .height(dimens.keyHeight)
-}
-
 sealed interface KeyContent {
     data class Text(val text: String) : KeyContent
     data class Icon(val icon: ImageVector) : KeyContent
+}
+
+@Composable
+fun Modifier.keyboardBackgroundStyle(): Modifier {
+    val colors = LocalKeyboardColors.current
+    return this.background(colors.background)
+}
+
+@Composable
+fun Modifier.keyboardRowStyle(): Modifier {
+    val dimens = LocalKeyboardDimens.current
+    return this
+        .fillMaxWidth()
+        .height(dimens.keyHeight)
 }
 
 @Composable

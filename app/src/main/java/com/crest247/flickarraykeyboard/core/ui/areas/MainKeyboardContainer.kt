@@ -41,24 +41,38 @@ fun MainKeyboardContainer(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
             ) {
-                state.currentModule.SpellingAreaLayout(
-                    onRadicalLayoutChanged = onRadicalLayoutChanged
-                )
+                Box(
+                    modifier = Modifier.onGloballyPositioned { coordinates ->
+                        if (coordinates.size.height > 0) {
+                            onRadicalLayoutChanged(coordinates)
+                        } else {
+                            onRadicalLayoutChanged(null)
+                        }
+                    }
+                ) {
+                    state.currentModule.SpellingAreaLayout()
+                }
             }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .keyboardBackgroundStyle()
-                    .onGloballyPositioned { onKeyboardLayoutChanged(it) }
             ) {
-                state.currentModule.SuggestionAreaLayout()
-                state.currentModule.KeyAreaLayout()
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { onKeyboardLayoutChanged(it) }
+                ) {
+                    state.currentModule.SuggestionAreaLayout()
+                    state.currentModule.KeyAreaLayout()
+                }
+
+                Spacer(
+                    modifier = Modifier
+                        .windowInsetsBottomHeight(WindowInsets.navigationBars)
+                )
             }
-            Spacer(
-                Modifier
-                    .keyboardBackgroundStyle()
-                    .windowInsetsBottomHeight(WindowInsets.navigationBars)
-            )
         }
         previewHandler.activePreviews.forEach { previewState ->
             KeyPreviewOverlay(state = previewState)

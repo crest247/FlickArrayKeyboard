@@ -51,9 +51,7 @@ data class FlickPreview(
 
 class PreviewHandler {
     private val _activePreviews = mutableStateMapOf<Any, KeyPreviewState>()
-
-    val activePreviews: Collection<KeyPreviewState>
-        get() = _activePreviews.values
+    val activePreviews: Collection<KeyPreviewState> get() = _activePreviews.values
 
     fun show(keyId: Any, state: KeyPreviewState) {
         _activePreviews[keyId] = state
