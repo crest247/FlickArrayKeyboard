@@ -1,6 +1,6 @@
 package com.crest247.flickarraykeyboard.core.theme
 
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
@@ -30,6 +30,6 @@ data class KeyboardDimens(
     val tapCancelThreshold: Dp
 )
 
-val LocalKeyboardDimens = compositionLocalOf<KeyboardDimens> {
+val LocalKeyboardDimens = staticCompositionLocalOf<KeyboardDimens> {
     error("KeyboardDimens not provided. Did you forget to wrap your UI in KeyboardTheme?")
 }

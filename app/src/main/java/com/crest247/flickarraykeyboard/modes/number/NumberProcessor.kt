@@ -12,9 +12,6 @@ class NumberProcessor : InputProcessor<NumberAction> {
     override fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {
         this.inputConnection = inputConnection
         this.editorInfo = editorInfo
-
-        val inputClass = editorInfo.inputType and InputType.TYPE_MASK_CLASS
-        val inputVariation = editorInfo.inputType and InputType.TYPE_MASK_VARIATION
     }
 
     override fun onAction(action: NumberAction) {

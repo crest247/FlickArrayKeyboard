@@ -3,7 +3,7 @@ package com.crest247.flickarraykeyboard.core.theme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 
@@ -26,7 +26,7 @@ data class KeyboardColors(
     val scrollBarThumb: Color
 )
 
-val LocalKeyboardColors = compositionLocalOf<KeyboardColors> {
+val LocalKeyboardColors = staticCompositionLocalOf<KeyboardColors> {
     error("No KeyboardColors provided")
 }
 

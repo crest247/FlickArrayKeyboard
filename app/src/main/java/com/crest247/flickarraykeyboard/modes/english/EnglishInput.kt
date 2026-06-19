@@ -5,7 +5,7 @@ enum class ShiftState {
     UPPERCASE,
     CAPS_LOCK
 }
-sealed class EnglishAction {
-    data class InputChar(val char: String) : EnglishAction()
-    object ToggleShift : EnglishAction()
+sealed interface EnglishAction {
+    data class InputChar(val char: String) : EnglishAction
+    object ToggleShift : EnglishAction
 }
