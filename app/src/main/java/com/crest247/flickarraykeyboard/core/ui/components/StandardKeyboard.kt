@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import com.crest247.flickarraykeyboard.core.models.CharKeyData
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
@@ -18,6 +19,7 @@ import com.crest247.flickarraykeyboard.core.theme.resolveColor
 @Composable
 fun StandardKeyboard(
     keyRows: List<List<KeyData>>,
+    rowHeight: Dp,
     onKeyAction: (KeyData, flickDirection: Int?) -> Unit
 ) {
     Column(
@@ -26,7 +28,7 @@ fun StandardKeyboard(
             .wrapContentHeight()
     ) {
         keyRows.forEach { rowKeys ->
-            Row(modifier = Modifier.keyboardRowStyle()) {
+            Row(modifier = Modifier.keyboardRowStyle(rowHeight)) {
                 rowKeys.forEach { keyData ->
                     when (keyData) {
                         is SpacerData -> {
@@ -83,12 +85,15 @@ fun StandardKeyboard(
                                                 keyData.centerText,
                                                 keyData.popupContents,
                                                 keyData.backgroundType,
-                                                onClick = { direction -> onKeyAction(keyData, direction) }
+                                                onClick = { direction ->
+                                                    onKeyAction(
+                                                        keyData,
+                                                        direction
+                                                    )
+                                                }
                                             )
                                     )
                                 }
-
-                                else -> {}
                             }
                         }
                     }

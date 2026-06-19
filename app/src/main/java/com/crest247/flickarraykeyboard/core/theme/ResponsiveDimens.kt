@@ -32,8 +32,6 @@ fun rememberResponsiveDimens(): KeyboardDimens {
         val candidateHeight = baseKeyHeight + padding * 4
 
         KeyboardDimens(
-            keyHeight = baseKeyHeight,
-            keyBigHeight = numPadKeyHeight,
             keyTextSize = (baseKeyHeight.value * 0.45f).sp,
             keyIconSize = baseKeyHeight * 0.5f,
             candidateVerticalPadding = padding * 2,
@@ -53,7 +51,9 @@ fun rememberResponsiveDimens(): KeyboardDimens {
             previewScale = 1.1f,
             previewGap = 4.dp,
             previewCornerRadius = 12.dp,
-            previewBorderWidth = 0.5.dp
+            previewBorderWidth = 0.5.dp,
+            englishKeyHeight = baseKeyHeight,
+            numberKeyHeight = numPadKeyHeight
         )
     }
 }

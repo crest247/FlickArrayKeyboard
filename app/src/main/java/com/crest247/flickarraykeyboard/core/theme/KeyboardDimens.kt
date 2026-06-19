@@ -5,8 +5,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
 data class KeyboardDimens(
-    val keyHeight: Dp,
-    val keyBigHeight: Dp,
     val keyTextSize: TextUnit,
     val keyIconSize: Dp,
     val candidateVerticalPadding: Dp,
@@ -26,7 +24,9 @@ data class KeyboardDimens(
     val previewGap: Dp,
     val previewTransparentPadding: Dp,
     val previewCornerRadius: Dp,
-    val previewBorderWidth: Dp
+    val previewBorderWidth: Dp,
+    val englishKeyHeight: Dp,
+    val numberKeyHeight: Dp
 )
 
 val LocalKeyboardDimens = compositionLocalOf<KeyboardDimens> {

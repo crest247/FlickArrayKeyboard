@@ -42,11 +42,11 @@ fun Modifier.keyboardBackgroundStyle(): Modifier {
 }
 
 @Composable
-fun Modifier.keyboardRowStyle(): Modifier {
+fun Modifier.keyboardRowStyle(rowHeight: Dp): Modifier {
     val dimens = LocalKeyboardDimens.current
     return this
         .fillMaxWidth()
-        .height(dimens.keyHeight)
+        .height(rowHeight)
 }
 
 @Composable
@@ -149,8 +149,9 @@ fun KeyButton(
 @ThemePreviews
 @Composable
 fun PreviewKeyButton() {
+    val dimens = LocalKeyboardDimens.current
     KeyboardPreviewWrapper {
-        Row(modifier = Modifier.keyboardRowStyle()) {
+        Row(modifier = Modifier.keyboardRowStyle(dimens.englishKeyHeight)) {
             KeyButton(
                 content = KeyContent.Text("Q"),
                 modifier = Modifier.width(40.dp)

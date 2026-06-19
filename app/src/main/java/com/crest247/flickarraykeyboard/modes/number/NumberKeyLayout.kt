@@ -6,6 +6,7 @@ import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.models.CharKeyData
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
+import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 import com.crest247.flickarraykeyboard.core.ui.components.StandardKeyboard
 import com.crest247.flickarraykeyboard.core.ui.preview.KeyboardPreviewWrapper
@@ -13,6 +14,7 @@ import com.crest247.flickarraykeyboard.core.ui.preview.ThemePreviews
 
 @Composable
 fun NumberKeyLayout(processor: NumberProcessor) {
+    val dimens = LocalKeyboardDimens.current
     val state = LocalKeyboardState.current
     val systemProcessor = state.systemProcessor
     val imeOptions = state.currentEditorInfo?.imeOptions
@@ -20,7 +22,10 @@ fun NumberKeyLayout(processor: NumberProcessor) {
     val keyRows = remember(imeOptions) {
         NumberLayoutProvider.createKeys(imeOptions)
     }
-    StandardKeyboard(keyRows = keyRows) { keyData, direction ->
+    StandardKeyboard(
+        keyRows = keyRows,
+        rowHeight = dimens.numberKeyHeight
+    ) { keyData, direction ->
         val action = when (keyData) {
             is CharKeyData -> NumberAction.InputChar(keyData.text)
             is FuncKeyData -> when (keyData.type) {

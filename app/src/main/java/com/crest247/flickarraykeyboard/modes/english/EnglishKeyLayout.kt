@@ -6,12 +6,14 @@ import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.models.CharKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
+import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.components.StandardKeyboard
 import com.crest247.flickarraykeyboard.core.ui.preview.KeyboardPreviewWrapper
 import com.crest247.flickarraykeyboard.core.ui.preview.ThemePreviews
 
 @Composable
 fun EnglishKeyLayout(processor: EnglishProcessor) {
+    val dimens = LocalKeyboardDimens.current
     val state = LocalKeyboardState.current
     val systemProcessor = state.systemProcessor
     val imeOptions = state.currentEditorInfo?.imeOptions
@@ -21,7 +23,10 @@ fun EnglishKeyLayout(processor: EnglishProcessor) {
     val keyRows = remember(shiftState, variant, imeOptions) {
         EnglishLayoutProvider.createKeys(shiftState, variant, imeOptions)
     }
-    StandardKeyboard(keyRows = keyRows) { keyData, _ ->
+    StandardKeyboard(
+        keyRows = keyRows,
+        rowHeight = dimens.englishKeyHeight
+    ) { keyData, _ ->
         val action = when (keyData) {
             is CharKeyData -> EnglishAction.InputChar(keyData.text)
             is FuncKeyData -> when (keyData.type) {
