@@ -46,14 +46,15 @@ fun rememberResponsiveDimens(): KeyboardDimens {
             previewSmallTextSize = 12.sp,
             previewIconSize = if (isLandscape && !isTablet) 24.dp else 30.dp,
             previewSmallIconSize = 15.dp,
-            flickThreshold = 10.dp,
             previewTransparentPadding = if (isLandscape && !isTablet) 60.dp else 80.dp,
             previewScale = 1.1f,
             previewGap = 4.dp,
             previewCornerRadius = 12.dp,
             previewBorderWidth = 0.5.dp,
             englishKeyHeight = baseKeyHeight,
-            numberKeyHeight = numPadKeyHeight
+            numberKeyHeight = numPadKeyHeight,
+            flickThreshold = 10.dp,
+            tapCancelThreshold = 50.dp
         )
     }
 }

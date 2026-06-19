@@ -145,7 +145,7 @@ fun Modifier.tapWithPreview(
     val density = LocalDensity.current
     val dimens = LocalKeyboardDimens.current
     val previewHandler = LocalPreviewHandler.current
-    val threshold = with(density) { dimens.flickThreshold.toPx() }
+    val threshold = with(density) { dimens.tapCancelThreshold.toPx() }
 
     var keyPosition by remember { mutableStateOf(Offset.Zero) }
     var keyWidth by remember { mutableFloatStateOf(0f) }

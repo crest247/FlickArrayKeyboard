@@ -19,14 +19,15 @@ data class KeyboardDimens(
     val previewSmallTextSize: TextUnit,
     val previewIconSize: Dp,
     val previewSmallIconSize: Dp,
-    val flickThreshold: Dp,
     val previewScale: Float,
     val previewGap: Dp,
     val previewTransparentPadding: Dp,
     val previewCornerRadius: Dp,
     val previewBorderWidth: Dp,
     val englishKeyHeight: Dp,
-    val numberKeyHeight: Dp
+    val numberKeyHeight: Dp,
+    val flickThreshold: Dp,
+    val tapCancelThreshold: Dp
 )
 
 val LocalKeyboardDimens = compositionLocalOf<KeyboardDimens> {
