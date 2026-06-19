@@ -53,7 +53,12 @@ class SystemProcessor(
                 }
             }
 
-            is SystemAction.SwitchLanguage -> {}
+            is SystemAction.SwitchLanguage -> {
+                when (state.currentModule) {
+                    state.availableModules[0] -> state.switchModule(state.availableModules[1])
+                    state.availableModules[1] -> state.switchModule(state.availableModules[0])
+                }
+            }
         }
     }
 }

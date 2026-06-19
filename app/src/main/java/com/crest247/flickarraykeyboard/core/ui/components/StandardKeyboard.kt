@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.crest247.flickarraykeyboard.core.models.CharKeyData
+import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SpacerData
@@ -62,8 +63,27 @@ fun StandardKeyboard(
                                                 content = keyData.content,
                                                 backgroundType = keyData.backgroundType,
                                                 onClick = { onKeyAction(keyData, null) },
-                                                onRepeat = if (keyData.type.isRepeatable) { { onKeyAction(keyData, null) } } else null,
-                                                onDown = if (keyData.type.useDown) { { onKeyAction(keyData, null) } } else null,
+                                                onRepeat = if (keyData.type.isRepeatable) {
+                                                    { onKeyAction(keyData, null) }
+                                                } else null,
+                                                onDown = if (keyData.type.useDown) {
+                                                    { onKeyAction(keyData, null) }
+                                                } else null,
+                                            )
+                                    )
+                                }
+
+                                is FlickKeyData -> {
+                                    KeyButton(
+                                        content = KeyContent.Text(keyData.centerText),
+                                        backgroundColor = bgColor,
+                                        modifier = Modifier
+                                            .weight(keyData.weight)
+                                            .flickWithPreview(
+                                                keyData.centerText,
+                                                keyData.popupContents,
+                                                keyData.backgroundType,
+                                                onClick = { direction -> onKeyAction(keyData, direction) }
                                             )
                                     )
                                 }

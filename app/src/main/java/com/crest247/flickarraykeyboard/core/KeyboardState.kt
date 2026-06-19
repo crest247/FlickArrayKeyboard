@@ -4,16 +4,17 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.crest247.flickarraykeyboard.core.engine.SystemProcessor
 import com.crest247.flickarraykeyboard.core.models.KeyboardModule
 import com.crest247.flickarraykeyboard.modes.english.EnglishModule
+import com.crest247.flickarraykeyboard.modes.number.NumberModule
 
 class KeyboardState {
     val availableModules: List<KeyboardModule> = listOf(
         EnglishModule,
+        NumberModule
     )
     var currentModule by mutableStateOf(availableModules.first()); private set
     var currentInputConnection by mutableStateOf<InputConnection?>(null); private set
