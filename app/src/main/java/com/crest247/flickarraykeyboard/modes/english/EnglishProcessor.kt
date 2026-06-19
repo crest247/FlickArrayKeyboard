@@ -10,10 +10,8 @@ import com.crest247.flickarraykeyboard.core.InputProcessor
 
 class EnglishProcessor : InputProcessor<EnglishAction> {
     private var inputConnection: InputConnection? = null
-    var editorInfo: EditorInfo? = null
-        private set
-    var shiftState: ShiftState by mutableStateOf(ShiftState.LOWERCASE)
-        private set
+    var editorInfo: EditorInfo? = null; private set
+    var shiftState: ShiftState by mutableStateOf(ShiftState.LOWERCASE); private set
     var variant: EnglishVariant by mutableStateOf(EnglishVariant.Default)
     private var isShiftPressed = false
     private var hasTypedDuringHold = false

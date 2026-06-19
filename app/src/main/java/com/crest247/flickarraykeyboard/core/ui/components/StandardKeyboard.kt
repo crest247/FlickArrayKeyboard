@@ -46,7 +46,7 @@ fun StandardKeyboard(
                                                 keyId = keyData.text,
                                                 content = KeyContent.Text(keyData.text),
                                                 backgroundType = keyData.backgroundType,
-                                                onClick = { onKeyAction(keyData, null) },
+                                                onClick = { onKeyAction(keyData, null) }
                                             )
                                     )
                                 }
@@ -62,14 +62,8 @@ fun StandardKeyboard(
                                                 content = keyData.content,
                                                 backgroundType = keyData.backgroundType,
                                                 onClick = { onKeyAction(keyData, null) },
-                                                onRepeat = if (keyData.type.isRepeatable) {
-                                                    { onKeyAction(keyData, null) }
-                                                } else null,
-                                                onDown = {
-                                                    if (keyData.type.useDown) {
-                                                        run { onKeyAction(keyData, null) }
-                                                    }
-                                                }
+                                                onRepeat = if (keyData.type.isRepeatable) { { onKeyAction(keyData, null) } } else null,
+                                                onDown = if (keyData.type.useDown) { { onKeyAction(keyData, null) } } else null,
                                             )
                                     )
                                 }

@@ -26,15 +26,15 @@ import kotlin.math.abs
 import kotlin.math.atan2
 
 fun Modifier.keyGestures(
-    onDown: () -> Unit,
-    onUp: () -> Unit,
-    onClick: ((Int?) -> Unit)? = null,
+    onDown: (() -> Unit)? = null,
+    onUp: (() -> Unit)? = null,
+    onClick: ((Int) -> Unit)? = null,
     onLongPress: (() -> Unit)? = null,
     onRepeat: (() -> Unit)? = null,
     onFlick: ((Int) -> Unit)? = null,
     longPressTimeout: Long = 500L,
     repeatInterval: Long = 50L,
-    directionCount: Int = -1,
+    directionCount: Int,
     flickThresholdPx: Float
 ): Modifier = composed {
     val currentOnDown by rememberUpdatedState(onDown)
@@ -68,10 +68,9 @@ fun Modifier.keyGestures(
 
             val startPosition = down.position
             var currentDirection = 0
-            var isCanceled = false
 
             isLongPressTriggered = false
-            currentOnDown()
+            currentOnDown?.invoke()
             isTimerRunning = true
             var keepGoing = true
 
@@ -87,14 +86,9 @@ fun Modifier.keyGestures(
                     )
 
                     if (newDirection != currentDirection) {
-                        if (directionCount >= 0) {
-                            currentDirection = newDirection
-                            currentOnFlick?.invoke(newDirection)
-                            change.consume()
-                        } else {
-                            isCanceled = true
-                            keepGoing = false
-                        }
+                        currentDirection = newDirection
+                        currentOnFlick?.invoke(newDirection)
+                        change.consume()
                         isTimerRunning = false
                     }
                 }
@@ -102,15 +96,10 @@ fun Modifier.keyGestures(
 
             isTimerRunning = false
 
-            if (!isCanceled) {
-                if (directionCount > 0) {
-                    currentOnClick?.invoke(currentDirection)
-                } else {
-                    if (!(isLongPressTriggered && currentOnLongPress != null))
-                        currentOnClick?.invoke(null)
-                }
+            if (!(isLongPressTriggered && currentOnLongPress != null)) {
+                currentOnClick?.invoke(currentDirection)
             }
-            currentOnUp()
+            currentOnUp?.invoke()
         }
     }
 }
@@ -149,8 +138,8 @@ fun Modifier.tapWithPreview(
     backgroundType: KeyBackgroundType,
     onClick: () -> Unit,
     onLongPress: (() -> Unit)? = null,
-    onDown: () -> Unit = {},
-    onUp: () -> Unit = {},
+    onDown: (() -> Unit)? = null,
+    onUp: (() -> Unit)? = null,
     onRepeat: (() -> Unit)? = null
 ): Modifier = composed {
     val density = LocalDensity.current
@@ -174,15 +163,28 @@ fun Modifier.tapWithPreview(
                     keyId,
                     TapPreview(content, keyPosition, keyWidth, keyHeight, backgroundType)
                 )
-                onDown()
+                onDown?.invoke()
             },
             onUp = {
                 previewHandler.hide(keyId)
-                onUp()
+                onUp?.invoke()
             },
-            onClick = { onClick() },
+            onFlick = { direction ->
+                if (direction == 1) {
+                    previewHandler.hide(keyId)
+                } else if (direction == 0) {
+                    previewHandler.show(
+                        keyId,
+                        TapPreview(content, keyPosition, keyWidth, keyHeight, backgroundType)
+                    )
+                }
+            },
+            onClick = { direction ->
+                if (direction == 0) onClick()
+            },
             onLongPress = onLongPress,
             onRepeat = onRepeat,
+            directionCount = 1,
             flickThresholdPx = threshold
         )
 }
@@ -192,8 +194,8 @@ fun Modifier.flickWithPreview(
     keyId: Any,
     popupContents: List<KeyContent?>,
     backgroundType: KeyBackgroundType,
-    onDown: () -> Unit = {},
-    onUp: () -> Unit = {},
+    onDown: (() -> Unit)? = null,
+    onUp: (() -> Unit)? = null,
     onFlick: (Int) -> Unit = {},
     onClick: (Int) -> Unit = {}
 ): Modifier = composed {
@@ -218,11 +220,11 @@ fun Modifier.flickWithPreview(
                     keyId,
                     FlickPreview(popupContents, 0, keyPosition, keyWidth, keyHeight, backgroundType)
                 )
-                onDown()
+                onDown?.invoke()
             },
             onUp = {
                 previewHandler.hide(keyId)
-                onUp()
+                onUp?.invoke()
             },
             onFlick = { direction ->
                 previewHandler.show(
@@ -238,7 +240,9 @@ fun Modifier.flickWithPreview(
                 )
                 onFlick(direction)
             },
-            onClick = { direction -> onClick(direction ?: 0) },
+            onClick = { direction ->
+                onClick(direction)
+            },
             directionCount = popupContents.size - 1,
             flickThresholdPx = threshold
         )
