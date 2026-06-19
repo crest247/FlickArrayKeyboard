@@ -14,8 +14,13 @@ import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Search
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 
-enum class FuncType(val isRepeatable: Boolean = false) {
-    SHIFT, ENTER, SPACE, LANGUAGE, TAB, BACKSPACE(isRepeatable = true)
+enum class FuncType(
+    val isRepeatable: Boolean = false,
+    val useDown: Boolean = false
+) {
+    ENTER, SPACE, LANGUAGE, TAB,
+    BACKSPACE(isRepeatable = true),
+    SHIFT(useDown = true),
 }
 
 enum class KeyBackgroundType {
@@ -64,11 +69,16 @@ data class FuncKeyData(
 
         fun create(type: FuncType, weight: Float = 1.0f): FuncKeyData {
             val content = defaultContents[type] ?: throw (IllegalArgumentException("Unknown type"))
-            val bgType = when (type) {
-                FuncType.SPACE -> KeyBackgroundType.NORMAL
-                else -> KeyBackgroundType.FUNCTIONAL
-            }
-            return FuncKeyData(type, content, weight, bgType)
+
+            return FuncKeyData(
+                type,
+                content,
+                weight,
+                when (type) {
+                    FuncType.SPACE -> KeyBackgroundType.NORMAL
+                    else -> KeyBackgroundType.FUNCTIONAL
+                }
+            )
         }
 
         fun createEnterKey(imeOptions: Int?, weight: Float = 1.5f): FuncKeyData {

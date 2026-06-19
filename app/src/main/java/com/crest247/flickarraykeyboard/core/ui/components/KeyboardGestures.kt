@@ -18,7 +18,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
-import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import kotlinx.coroutines.delay
@@ -45,8 +44,6 @@ fun Modifier.keyGestures(
     val currentOnRepeat by rememberUpdatedState(onRepeat)
     val currentOnFlick by rememberUpdatedState(onFlick)
 
-    val state = LocalKeyboardState.current
-
     var isTimerRunning by remember { mutableStateOf(false) }
     var isLongPressTriggered by remember { mutableStateOf(false) }
 
@@ -67,9 +64,7 @@ fun Modifier.keyGestures(
     this.pointerInput(Unit) {
         awaitEachGesture {
             val down = awaitFirstDown(pass = PointerEventPass.Main)
-
-            state.renewActionToken()
-            val startToken = state.actionToken
+            val targetPointerId = down.id
 
             val startPosition = down.position
             var currentDirection = 0
@@ -82,7 +77,7 @@ fun Modifier.keyGestures(
 
             while (keepGoing) {
                 val event = awaitPointerEvent()
-                val change = event.changes.firstOrNull()
+                val change = event.changes.firstOrNull { it.id == targetPointerId }
 
                 if (change == null || !change.pressed) {
                     keepGoing = false
@@ -102,12 +97,6 @@ fun Modifier.keyGestures(
                         }
                         isTimerRunning = false
                     }
-                }
-
-                if (state.actionToken != startToken) {
-                    isCanceled = true
-                    keepGoing = false
-                    isTimerRunning = false
                 }
             }
 
@@ -238,7 +227,14 @@ fun Modifier.flickWithPreview(
             onFlick = { direction ->
                 previewHandler.show(
                     keyId,
-                    FlickPreview(popupContents, direction, keyPosition, keyWidth, keyHeight, backgroundType)
+                    FlickPreview(
+                        popupContents,
+                        direction,
+                        keyPosition,
+                        keyWidth,
+                        keyHeight,
+                        backgroundType
+                    )
                 )
                 onFlick(direction)
             },

@@ -12,24 +12,13 @@ import com.crest247.flickarraykeyboard.core.models.KeyboardModule
 import com.crest247.flickarraykeyboard.modes.english.EnglishModule
 
 class KeyboardState {
-    var currentInputConnection by mutableStateOf<InputConnection?>(null)
-        private set
-
     val availableModules: List<KeyboardModule> = listOf(
         EnglishModule,
     )
-    var currentEditorInfo by mutableStateOf<EditorInfo?>(null)
-        private set
-    var currentModule by mutableStateOf(availableModules.first())
-        private set
-    var actionToken by mutableLongStateOf(0L)
-        private set
-
+    var currentModule by mutableStateOf(availableModules.first()); private set
+    var currentInputConnection by mutableStateOf<InputConnection?>(null); private set
+    var currentEditorInfo by mutableStateOf<EditorInfo?>(null); private set
     val systemProcessor = SystemProcessor(this)
-
-    fun renewActionToken() {
-        actionToken = System.currentTimeMillis()
-    }
 
     fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {
         this.currentInputConnection = inputConnection

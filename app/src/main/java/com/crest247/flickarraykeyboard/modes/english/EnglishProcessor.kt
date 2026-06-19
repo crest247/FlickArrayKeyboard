@@ -12,9 +12,12 @@ class EnglishProcessor : InputProcessor<EnglishAction> {
     private var inputConnection: InputConnection? = null
     var editorInfo: EditorInfo? = null
         private set
-    var shiftState by mutableStateOf(ShiftState.LOWERCASE)
+    var shiftState: ShiftState by mutableStateOf(ShiftState.LOWERCASE)
         private set
-    var variant by mutableStateOf(EnglishVariant.Default)
+    var variant: EnglishVariant by mutableStateOf(EnglishVariant.Default)
+    private var isShiftPressed = false
+    private var hasTypedDuringHold = false
+
     override fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {
         this.inputConnection = inputConnection
         this.editorInfo = editorInfo
@@ -35,18 +38,33 @@ class EnglishProcessor : InputProcessor<EnglishAction> {
     override fun onAction(action: EnglishAction) {
         when (action) {
             is EnglishAction.InputChar -> {
+                if (isShiftPressed) {
+                    hasTypedDuringHold = true
+                }
+
                 inputConnection?.commitText(action.char, 1)
 
-                if (shiftState == ShiftState.UPPERCASE) {
+                if (!isShiftPressed && shiftState == ShiftState.UPPERCASE) {
                     shiftState = ShiftState.LOWERCASE
                 }
             }
 
             is EnglishAction.ToggleShift -> {
-                shiftState = when (shiftState) {
-                    ShiftState.LOWERCASE -> ShiftState.UPPERCASE
-                    ShiftState.UPPERCASE -> ShiftState.CAPS_LOCK
-                    ShiftState.CAPS_LOCK -> ShiftState.LOWERCASE
+                if (!isShiftPressed) {
+                    isShiftPressed = true
+                    hasTypedDuringHold = false
+
+                    shiftState = when (shiftState) {
+                        ShiftState.LOWERCASE -> ShiftState.UPPERCASE
+                        ShiftState.UPPERCASE -> ShiftState.CAPS_LOCK
+                        ShiftState.CAPS_LOCK -> ShiftState.LOWERCASE
+                    }
+                } else {
+                    isShiftPressed = false
+
+                    if (hasTypedDuringHold && shiftState == ShiftState.UPPERCASE) {
+                        shiftState = ShiftState.LOWERCASE
+                    }
                 }
             }
         }
