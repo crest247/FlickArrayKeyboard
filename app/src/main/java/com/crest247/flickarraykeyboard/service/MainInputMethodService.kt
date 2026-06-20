@@ -16,12 +16,22 @@ import com.crest247.flickarraykeyboard.core.theme.KeyboardTheme
 import com.crest247.flickarraykeyboard.core.ui.areas.MainKeyboardContainer
 import com.crest247.flickarraykeyboard.core.ui.components.LocalPreviewHandler
 import com.crest247.flickarraykeyboard.core.ui.components.PreviewHandler
+import com.crest247.flickarraykeyboard.modes.shared.array.ArrayDecoder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainInputMethodService : ComposedInputMethodService() {
     private lateinit var keyboardState: KeyboardState
     private lateinit var composeView: ComposeView
     private var keyboardBounds: Rect? = null
     private var radicalBounds: Rect? = null
+
+    init {
+        CoroutineScope(Dispatchers.Main).launch {
+            ArrayDecoder.loadData(this@MainInputMethodService)
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()

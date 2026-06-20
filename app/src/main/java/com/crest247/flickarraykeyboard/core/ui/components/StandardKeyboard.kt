@@ -12,6 +12,7 @@ import com.crest247.flickarraykeyboard.core.models.CharKeyData
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.KeyData
+import com.crest247.flickarraykeyboard.core.models.RadicalKeyData
 import com.crest247.flickarraykeyboard.core.models.SpacerData
 import com.crest247.flickarraykeyboard.core.models.VisibleKeyData
 import com.crest247.flickarraykeyboard.core.theme.resolveColor
@@ -91,6 +92,21 @@ fun StandardKeyboard(
                                                         direction
                                                     )
                                                 }
+                                            )
+                                    )
+                                }
+
+                                is RadicalKeyData<*> -> {
+                                    KeyButton(
+                                        content = KeyContent.Text(keyData.text),
+                                        backgroundColor = bgColor,
+                                        modifier = Modifier
+                                            .weight(keyData.weight)
+                                            .tapWithPreview(
+                                                keyId = keyData.text,
+                                                content = KeyContent.Text(keyData.text),
+                                                backgroundType = keyData.backgroundType,
+                                                onClick = { onKeyAction(keyData, null) }
                                             )
                                     )
                                 }

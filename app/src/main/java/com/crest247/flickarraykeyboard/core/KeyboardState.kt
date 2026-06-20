@@ -8,13 +8,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.crest247.flickarraykeyboard.core.engine.SystemProcessor
 import com.crest247.flickarraykeyboard.core.models.KeyboardModule
+import com.crest247.flickarraykeyboard.modes.array30.Array30Module
 import com.crest247.flickarraykeyboard.modes.english.EnglishModule
 import com.crest247.flickarraykeyboard.modes.number.NumberModule
 
 class KeyboardState {
     val availableModules: List<KeyboardModule> = listOf(
         EnglishModule,
-        NumberModule
+        NumberModule,
+        Array30Module
     )
     var currentModule by mutableStateOf(availableModules.first()); private set
     var currentInputConnection by mutableStateOf<InputConnection?>(null); private set

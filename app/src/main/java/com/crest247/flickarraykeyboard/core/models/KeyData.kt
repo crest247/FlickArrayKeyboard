@@ -51,6 +51,13 @@ data class FlickKeyData(
     override val backgroundType: KeyBackgroundType = KeyBackgroundType.NORMAL
 ) : VisibleKeyData
 
+data class RadicalKeyData<T>(
+    val text: String,
+    val action: T,
+    override val weight: Float = 1.0f,
+    override val backgroundType: KeyBackgroundType = KeyBackgroundType.NORMAL
+) : VisibleKeyData
+
 data class FuncKeyData(
     val type: FuncType,
     val content: KeyContent,

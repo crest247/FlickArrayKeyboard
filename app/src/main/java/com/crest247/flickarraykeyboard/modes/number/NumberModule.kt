@@ -11,11 +11,11 @@ object NumberModule : KeyboardModule {
     }
 
     @Composable
-    override fun KeyAreaLayout() {
-        NumberKeyLayout(processor = processor)
+    override fun SuggestionAreaLayout() {
     }
 
     @Composable
-    override fun SuggestionAreaLayout() {
+    override fun KeyAreaLayout() {
+        NumberKeyLayout(processor = processor)
     }
 }

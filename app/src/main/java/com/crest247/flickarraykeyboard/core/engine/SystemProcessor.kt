@@ -27,6 +27,7 @@ class SystemProcessor(
                 FuncType.LANGUAGE -> onAction(SystemAction.SwitchLanguage)
                 else -> {}
             }
+
             else -> {}
         }
     }
@@ -56,7 +57,8 @@ class SystemProcessor(
             is SystemAction.SwitchLanguage -> {
                 when (state.currentModule) {
                     state.availableModules[0] -> state.switchModule(state.availableModules[1])
-                    state.availableModules[1] -> state.switchModule(state.availableModules[0])
+                    state.availableModules[1] -> state.switchModule(state.availableModules[2])
+                    state.availableModules[2] -> state.switchModule(state.availableModules[0])
                 }
             }
         }

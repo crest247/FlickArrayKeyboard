@@ -8,10 +8,8 @@ interface KeyboardModule {
 
     @Composable
     fun SpellingAreaLayout()
-
-    @Composable
-    fun KeyAreaLayout()
-
     @Composable
     fun SuggestionAreaLayout()
+    @Composable
+    fun KeyAreaLayout()
 }

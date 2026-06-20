@@ -25,6 +25,7 @@ data class KeyboardDimens(
     val previewCornerRadius: Dp,
     val previewBorderWidth: Dp,
     val englishKeyHeight: Dp,
+    val array30KeyHeight: Dp,
     val numberKeyHeight: Dp,
     val flickThreshold: Dp,
     val tapCancelThreshold: Dp
