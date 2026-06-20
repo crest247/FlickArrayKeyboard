@@ -1,39 +1,83 @@
 package com.crest247.flickarraykeyboard.modes.array30
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardColors
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 
 @Composable
 fun Array30SuggestionLayout(processor: Array30Processor) {
     val dimens = LocalKeyboardDimens.current
+    val colors = LocalKeyboardColors.current
 
-    if (Array30Module.processor.candidates.isNotEmpty()) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(dimens.candidateHeight),
-            contentPadding = PaddingValues(horizontal = dimens.candidateHorizontalPadding)
-        ) {
-            items(Array30Module.processor.candidates) { word ->
-                Text(
-                    text = word,
-                    fontSize = dimens.candidateTextSize,
-                    modifier = Modifier
-                        .clickable { Array30Module.processor.commitCandidate(word) }
-                        .padding(
-                            horizontal = dimens.candidateHorizontalPadding,
-                            vertical = dimens.candidateVerticalPadding
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(dimens.candidateHeight)
+            .background(colors.candidateBackground)
+    ) {
+        if (processor.candidates.isNotEmpty()) {
+            LazyRow(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(start = dimens.candidateHorizontalPadding)
+            ) {
+                itemsIndexed(processor.candidates) { index, candidate ->
+
+                    val isSelected = (index == 0)
+
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(
+                                end = dimens.candidateHorizontalPadding,
+                                top = dimens.candidateVerticalPadding,
+                                bottom = dimens.candidateVerticalPadding
+                            )
+                            .aspectRatio(1f)
+                            .fillMaxHeight()
+                            .clip(RoundedCornerShape(dimens.keyRadius))
+                            .background(
+                                if (isSelected) colors.candidateSelectedBackground
+                                else colors.candidateUnselectedBackground
+                            )
+                            .then(
+                                if (isSelected) Modifier.border(
+                                    width = dimens.candidateSelectedBorder,
+                                    color = colors.candidateSelectedBorder,
+                                    shape = RoundedCornerShape(dimens.keyRadius)
+                                )
+                                else Modifier
+                            )
+                            .clickable {
+                                processor.commitCandidate(candidate)
+                            }
+                    ) {
+                        Text(
+                            text = candidate,
+                            fontSize = dimens.candidateTextSize,
+                            color = colors.candidateText
                         )
-                )
+                    }
+                }
             }
         }
     }
