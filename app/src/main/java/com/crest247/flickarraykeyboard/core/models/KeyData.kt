@@ -38,22 +38,17 @@ sealed interface VisibleKeyData : KeyData {
     val backgroundType: KeyBackgroundType
 }
 
-data class CharKeyData(
-    val text: String,
-    override val weight: Float = 1.0f,
-    override val backgroundType: KeyBackgroundType = KeyBackgroundType.NORMAL
-) : VisibleKeyData
-
-data class FlickKeyData(
-    val centerText: String,
-    val popupContents: List<KeyContent?>,
-    override val weight: Float = 1.0f,
-    override val backgroundType: KeyBackgroundType = KeyBackgroundType.NORMAL
-) : VisibleKeyData
-
-data class RadicalKeyData<T>(
+data class TapKeyData<T>(
     val text: String,
     val action: T,
+    override val weight: Float = 1.0f,
+    override val backgroundType: KeyBackgroundType = KeyBackgroundType.NORMAL
+) : VisibleKeyData
+
+data class FlickKeyData<T>(
+    val centerText: String,
+    val popupContents: List<KeyContent?>,
+    val directionActions: Map<Int, T>,
     override val weight: Float = 1.0f,
     override val backgroundType: KeyBackgroundType = KeyBackgroundType.NORMAL
 ) : VisibleKeyData

@@ -3,176 +3,176 @@ package com.crest247.flickarraykeyboard.modes.array30
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyData
-import com.crest247.flickarraykeyboard.core.models.RadicalKeyData
+import com.crest247.flickarraykeyboard.core.models.TapKeyData
 import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 
 object Array30LayoutProvider {
     fun createKeys(imeOptions: Int?): List<List<KeyData>> {
         return listOf(
             listOf(
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "1",
                     action = ArrayAction.Input(displayStr = "1", lookupStr = "1")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "2",
                     action = ArrayAction.Input(displayStr = "2", lookupStr = "2")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "3",
                     action = ArrayAction.Input(displayStr = "3", lookupStr = "3")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "4",
                     action = ArrayAction.Input(displayStr = "4", lookupStr = "4")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "5",
                     action = ArrayAction.Input(displayStr = "5", lookupStr = "5")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "6",
                     action = ArrayAction.Input(displayStr = "6", lookupStr = "6")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "7",
                     action = ArrayAction.Input(displayStr = "7", lookupStr = "7")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "8",
                     action = ArrayAction.Input(displayStr = "8", lookupStr = "8")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "9",
                     action = ArrayAction.Input(displayStr = "9", lookupStr = "9")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "0",
                     action = ArrayAction.Input(displayStr = "0", lookupStr = "0")
                 )
             ),
             listOf(
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "1^",
                     action = ArrayAction.Input(displayStr = "1^", lookupStr = "q")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "2^",
                     action = ArrayAction.Input(displayStr = "2^", lookupStr = "w")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "3^",
                     action = ArrayAction.Input(displayStr = "3^", lookupStr = "e")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "4^",
                     action = ArrayAction.Input(displayStr = "4^", lookupStr = "r")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "5^",
                     action = ArrayAction.Input(displayStr = "5^", lookupStr = "t")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "6^",
                     action = ArrayAction.Input(displayStr = "6^", lookupStr = "y")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "7^",
                     action = ArrayAction.Input(displayStr = "7^", lookupStr = "u")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "8^",
                     action = ArrayAction.Input(displayStr = "8^", lookupStr = "i")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "9^",
                     action = ArrayAction.Input(displayStr = "9^", lookupStr = "o")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "0^",
                     action = ArrayAction.Input(displayStr = "0^", lookupStr = "p")
                 )
             ),
             listOf(
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "1-",
                     action = ArrayAction.Input(displayStr = "1-", lookupStr = "a")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "2-",
                     action = ArrayAction.Input(displayStr = "2-", lookupStr = "s")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "3-",
                     action = ArrayAction.Input(displayStr = "3-", lookupStr = "d")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "4-",
                     action = ArrayAction.Input(displayStr = "4-", lookupStr = "f")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "5-",
                     action = ArrayAction.Input(displayStr = "5-", lookupStr = "g")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "6-",
                     action = ArrayAction.Input(displayStr = "6-", lookupStr = "h")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "7-",
                     action = ArrayAction.Input(displayStr = "7-", lookupStr = "j")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "8-",
                     action = ArrayAction.Input(displayStr = "8-", lookupStr = "k")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "9-",
                     action = ArrayAction.Input(displayStr = "9-", lookupStr = "l")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "0-",
                     action = ArrayAction.Input(displayStr = "0-", lookupStr = ";")
                 )
             ),
             listOf(
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "1v",
                     action = ArrayAction.Input(displayStr = "1v", lookupStr = "z")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "2v",
                     action = ArrayAction.Input(displayStr = "2v", lookupStr = "x")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "3v",
                     action = ArrayAction.Input(displayStr = "3v", lookupStr = "c")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "4v",
                     action = ArrayAction.Input(displayStr = "4v", lookupStr = "v")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "5v",
                     action = ArrayAction.Input(displayStr = "5v", lookupStr = "b")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "6v",
                     action = ArrayAction.Input(displayStr = "6v", lookupStr = "n")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "7v",
                     action = ArrayAction.Input(displayStr = "7v", lookupStr = "m")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "8v",
                     action = ArrayAction.Input(displayStr = "8v", lookupStr = ",")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "9v",
                     action = ArrayAction.Input(displayStr = "9v", lookupStr = ".")
                 ),
-                RadicalKeyData(
+                TapKeyData<ArrayAction>(
                     text = "0v",
                     action = ArrayAction.Input(displayStr = "0v", lookupStr = "/")
                 )

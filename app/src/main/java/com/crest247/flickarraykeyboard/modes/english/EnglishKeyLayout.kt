@@ -3,9 +3,9 @@ package com.crest247.flickarraykeyboard.modes.english
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
-import com.crest247.flickarraykeyboard.core.models.CharKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
+import com.crest247.flickarraykeyboard.core.models.TapKeyData
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.components.StandardKeyboard
 import com.crest247.flickarraykeyboard.core.ui.preview.KeyboardPreviewWrapper
@@ -28,7 +28,7 @@ fun EnglishKeyLayout(processor: EnglishProcessor) {
         rowHeight = dimens.englishKeyHeight
     ) { keyData, _ ->
         val action = when (keyData) {
-            is CharKeyData -> EnglishAction.InputChar(keyData.text)
+            is TapKeyData<*> -> keyData.action as? EnglishAction
             is FuncKeyData -> when (keyData.type) {
                 FuncType.SHIFT -> EnglishAction.ToggleShift
                 else -> null

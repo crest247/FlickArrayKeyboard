@@ -8,12 +8,11 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import com.crest247.flickarraykeyboard.core.models.CharKeyData
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.KeyData
-import com.crest247.flickarraykeyboard.core.models.RadicalKeyData
 import com.crest247.flickarraykeyboard.core.models.SpacerData
+import com.crest247.flickarraykeyboard.core.models.TapKeyData
 import com.crest247.flickarraykeyboard.core.models.VisibleKeyData
 import com.crest247.flickarraykeyboard.core.theme.resolveColor
 
@@ -40,7 +39,7 @@ fun StandardKeyboard(
                             val bgColor = keyData.backgroundType.resolveColor()
 
                             when (keyData) {
-                                is CharKeyData -> {
+                                is TapKeyData<*> -> {
                                     KeyButton(
                                         content = KeyContent.Text(keyData.text),
                                         backgroundColor = bgColor,
@@ -76,7 +75,7 @@ fun StandardKeyboard(
                                     )
                                 }
 
-                                is FlickKeyData -> {
+                                is FlickKeyData<*> -> {
                                     KeyButton(
                                         content = KeyContent.Text(keyData.centerText),
                                         backgroundColor = bgColor,
@@ -92,21 +91,6 @@ fun StandardKeyboard(
                                                         direction
                                                     )
                                                 }
-                                            )
-                                    )
-                                }
-
-                                is RadicalKeyData<*> -> {
-                                    KeyButton(
-                                        content = KeyContent.Text(keyData.text),
-                                        backgroundColor = bgColor,
-                                        modifier = Modifier
-                                            .weight(keyData.weight)
-                                            .tapWithPreview(
-                                                keyId = keyData.text,
-                                                content = KeyContent.Text(keyData.text),
-                                                backgroundType = keyData.backgroundType,
-                                                onClick = { onKeyAction(keyData, null) }
                                             )
                                     )
                                 }

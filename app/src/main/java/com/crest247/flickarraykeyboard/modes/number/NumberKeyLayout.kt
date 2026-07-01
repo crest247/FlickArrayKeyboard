@@ -3,9 +3,9 @@ package com.crest247.flickarraykeyboard.modes.number
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
-import com.crest247.flickarraykeyboard.core.models.CharKeyData
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
+import com.crest247.flickarraykeyboard.core.models.TapKeyData
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 import com.crest247.flickarraykeyboard.core.ui.components.StandardKeyboard
@@ -27,21 +27,9 @@ fun NumberKeyLayout(processor: NumberProcessor) {
         rowHeight = dimens.numberKeyHeight
     ) { keyData, direction ->
         val action = when (keyData) {
-            is CharKeyData -> NumberAction.InputChar(keyData.text)
-            is FuncKeyData -> when (keyData.type) {
-                else -> null
-            }
-
-            is FlickKeyData -> {
-                val targetContent: KeyContent? = keyData.popupContents.getOrNull(direction!!)
-                when (targetContent) {
-                    is KeyContent.Text -> {
-                        NumberAction.InputChar(targetContent.text)
-                    }
-                    else -> null
-                }
-            }
-
+            is TapKeyData<*> -> keyData.action as? NumberAction
+            is FuncKeyData -> null
+            is FlickKeyData<*> -> keyData.directionActions[direction] as? NumberAction
             else -> null
         }
 
