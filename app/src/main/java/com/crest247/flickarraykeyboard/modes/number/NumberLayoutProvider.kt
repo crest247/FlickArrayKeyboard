@@ -20,14 +20,16 @@ object NumberLayoutProvider {
             )
         }
 
-        fun flickKey(centerText: String, popupTexts: List<String>): FlickKeyData<NumberAction> {
+        fun flickKey(centerText: String, popupTexts: List<String>): FlickKeyData<*> {
             return FlickKeyData(
                 KeyContent.Text(centerText),
-                popupTexts.map { text ->
-                    KeyContent.Text(text)
+                List(popupTexts.size + 1) { index ->
+                    if (index == 0) KeyContent.Text("")
+                    else KeyContent.Text(popupTexts[index - 1])
                 },
-                popupTexts.mapIndexed { index, text ->
-                    index to NumberAction.InputChar(text)
+                List(popupTexts.size + 1) { index ->
+                    if (index == 0) 0 to null
+                    else index to NumberAction.InputChar(popupTexts[index - 1])
                 }.toMap()
             )
         }
@@ -50,7 +52,7 @@ object NumberLayoutProvider {
                 numKey("6"),
                 flickKey(
                     "(",
-                    listOf("(", ")", "[", "]", ">", "<", "{", "}")
+                    listOf("(", ")", "]", "[", ">", "<", "{", "}")
                 ),
             ),
             listOf(
@@ -63,7 +65,12 @@ object NumberLayoutProvider {
             listOf(
                 FlickKeyData(
                     KeyContent.Icon(Icons.Outlined.Language),
-                    listOf(KeyContent.Text(""), KeyContent.Text("行"), KeyContent.Text("A"), KeyContent.Text("1")),
+                    listOf(
+                        KeyContent.Text(""),
+                        KeyContent.Text("行"),
+                        KeyContent.Text("A"),
+                        KeyContent.Text("1")
+                    ),
                     mapOf(
                         0 to null,
                         1 to SystemAction.SwitchModule(0),
@@ -80,7 +87,7 @@ object NumberLayoutProvider {
                 numKey("0"),
                 flickKey(
                     "#",
-                    listOf("#", "$", "%", "^", "~", "&")
+                    listOf("#", "$", "%", "|", "^", "~", "&")
                 ),
                 FuncKeyData.create(FuncType.ENTER, 1.0f)
             )
