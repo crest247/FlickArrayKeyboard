@@ -3,6 +3,7 @@ package com.crest247.flickarraykeyboard.core.engine
 import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.InputProcessor
 import com.crest247.flickarraykeyboard.core.KeyboardState
+import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyData
@@ -11,21 +12,27 @@ sealed interface SystemAction {
     object Backspace : SystemAction
     object Space : SystemAction
     object Enter : SystemAction
-    object SwitchLanguage : SystemAction
+
+    data class SwitchModule(val moduleId: Int) : SystemAction
 }
 
 class SystemProcessor(
     private val state: KeyboardState
 ) : InputProcessor<SystemAction> {
 
-    fun handleUniversalKey(keyData: KeyData) {
+    fun handleUniversalKey(keyData: KeyData, direction: Int? = null) {
         when (keyData) {
             is FuncKeyData -> when (keyData.type) {
                 FuncType.BACKSPACE -> onAction(SystemAction.Backspace)
                 FuncType.SPACE -> onAction(SystemAction.Space)
                 FuncType.ENTER -> onAction(SystemAction.Enter)
-                FuncType.LANGUAGE -> onAction(SystemAction.SwitchLanguage)
                 else -> {}
+            }
+
+            is FlickKeyData<*> -> {
+                keyData.directionActions[direction].let {
+                    if (it is SystemAction) onAction(it)
+                }
             }
 
             else -> {}
@@ -54,12 +61,8 @@ class SystemProcessor(
                 }
             }
 
-            is SystemAction.SwitchLanguage -> {
-                when (state.currentModule) {
-                    state.availableModules[0] -> state.switchModule(state.availableModules[1])
-                    state.availableModules[1] -> state.switchModule(state.availableModules[2])
-                    state.availableModules[2] -> state.switchModule(state.availableModules[0])
-                }
+            is SystemAction.SwitchModule -> {
+                state.switchModule(state.availableModules[action.moduleId])
             }
         }
     }

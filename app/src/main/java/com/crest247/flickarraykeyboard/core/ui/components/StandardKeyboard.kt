@@ -77,12 +77,12 @@ fun StandardKeyboard(
 
                                 is FlickKeyData<*> -> {
                                     KeyButton(
-                                        content = KeyContent.Text(keyData.centerText),
+                                        content = keyData.centerContent,
                                         backgroundColor = bgColor,
                                         modifier = Modifier
                                             .weight(keyData.weight)
                                             .flickWithPreview(
-                                                keyData.centerText,
+                                                keyData.centerContent,
                                                 keyData.popupContents,
                                                 keyData.backgroundType,
                                                 onClick = { direction ->

@@ -3,6 +3,8 @@ package com.crest247.flickarraykeyboard.modes.array30
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
+import com.crest247.flickarraykeyboard.core.engine.SystemAction
+import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
@@ -25,7 +27,7 @@ fun Array30KeyLayout(processor: Array30Processor) {
     StandardKeyboard(
         keyRows = keyRows,
         rowHeight = dimens.array30KeyHeight
-    ) { keyData, _ ->
+    ) { keyData, direction ->
         val action = when (keyData) {
             is TapKeyData<*> -> keyData.action as? ArrayAction
             is FuncKeyData -> when (keyData.type) {
@@ -41,6 +43,10 @@ fun Array30KeyLayout(processor: Array30Processor) {
         if (action != null) {
             processor.onAction(action)
         } else {
+            if (keyData is FlickKeyData<*>)
+                keyData.directionActions[direction].let {
+                    if (it is SystemAction) systemProcessor.onAction(it)
+                }
             systemProcessor.handleUniversalKey(keyData)
         }
     }

@@ -3,6 +3,8 @@ package com.crest247.flickarraykeyboard.modes.english
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
+import com.crest247.flickarraykeyboard.core.engine.SystemAction
+import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
@@ -26,7 +28,7 @@ fun EnglishKeyLayout(processor: EnglishProcessor) {
     StandardKeyboard(
         keyRows = keyRows,
         rowHeight = dimens.englishKeyHeight
-    ) { keyData, _ ->
+    ) { keyData, direction ->
         val action = when (keyData) {
             is TapKeyData<*> -> keyData.action as? EnglishAction
             is FuncKeyData -> when (keyData.type) {
@@ -40,6 +42,10 @@ fun EnglishKeyLayout(processor: EnglishProcessor) {
         if (action != null) {
             processor.onAction(action)
         } else {
+            if (keyData is FlickKeyData<*>)
+                keyData.directionActions[direction].let {
+                    if (it is SystemAction) systemProcessor.onAction(it)
+                }
             systemProcessor.handleUniversalKey(keyData)
         }
     }

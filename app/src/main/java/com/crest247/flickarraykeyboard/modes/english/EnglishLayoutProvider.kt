@@ -1,12 +1,16 @@
 package com.crest247.flickarraykeyboard.modes.english
 
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Language
+import com.crest247.flickarraykeyboard.core.engine.SystemAction
+import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SpacerData
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
+import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 
 enum class EnglishVariant { Default, Email, Url }
 
@@ -60,7 +64,18 @@ object EnglishLayoutProvider {
                 FuncKeyData.create(FuncType.BACKSPACE, 1.5f)
             ),
             listOf(
-                FuncKeyData.create(FuncType.LANGUAGE, 1.5f),
+                FlickKeyData(
+                    KeyContent.Icon(Icons.Outlined.Language),
+                    listOf(KeyContent.Text(""), KeyContent.Text("行"), KeyContent.Text("A"), KeyContent.Text("1")),
+                    mapOf(
+                        0 to null,
+                        1 to SystemAction.SwitchModule(0),
+                        2 to SystemAction.SwitchModule(1),
+                        3 to SystemAction.SwitchModule(2)
+                    ),
+                    1.5f,
+                    KeyBackgroundType.FUNCTIONAL
+                ),
                 variantKey,
                 FuncKeyData.create(FuncType.SPACE, 5.0f),
                 charKey(".", ">"),

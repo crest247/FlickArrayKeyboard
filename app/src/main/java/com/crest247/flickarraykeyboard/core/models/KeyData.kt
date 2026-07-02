@@ -46,7 +46,7 @@ data class TapKeyData<T>(
 ) : VisibleKeyData
 
 data class FlickKeyData<T>(
-    val centerText: String,
+    val centerContent: KeyContent,
     val popupContents: List<KeyContent?>,
     val directionActions: Map<Int, T>,
     override val weight: Float = 1.0f,

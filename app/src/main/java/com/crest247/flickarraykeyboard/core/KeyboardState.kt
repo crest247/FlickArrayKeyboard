@@ -14,9 +14,9 @@ import com.crest247.flickarraykeyboard.modes.number.NumberModule
 
 class KeyboardState {
     val availableModules: List<KeyboardModule> = listOf(
+        Array30Module,
         EnglishModule,
-        NumberModule,
-        Array30Module
+        NumberModule
     )
     var currentModule by mutableStateOf(availableModules.first()); private set
     var currentInputConnection by mutableStateOf<InputConnection?>(null); private set
