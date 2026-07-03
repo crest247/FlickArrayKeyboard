@@ -21,6 +21,7 @@ import com.crest247.flickarraykeyboard.core.theme.resolveColor
 fun StandardKeyboard(
     keyRows: List<List<KeyData>>,
     rowHeight: Dp,
+    onKeyLongPress: ((KeyData, Int?) -> Unit)? = null,
     onKeyAction: (KeyData, flickDirection: Int?) -> Unit
 ) {
     Column(
@@ -78,6 +79,10 @@ fun StandardKeyboard(
                                                         keyData,
                                                         direction
                                                     )
+                                                },
+                                                onLongPress = {
+                                                    if (onKeyLongPress != null)
+                                                        onKeyLongPress(keyData, 0)
                                                 }
                                             )
                                     )

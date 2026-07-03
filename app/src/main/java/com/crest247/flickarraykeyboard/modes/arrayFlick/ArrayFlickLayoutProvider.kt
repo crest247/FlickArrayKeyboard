@@ -22,7 +22,10 @@ object ArrayFlickLayoutProvider {
                 KeyContent.Text(centerText),
                 List(displayTexts.size) { KeyContent.Text(displayTexts[it]) },
                 List(displayTexts.size) {
-                    it to ArrayAction.InputRadical(displayTexts[it], lookupTexts[it])
+                    it to ArrayFlickAction.InputRadical(
+                        displayTexts[it], lookupTexts[it],
+                        ArrayAction.InputRadical(centerText, centerText)
+                    )
                 }.toMap()
             )
         }

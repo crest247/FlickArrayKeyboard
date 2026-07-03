@@ -197,7 +197,8 @@ fun Modifier.flickWithPreview(
     onDown: (() -> Unit)? = null,
     onUp: (() -> Unit)? = null,
     onFlick: (Int) -> Unit = {},
-    onClick: (Int) -> Unit = {}
+    onClick: (Int) -> Unit = {},
+    onLongPress: (() -> Unit)? = null
 ): Modifier = composed {
     val density = LocalDensity.current
     val dimens = LocalKeyboardDimens.current
@@ -243,6 +244,7 @@ fun Modifier.flickWithPreview(
             onClick = { direction ->
                 onClick(direction)
             },
+            onLongPress = onLongPress,
             directionCount = popupContents.size - 1,
             flickThresholdPx = threshold
         )

@@ -2,15 +2,17 @@ package com.crest247.flickarraykeyboard.modes.arrayFlick
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
+import com.crest247.flickarraykeyboard.core.models.KeyboardAction
+import com.crest247.flickarraykeyboard.core.models.LongPressAction
 import com.crest247.flickarraykeyboard.core.models.VisibleKeyData
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.components.StandardKeyboard
 import com.crest247.flickarraykeyboard.core.ui.preview.KeyboardPreviewWrapper
 import com.crest247.flickarraykeyboard.core.ui.preview.ThemePreviews
+import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 import com.crest247.flickarraykeyboard.modes.shared.array.ArrayProcessor
 
 @Composable
@@ -25,13 +27,28 @@ fun ArrayFlickKeyLayout(processor: ArrayProcessor) {
     }
     StandardKeyboard(
         keyRows = keyRows,
-        rowHeight = dimens.arrayFlickKeyHeight
+        rowHeight = dimens.arrayFlickKeyHeight,
+        onKeyLongPress = { keyData, direction ->
+            val baseAction = when (keyData) {
+                is FlickKeyData<*> -> keyData.directionActions[direction]
+                else -> null
+            }
+            if (baseAction is LongPressAction) {
+                baseAction.longPressAction?.let { longPressAction ->
+                    processor.onAction(longPressAction)
+                }
+            }
+        }
     ) { keyData, direction ->
         when (keyData) {
             is FlickKeyData<*> -> keyData.directionActions[direction]
             is VisibleKeyData<*> -> keyData.action
             else -> null
-        }?.let { it as? KeyboardAction }?.let { action ->
+        }?.let {
+            if (it is ArrayFlickAction.InputRadical)
+                ArrayAction.InputRadical(displayStr = it.displayStr, lookupStr = it.lookupStr)
+            else it
+        }.let { it as? KeyboardAction }?.let { action ->
             if (!processor.onAction(action))
                 (action as? SystemAction)?.let { systemProcessor.onAction(it) }
         }
