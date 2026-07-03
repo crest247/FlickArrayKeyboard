@@ -1,4 +1,4 @@
-package com.crest247.flickarraykeyboard.modes.array30
+package com.crest247.flickarraykeyboard.modes.shared.array
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -20,12 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardColors
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 
 @Composable
-fun Array30SuggestionLayout(processor: Array30Processor) {
+fun ArraySuggestionLayout(processor: ArrayProcessor) {
     val dimens = LocalKeyboardDimens.current
     val colors = LocalKeyboardColors.current
 
@@ -63,9 +61,11 @@ fun Array30SuggestionLayout(processor: Array30Processor) {
                                 if (isSelected) Modifier.border(
                                     width = dimens.candidateSelectedBorder,
                                     color = colors.candidateSelectedBorder,
-                                    shape = RoundedCornerShape(dimens.keyRadius)
+                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(
+                                        dimens.keyRadius
+                                    )
                                 )
-                                else Modifier
+                                else Modifier.Companion
                             )
                             .clickable {
                                 processor.commitCandidate(candidate)

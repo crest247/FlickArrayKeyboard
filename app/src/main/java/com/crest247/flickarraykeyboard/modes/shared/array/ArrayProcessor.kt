@@ -1,4 +1,4 @@
-package com.crest247.flickarraykeyboard.modes.array30
+package com.crest247.flickarraykeyboard.modes.shared.array
 
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
@@ -8,10 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.crest247.flickarraykeyboard.core.InputProcessor
 import com.crest247.flickarraykeyboard.core.KeyboardAction
-import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
-import com.crest247.flickarraykeyboard.modes.shared.array.ArrayDecoder
 
-class Array30Processor : InputProcessor {
+class ArrayProcessor : InputProcessor {
     private var inputConnection: InputConnection? = null
     var editorInfo: EditorInfo? = null; private set
     val displayTokens = mutableStateListOf<String>()
@@ -26,7 +24,7 @@ class Array30Processor : InputProcessor {
     override fun onAction(action: KeyboardAction): Boolean {
         return if (action !is ArrayAction) false
         else when (action) {
-            is ArrayAction.Input -> {
+            is ArrayAction.InputRadical -> {
                 displayTokens.add(action.displayStr)
                 lookupTokens.add(action.lookupStr)
                 updateCandidates()

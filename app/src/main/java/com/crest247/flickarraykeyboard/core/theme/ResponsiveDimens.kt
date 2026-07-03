@@ -56,6 +56,7 @@ fun rememberResponsiveDimens(): KeyboardDimens {
             englishKeyHeight = baseKeyHeight,
             array30KeyHeight = baseKeyHeight,
             numberKeyHeight = numPadKeyHeight,
+            arrayFlickKeyHeight = numPadKeyHeight,
             flickThreshold = 10.dp,
             tapCancelThreshold = 50.dp
         )

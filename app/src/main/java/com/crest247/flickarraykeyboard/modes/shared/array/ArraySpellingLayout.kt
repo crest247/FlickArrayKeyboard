@@ -1,4 +1,4 @@
-package com.crest247.flickarraykeyboard.modes.array30
+package com.crest247.flickarraykeyboard.modes.shared.array
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,10 +14,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardColors
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
-import com.crest247.flickarraykeyboard.modes.array30.Array30Module.processor
 
 @Composable
-fun Array30SpellingLayout(processor: Array30Processor) {
+fun ArraySpellingLayout(processor: ArrayProcessor) {
     val dimens = LocalKeyboardDimens.current
     val colors = LocalKeyboardColors.current
 

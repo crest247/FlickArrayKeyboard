@@ -69,13 +69,15 @@ object NumberLayoutProvider {
                         KeyContent.Text(""),
                         KeyContent.Text("行"),
                         KeyContent.Text("A"),
-                        KeyContent.Text("1")
+                        KeyContent.Text("1"),
+                        KeyContent.Text("行ᶠ")
                     ),
                     mapOf(
                         0 to null,
                         1 to SystemAction.SwitchModule(0),
                         2 to SystemAction.SwitchModule(1),
-                        3 to SystemAction.SwitchModule(2)
+                        3 to SystemAction.SwitchModule(2),
+                        4 to SystemAction.SwitchModule(3)
                     ),
                     1.0f,
                     KeyBackgroundType.FUNCTIONAL
