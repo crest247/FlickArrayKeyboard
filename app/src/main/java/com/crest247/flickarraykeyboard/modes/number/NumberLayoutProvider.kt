@@ -4,12 +4,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Language
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
-import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 import com.crest247.flickarraykeyboard.core.models.KeyData
+import com.crest247.flickarraykeyboard.core.models.SystemKeyFactory
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
+import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 
 object NumberLayoutProvider {
     fun createKeys(imeOptions: Int?): List<List<KeyData>> {
@@ -36,16 +37,16 @@ object NumberLayoutProvider {
 
         return listOf(
             listOf(
-                FuncKeyData.create(FuncType.TAB, 1.0f),
+                SystemKeyFactory.create(FuncType.TAB, 1.0f),
                 numKey("1"),
                 numKey("2"),
                 numKey("3"),
-                FuncKeyData.create(FuncType.BACKSPACE, 1.0f),
+                SystemKeyFactory.create(FuncType.BACKSPACE, 1.0f),
             ),
             listOf(
                 flickKey(
                     ".",
-                    listOf(".", ",", ":", "_", "!", "?")
+                    listOf(".", ",", ":", "_", "!", "?", "°")
                 ),
                 numKey("4"),
                 numKey("5"),
@@ -56,11 +57,11 @@ object NumberLayoutProvider {
                 ),
             ),
             listOf(
-                FuncKeyData.create(FuncType.SPACE, 1.0f),
+                SystemKeyFactory.create(FuncType.SPACE, 1.0f),
                 numKey("7"),
                 numKey("8"),
                 numKey("9"),
-                FuncKeyData.create(FuncType.SPACE, 1.0f),
+                SystemKeyFactory.create(FuncType.SPACE, 1.0f),
             ),
             listOf(
                 FlickKeyData(
@@ -91,7 +92,7 @@ object NumberLayoutProvider {
                     "#",
                     listOf("#", "$", "%", "|", "^", "~", "&")
                 ),
-                FuncKeyData.create(FuncType.ENTER, 1.0f)
+                SystemKeyFactory.createEnterKey(imeOptions, 1.0f, ArrayAction.Enter)
             )
         )
     }

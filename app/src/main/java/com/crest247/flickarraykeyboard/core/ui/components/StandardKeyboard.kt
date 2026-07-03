@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import com.crest247.flickarraykeyboard.core.RepeatableAction
+import com.crest247.flickarraykeyboard.core.TriggerOnDownAction
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
-import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SpacerData
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
@@ -40,21 +41,8 @@ fun StandardKeyboard(
 
                             when (keyData) {
                                 is TapKeyData<*> -> {
-                                    KeyButton(
-                                        content = KeyContent.Text(keyData.text),
-                                        backgroundColor = bgColor,
-                                        modifier = Modifier
-                                            .weight(keyData.weight)
-                                            .tapWithPreview(
-                                                keyId = keyData.text,
-                                                content = KeyContent.Text(keyData.text),
-                                                backgroundType = keyData.backgroundType,
-                                                onClick = { onKeyAction(keyData, null) }
-                                            )
-                                    )
-                                }
-
-                                is FuncKeyData<*> -> {
+                                    val isRepeatable = keyData.action is RepeatableAction
+                                    val useDown = keyData.action is TriggerOnDownAction
                                     KeyButton(
                                         content = keyData.content,
                                         backgroundColor = bgColor,
@@ -65,12 +53,12 @@ fun StandardKeyboard(
                                                 content = keyData.content,
                                                 backgroundType = keyData.backgroundType,
                                                 onClick = { onKeyAction(keyData, null) },
-                                                onRepeat = if (keyData.type.isRepeatable) {
+                                                onRepeat = if (isRepeatable) {
                                                     { onKeyAction(keyData, null) }
                                                 } else null,
-                                                onDown = if (keyData.type.useDown) {
+                                                onDown = if (useDown) {
                                                     { onKeyAction(keyData, null) }
-                                                } else null,
+                                                } else null
                                             )
                                     )
                                 }

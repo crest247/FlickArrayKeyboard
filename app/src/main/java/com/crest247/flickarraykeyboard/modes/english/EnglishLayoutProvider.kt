@@ -4,11 +4,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Language
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
-import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SpacerData
+import com.crest247.flickarraykeyboard.core.models.SystemKeyFactory
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 
@@ -57,11 +57,11 @@ object EnglishLayoutProvider {
                 SpacerData(0.5f)
             ),
             listOf(
-                FuncKeyData.create(FuncType.SHIFT, 1.5f, EnglishAction.ToggleShift),
+                SystemKeyFactory.create(FuncType.SHIFT, 1.5f, EnglishAction.ToggleShift),
                 charKey("z", "Z"), charKey("x", "X"), charKey("c", "C"),
                 charKey("v", "V"), charKey("b", "B"), charKey("n", "N"),
                 charKey("m", "M"),
-                FuncKeyData.create(FuncType.BACKSPACE, 1.5f)
+                SystemKeyFactory.create(FuncType.BACKSPACE, 1.5f)
             ),
             listOf(
                 FlickKeyData(
@@ -80,13 +80,13 @@ object EnglishLayoutProvider {
                         3 to SystemAction.SwitchModule(2),
                         4 to SystemAction.SwitchModule(3)
                     ),
-                    1.0f,
+                    1.5f,
                     KeyBackgroundType.FUNCTIONAL
                 ),
                 variantKey,
-                FuncKeyData.create(FuncType.SPACE, 5.0f),
+                SystemKeyFactory.create(FuncType.SPACE, 5.0f),
                 charKey(".", ">"),
-                FuncKeyData.createEnterKey(imeOptions, 1.5f)
+                SystemKeyFactory.createEnterKey(imeOptions, 1.5f)
             )
         )
     }

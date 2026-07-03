@@ -4,13 +4,10 @@ import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.InputProcessor
 import com.crest247.flickarraykeyboard.core.KeyboardAction
 import com.crest247.flickarraykeyboard.core.KeyboardState
-import com.crest247.flickarraykeyboard.core.models.FlickKeyData
-import com.crest247.flickarraykeyboard.core.models.FuncKeyData
-import com.crest247.flickarraykeyboard.core.models.FuncType
-import com.crest247.flickarraykeyboard.core.models.KeyData
+import com.crest247.flickarraykeyboard.core.RepeatableAction
 
 sealed interface SystemAction : KeyboardAction {
-    object Backspace : SystemAction
+    object Backspace : SystemAction, RepeatableAction
     object Space : SystemAction
     object Enter : SystemAction
 
@@ -22,7 +19,7 @@ class SystemProcessor(
 ) : InputProcessor {
 
     override fun onAction(action: KeyboardAction): Boolean {
-        if(action !is SystemAction) return false
+        if (action !is SystemAction) return false
 
         val inputConnection = state.currentInputConnection
         val editorInfo = state.currentEditorInfo
