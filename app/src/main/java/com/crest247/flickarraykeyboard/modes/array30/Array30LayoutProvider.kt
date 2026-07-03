@@ -196,9 +196,9 @@ object Array30LayoutProvider {
                     3.0f,
                     KeyBackgroundType.FUNCTIONAL
                 ),
-                FuncKeyData.create(FuncType.SPACE, 4.0f),
-                FuncKeyData.create(FuncType.BACKSPACE, 1.5f),
-                FuncKeyData.createEnterKey(imeOptions, 1.5f)
+                FuncKeyData.create(FuncType.SPACE, 4.0f, ArrayAction.Space),
+                FuncKeyData.create(FuncType.BACKSPACE, 1.5f, ArrayAction.Backspace),
+                FuncKeyData.createEnterKey(imeOptions, 1.5f, ArrayAction.Enter)
             )
         )
     }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.crest247.flickarraykeyboard.core.InputProcessor
 
 interface KeyboardModule {
-    val processor: InputProcessor<*>
+    val processor: InputProcessor
 
     @Composable
     fun SpellingAreaLayout()

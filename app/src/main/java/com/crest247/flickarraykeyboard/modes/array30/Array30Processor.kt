@@ -7,10 +7,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.crest247.flickarraykeyboard.core.InputProcessor
+import com.crest247.flickarraykeyboard.core.KeyboardAction
 import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 import com.crest247.flickarraykeyboard.modes.shared.array.ArrayDecoder
 
-class Array30Processor : InputProcessor<ArrayAction> {
+class Array30Processor : InputProcessor {
     private var inputConnection: InputConnection? = null
     var editorInfo: EditorInfo? = null; private set
     val displayTokens = mutableStateListOf<String>()
@@ -22,12 +23,14 @@ class Array30Processor : InputProcessor<ArrayAction> {
         this.editorInfo = editorInfo
     }
 
-    override fun onAction(action: ArrayAction) {
-        when (action) {
+    override fun onAction(action: KeyboardAction): Boolean {
+        return if (action !is ArrayAction) false
+        else when (action) {
             is ArrayAction.Input -> {
                 displayTokens.add(action.displayStr)
                 lookupTokens.add(action.lookupStr)
                 updateCandidates()
+                true
             }
 
             is ArrayAction.Backspace -> {
@@ -42,6 +45,7 @@ class Array30Processor : InputProcessor<ArrayAction> {
                 } else {
                     inputConnection?.deleteSurroundingText(1, 0)
                 }
+                true
             }
 
             is ArrayAction.Space -> {
@@ -49,6 +53,7 @@ class Array30Processor : InputProcessor<ArrayAction> {
                 else if (displayTokens.isEmpty()) {
                     inputConnection?.commitText(" ", 1)
                 }
+                true
             }
 
             is ArrayAction.Enter -> {
@@ -61,6 +66,7 @@ class Array30Processor : InputProcessor<ArrayAction> {
                         actionId?.let { inputConnection?.performEditorAction(it) }
                     }
                 }
+                true
             }
         }
     }

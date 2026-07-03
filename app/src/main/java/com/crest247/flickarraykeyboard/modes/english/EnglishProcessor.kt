@@ -7,8 +7,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.crest247.flickarraykeyboard.core.InputProcessor
+import com.crest247.flickarraykeyboard.core.KeyboardAction
 
-class EnglishProcessor : InputProcessor<EnglishAction> {
+class EnglishProcessor : InputProcessor {
     private var inputConnection: InputConnection? = null
     var editorInfo: EditorInfo? = null; private set
     var shiftState: ShiftState by mutableStateOf(ShiftState.LOWERCASE); private set
@@ -33,8 +34,9 @@ class EnglishProcessor : InputProcessor<EnglishAction> {
             EnglishVariant.Default
     }
 
-    override fun onAction(action: EnglishAction) {
-        when (action) {
+    override fun onAction(action: KeyboardAction): Boolean {
+        return if (action !is EnglishAction) false
+        else when (action) {
             is EnglishAction.InputChar -> {
                 if (isShiftPressed) {
                     hasTypedDuringHold = true
@@ -45,6 +47,7 @@ class EnglishProcessor : InputProcessor<EnglishAction> {
                 if (!isShiftPressed && shiftState == ShiftState.UPPERCASE) {
                     shiftState = ShiftState.LOWERCASE
                 }
+                true
             }
 
             is EnglishAction.ToggleShift -> {
@@ -64,6 +67,7 @@ class EnglishProcessor : InputProcessor<EnglishAction> {
                         shiftState = ShiftState.LOWERCASE
                     }
                 }
+                true
             }
         }
     }

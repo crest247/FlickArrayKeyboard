@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.ArrowCircleRight
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Search
+import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 
 enum class FuncType(
@@ -34,31 +35,38 @@ sealed interface KeyData {
 
 data class SpacerData(override val weight: Float) : KeyData
 
-sealed interface VisibleKeyData : KeyData {
+sealed interface VisibleKeyData<T> : KeyData {
+    val content: KeyContent
+    val action: T
     val backgroundType: KeyBackgroundType
 }
 
 data class TapKeyData<T>(
     val text: String,
-    val action: T,
+    override val action: T,
     override val weight: Float = 1.0f,
     override val backgroundType: KeyBackgroundType = KeyBackgroundType.NORMAL
-) : VisibleKeyData
+) : VisibleKeyData<T> {
+    override val content: KeyContent = KeyContent.Text(text)
+}
 
 data class FlickKeyData<T>(
-    val centerContent: KeyContent,
+    override val content: KeyContent,
     val popupContents: List<KeyContent?>,
     val directionActions: Map<Int, T>,
     override val weight: Float = 1.0f,
     override val backgroundType: KeyBackgroundType = KeyBackgroundType.NORMAL
-) : VisibleKeyData
+) : VisibleKeyData<Map<Int, T>> {
+    override val action = directionActions
+}
 
-data class FuncKeyData(
+data class FuncKeyData<T>(
     val type: FuncType,
-    val content: KeyContent,
+    override val content: KeyContent,
+    override val action: T,
     override val weight: Float = 1.0f,
     override val backgroundType: KeyBackgroundType = KeyBackgroundType.FUNCTIONAL
-) : VisibleKeyData {
+) : VisibleKeyData<T> {
     companion object {
         private val defaultContents = mapOf(
             FuncType.BACKSPACE to KeyContent.Icon(Icons.AutoMirrored.Outlined.Backspace),
@@ -69,34 +77,44 @@ data class FuncKeyData(
             FuncType.TAB to KeyContent.Icon(Icons.AutoMirrored.Outlined.KeyboardTab)
         )
 
-        fun create(type: FuncType, weight: Float = 1.0f): FuncKeyData {
+        fun create(type: FuncType, weight: Float = 1.0f, action: Any? = null): FuncKeyData<*> {
             val content = defaultContents[type] ?: throw (IllegalArgumentException("Unknown type"))
 
             return FuncKeyData(
                 type,
                 content,
+                action ?: when (type) {
+                    FuncType.SPACE -> SystemAction.Space
+                    FuncType.BACKSPACE -> SystemAction.Backspace
+                    FuncType.ENTER -> SystemAction.Enter
+                    else -> null
+                },
                 weight,
-                when (type) {
-                    FuncType.SPACE -> KeyBackgroundType.NORMAL
-                    else -> KeyBackgroundType.FUNCTIONAL
-                }
+                if (type == FuncType.SPACE) KeyBackgroundType.NORMAL
+                else KeyBackgroundType.FUNCTIONAL
             )
         }
 
-        fun createEnterKey(imeOptions: Int?, weight: Float = 1.5f): FuncKeyData {
-            val action = imeOptions?.and(IME_MASK_ACTION)
-            val content = when (action) {
-                EditorInfo.IME_ACTION_SEARCH -> KeyContent.Icon(Icons.Outlined.Search)
-                EditorInfo.IME_ACTION_SEND -> KeyContent.Icon(Icons.AutoMirrored.Filled.Send)
-                EditorInfo.IME_ACTION_DONE -> KeyContent.Icon(Icons.Outlined.Done)
-                EditorInfo.IME_ACTION_GO -> KeyContent.Icon(Icons.Outlined.ArrowCircleRight)
-                EditorInfo.IME_ACTION_NEXT -> KeyContent.Icon(Icons.AutoMirrored.Outlined.NextPlan)
-                else -> KeyContent.Icon(Icons.AutoMirrored.Outlined.KeyboardReturn)
+        fun createEnterKey(
+            imeOptions: Int?,
+            weight: Float = 1.5f,
+            action: Any? = null
+        ): FuncKeyData<*> {
+            val content = imeOptions?.and(IME_MASK_ACTION).let {
+                when (it) {
+                    EditorInfo.IME_ACTION_SEARCH -> KeyContent.Icon(Icons.Outlined.Search)
+                    EditorInfo.IME_ACTION_SEND -> KeyContent.Icon(Icons.AutoMirrored.Filled.Send)
+                    EditorInfo.IME_ACTION_DONE -> KeyContent.Icon(Icons.Outlined.Done)
+                    EditorInfo.IME_ACTION_GO -> KeyContent.Icon(Icons.Outlined.ArrowCircleRight)
+                    EditorInfo.IME_ACTION_NEXT -> KeyContent.Icon(Icons.AutoMirrored.Outlined.NextPlan)
+                    else -> KeyContent.Icon(Icons.AutoMirrored.Outlined.KeyboardReturn)
+                }
             }
 
             return FuncKeyData(
                 type = FuncType.ENTER,
                 content = content,
+                action = action ?: SystemAction.Enter,
                 weight = weight,
                 backgroundType = KeyBackgroundType.FUNCTIONAL
             )

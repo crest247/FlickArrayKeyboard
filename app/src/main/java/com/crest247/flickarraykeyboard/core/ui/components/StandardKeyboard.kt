@@ -35,7 +35,7 @@ fun StandardKeyboard(
                             Spacer(modifier = Modifier.weight(keyData.weight))
                         }
 
-                        is VisibleKeyData -> {
+                        is VisibleKeyData<*> -> {
                             val bgColor = keyData.backgroundType.resolveColor()
 
                             when (keyData) {
@@ -54,7 +54,7 @@ fun StandardKeyboard(
                                     )
                                 }
 
-                                is FuncKeyData -> {
+                                is FuncKeyData<*> -> {
                                     KeyButton(
                                         content = keyData.content,
                                         backgroundColor = bgColor,
@@ -77,12 +77,12 @@ fun StandardKeyboard(
 
                                 is FlickKeyData<*> -> {
                                     KeyButton(
-                                        content = keyData.centerContent,
+                                        content = keyData.content,
                                         backgroundColor = bgColor,
                                         modifier = Modifier
                                             .weight(keyData.weight)
                                             .flickWithPreview(
-                                                keyData.centerContent,
+                                                keyData.content,
                                                 keyData.popupContents,
                                                 keyData.backgroundType,
                                                 onClick = { direction ->

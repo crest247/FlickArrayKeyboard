@@ -1,11 +1,13 @@
 package com.crest247.flickarraykeyboard.modes.english
 
+import com.crest247.flickarraykeyboard.core.KeyboardAction
+
 enum class ShiftState {
     LOWERCASE,
     UPPERCASE,
     CAPS_LOCK
 }
-sealed interface EnglishAction {
+sealed interface EnglishAction : KeyboardAction {
     data class InputChar(val char: String) : EnglishAction
     object ToggleShift : EnglishAction
 }

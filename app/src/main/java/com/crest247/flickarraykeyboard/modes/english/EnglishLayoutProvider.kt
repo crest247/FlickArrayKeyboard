@@ -57,7 +57,7 @@ object EnglishLayoutProvider {
                 SpacerData(0.5f)
             ),
             listOf(
-                FuncKeyData.create(FuncType.SHIFT, 1.5f),
+                FuncKeyData.create(FuncType.SHIFT, 1.5f, EnglishAction.ToggleShift),
                 charKey("z", "Z"), charKey("x", "X"), charKey("c", "C"),
                 charKey("v", "V"), charKey("b", "B"), charKey("n", "N"),
                 charKey("m", "M"),

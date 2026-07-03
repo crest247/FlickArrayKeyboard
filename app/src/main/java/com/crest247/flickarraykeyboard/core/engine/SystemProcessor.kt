@@ -2,13 +2,14 @@ package com.crest247.flickarraykeyboard.core.engine
 
 import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.InputProcessor
+import com.crest247.flickarraykeyboard.core.KeyboardAction
 import com.crest247.flickarraykeyboard.core.KeyboardState
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyData
 
-sealed interface SystemAction {
+sealed interface SystemAction : KeyboardAction {
     object Backspace : SystemAction
     object Space : SystemAction
     object Enter : SystemAction
@@ -18,38 +19,23 @@ sealed interface SystemAction {
 
 class SystemProcessor(
     private val state: KeyboardState
-) : InputProcessor<SystemAction> {
+) : InputProcessor {
 
-    fun handleUniversalKey(keyData: KeyData, direction: Int? = null) {
-        when (keyData) {
-            is FuncKeyData -> when (keyData.type) {
-                FuncType.BACKSPACE -> onAction(SystemAction.Backspace)
-                FuncType.SPACE -> onAction(SystemAction.Space)
-                FuncType.ENTER -> onAction(SystemAction.Enter)
-                else -> {}
-            }
+    override fun onAction(action: KeyboardAction): Boolean {
+        if(action !is SystemAction) return false
 
-            is FlickKeyData<*> -> {
-                keyData.directionActions[direction].let {
-                    if (it is SystemAction) onAction(it)
-                }
-            }
-
-            else -> {}
-        }
-    }
-
-    override fun onAction(action: SystemAction) {
         val inputConnection = state.currentInputConnection
         val editorInfo = state.currentEditorInfo
 
-        when (action) {
+        return when (action) {
             is SystemAction.Backspace -> {
                 inputConnection?.deleteSurroundingText(1, 0)
+                true
             }
 
             is SystemAction.Space -> {
                 inputConnection?.commitText(" ", 1)
+                true
             }
 
             is SystemAction.Enter -> {
@@ -59,10 +45,12 @@ class SystemProcessor(
                 } else {
                     actionId?.let { inputConnection?.performEditorAction(it) }
                 }
+                true
             }
 
             is SystemAction.SwitchModule -> {
                 state.switchModule(state.availableModules[action.moduleId])
+                true
             }
         }
     }
