@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import com.crest247.flickarraykeyboard.core.RepeatableAction
-import com.crest247.flickarraykeyboard.core.TriggerOnDownAction
+import com.crest247.flickarraykeyboard.core.models.RepeatableAction
+import com.crest247.flickarraykeyboard.core.models.TriggerOnDownAction
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SpacerData

@@ -2,7 +2,7 @@ package com.crest247.flickarraykeyboard.modes.number
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.crest247.flickarraykeyboard.core.KeyboardAction
+import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData

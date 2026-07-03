@@ -1,7 +1,7 @@
 package com.crest247.flickarraykeyboard.modes.english
 
-import com.crest247.flickarraykeyboard.core.KeyboardAction
-import com.crest247.flickarraykeyboard.core.TriggerOnDownAction
+import com.crest247.flickarraykeyboard.core.models.KeyboardAction
+import com.crest247.flickarraykeyboard.core.models.TriggerOnDownAction
 
 enum class ShiftState {
     LOWERCASE,

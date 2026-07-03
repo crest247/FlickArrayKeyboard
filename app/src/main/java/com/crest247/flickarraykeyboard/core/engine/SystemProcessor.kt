@@ -2,9 +2,9 @@ package com.crest247.flickarraykeyboard.core.engine
 
 import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.InputProcessor
-import com.crest247.flickarraykeyboard.core.KeyboardAction
+import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 import com.crest247.flickarraykeyboard.core.KeyboardState
-import com.crest247.flickarraykeyboard.core.RepeatableAction
+import com.crest247.flickarraykeyboard.core.models.RepeatableAction
 
 sealed interface SystemAction : KeyboardAction {
     object Backspace : SystemAction, RepeatableAction
