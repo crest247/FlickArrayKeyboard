@@ -12,13 +12,15 @@ import com.crest247.flickarraykeyboard.modes.array30.Array30Module
 import com.crest247.flickarraykeyboard.modes.arrayFlick.ArrayFlickModule
 import com.crest247.flickarraykeyboard.modes.english.EnglishModule
 import com.crest247.flickarraykeyboard.modes.number.NumberModule
+import com.crest247.flickarraykeyboard.modes.symbol.SymbolModule
 
 class KeyboardState {
     val availableModules: List<KeyboardModule> = listOf(
         Array30Module,
         EnglishModule,
         NumberModule,
-        ArrayFlickModule
+        ArrayFlickModule,
+        SymbolModule
     )
     var currentModule by mutableStateOf(availableModules.first()); private set
     var currentInputConnection by mutableStateOf<InputConnection?>(null); private set

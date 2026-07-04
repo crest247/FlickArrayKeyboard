@@ -30,6 +30,7 @@ data class KeyboardDimens(
     val array30KeyHeight: Dp,
     val numberKeyHeight: Dp,
     val arrayFlickKeyHeight: Dp,
+    val symbolKeyHeight: Dp,
     val flickThreshold: Dp,
     val tapCancelThreshold: Dp
 )
