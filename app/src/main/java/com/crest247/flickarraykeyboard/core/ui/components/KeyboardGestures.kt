@@ -4,6 +4,7 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -15,6 +16,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
@@ -24,6 +26,8 @@ import kotlinx.coroutines.delay
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.atan2
+
+val LocalKeyboardLayoutCoordinates = compositionLocalOf<LayoutCoordinates?> { null }
 
 fun Modifier.keyGestures(
     onDown: (() -> Unit)? = null,
@@ -145,6 +149,8 @@ fun Modifier.tapWithPreview(
     val density = LocalDensity.current
     val dimens = LocalKeyboardDimens.current
     val previewHandler = LocalPreviewHandler.current
+    val keyboardAncestor = LocalKeyboardLayoutCoordinates.current
+
     val threshold = with(density) { dimens.tapCancelThreshold.toPx() }
 
     var keyPosition by remember { mutableStateOf(Offset.Zero) }
@@ -156,6 +162,7 @@ fun Modifier.tapWithPreview(
             keyPosition = coordinates.positionInRoot()
             keyWidth = coordinates.size.width.toFloat()
             keyHeight = coordinates.size.height.toFloat()
+            keyPosition = keyboardAncestor?.localPositionOf(coordinates, Offset.Zero) ?: Offset.Zero
         }
         .keyGestures(
             onDown = {
@@ -209,11 +216,14 @@ fun Modifier.flickWithPreview(
     var keyWidth by remember { mutableFloatStateOf(0f) }
     var keyHeight by remember { mutableFloatStateOf(0f) }
 
+    val keyboardAncestor = LocalKeyboardLayoutCoordinates.current
+
     this
         .onGloballyPositioned { coordinates ->
             keyPosition = coordinates.positionInRoot()
             keyWidth = coordinates.size.width.toFloat()
             keyHeight = coordinates.size.height.toFloat()
+            keyPosition = keyboardAncestor?.localPositionOf(coordinates, Offset.Zero) ?: Offset.Zero
         }
         .keyGestures(
             onDown = {

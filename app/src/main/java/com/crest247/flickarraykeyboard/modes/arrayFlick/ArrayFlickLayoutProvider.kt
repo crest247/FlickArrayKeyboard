@@ -1,11 +1,7 @@
 package com.crest247.flickarraykeyboard.modes.arrayFlick
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Language
-import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
-import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SystemKeyFactory
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
@@ -52,25 +48,7 @@ object ArrayFlickLayoutProvider {
                 SystemKeyFactory.create(FuncType.SPACE, 1.0f, ArrayAction.Space),
             ),
             listOf(
-                FlickKeyData(
-                    KeyContent.Icon(Icons.Outlined.Language),
-                    listOf(
-                        KeyContent.Text(""),
-                        KeyContent.Text("行"),
-                        KeyContent.Text("A"),
-                        KeyContent.Text("1"),
-                        KeyContent.Text("行ᶠ")
-                    ),
-                    mapOf(
-                        0 to null,
-                        1 to SystemAction.SwitchModule(0),
-                        2 to SystemAction.SwitchModule(1),
-                        3 to SystemAction.SwitchModule(2),
-                        4 to SystemAction.SwitchModule(3)
-                    ),
-                    1.0f,
-                    KeyBackgroundType.FUNCTIONAL
-                ),
+                SystemKeyFactory.create(FuncType.LANGUAGE, 1.0f),
                 SystemKeyFactory.create(FuncType.SPACE, 1.0f, ArrayAction.Space),
                 radicalKey("0", listOf("0-", "0^", "0v"), listOf(";", "p", "/")),
                 SystemKeyFactory.create(FuncType.SPACE, 1.0f, ArrayAction.Space),

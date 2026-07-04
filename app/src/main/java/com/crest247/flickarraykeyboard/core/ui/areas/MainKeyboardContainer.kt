@@ -11,12 +11,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import com.crest247.flickarraykeyboard.core.KeyboardState
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.components.KeyPreviewOverlay
+import com.crest247.flickarraykeyboard.core.ui.components.LocalKeyboardLayoutCoordinates
 import com.crest247.flickarraykeyboard.core.ui.components.LocalPreviewHandler
 import com.crest247.flickarraykeyboard.core.ui.components.keyboardBackgroundStyle
 
@@ -29,6 +35,8 @@ fun MainKeyboardContainer(
     val previewHandler = LocalPreviewHandler.current
     val dimens = LocalKeyboardDimens.current
     val transparentTopPadding = dimens.previewTransparentPadding
+
+    var stableCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -59,13 +67,24 @@ fun MainKeyboardContainer(
                     .keyboardBackgroundStyle()
             ) {
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { onKeyboardLayoutChanged(it) }
-                ) {
-                    state.currentModule.SuggestionAreaLayout()
-                    state.currentModule.KeyAreaLayout()
+                CompositionLocalProvider(LocalKeyboardLayoutCoordinates provides stableCoordinates) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned { coordinates ->
+                                stableCoordinates = coordinates
+                                onKeyboardLayoutChanged(coordinates)
+                            }
+                    ) {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            state.currentModule.SuggestionAreaLayout()
+                            state.currentModule.KeyAreaLayout()
+                        }
+
+                        previewHandler.activePreviews.values.forEach { previewState ->
+                            KeyPreviewOverlay(state = previewState)
+                        }
+                    }
                 }
 
                 Spacer(
@@ -73,9 +92,6 @@ fun MainKeyboardContainer(
                         .windowInsetsBottomHeight(WindowInsets.navigationBars)
                 )
             }
-        }
-        previewHandler.activePreviews.forEach { previewState ->
-            KeyPreviewOverlay(state = previewState)
         }
     }
 }
