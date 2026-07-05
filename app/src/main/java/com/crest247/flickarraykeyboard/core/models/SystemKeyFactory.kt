@@ -59,7 +59,8 @@ object SystemKeyFactory {
                     KeyContent.Text("A"),
                     KeyContent.Text("1"),
                     KeyContent.Text("行ᶠ"),
-                    KeyContent.Text("&")
+                    KeyContent.Text("&"),
+                    KeyContent.Text("😂")
                 ),
                 mapOf(
                     0 to null,
@@ -67,7 +68,8 @@ object SystemKeyFactory {
                     2 to SystemAction.SwitchModule(1),
                     3 to SystemAction.SwitchModule(2),
                     4 to SystemAction.SwitchModule(3),
-                    5 to SystemAction.SwitchModule(4)
+                    5 to SystemAction.SwitchModule(4),
+                    6 to SystemAction.SwitchModule(5),
                 ),
                 weight,
                 KeyBackgroundType.FUNCTIONAL
