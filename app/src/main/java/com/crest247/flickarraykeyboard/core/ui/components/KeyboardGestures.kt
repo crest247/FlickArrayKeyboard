@@ -82,9 +82,9 @@ fun Modifier.keyGestures(
                 val event = awaitPointerEvent()
                 val change = event.changes.firstOrNull { it.id == targetPointerId }
 
-                if (change == null || !change.pressed) {
+                if (change == null || !change.pressed)
                     keepGoing = false
-                } else {
+                else {
                     val newDirection = calculateFlickDirection(
                         startPosition, change.position, directionCount, flickThresholdPx
                     )
@@ -100,7 +100,7 @@ fun Modifier.keyGestures(
 
             isTimerRunning = false
 
-            if (!(isLongPressTriggered && currentOnLongPress != null)) {
+            if (!(isLongPressTriggered && currentOnLongPress != null && currentDirection == 0)) {
                 currentOnClick?.invoke(currentDirection)
             }
             currentOnUp?.invoke()

@@ -17,12 +17,12 @@ import com.crest247.flickarraykeyboard.modes.symbol.SymbolModule
 
 class KeyboardState {
     val availableModules: List<KeyboardModule> = listOf(
+        ArrayFlickModule,
         Array30Module,
         EnglishModule,
-        NumberModule,
-        ArrayFlickModule,
         SymbolModule,
-        EmojiModule
+        EmojiModule,
+        NumberModule
     )
     var currentModule by mutableStateOf(availableModules.first()); private set
     var currentInputConnection by mutableStateOf<InputConnection?>(null); private set

@@ -27,7 +27,7 @@ fun EmojiKeyLayout(processor: EmojiProcessor) {
 
     StandardKeyboard(
         keyRows = keyRows,
-        rowHeight = dimens.symbolKeyHeight
+        rowHeight = dimens.emojiKeyHeight
     ) { keyData, direction ->
         when (keyData) {
             is FlickKeyData<*> -> keyData.directionActions[direction]

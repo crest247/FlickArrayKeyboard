@@ -8,10 +8,14 @@ import androidx.compose.material.icons.automirrored.outlined.Backspace
 import androidx.compose.material.icons.automirrored.outlined.KeyboardReturn
 import androidx.compose.material.icons.automirrored.outlined.KeyboardTab
 import androidx.compose.material.icons.automirrored.outlined.NextPlan
+import androidx.compose.material.icons.outlined.Abc
 import androidx.compose.material.icons.outlined.ArrowCircleRight
 import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.EmojiEmotions
+import androidx.compose.material.icons.outlined.EmojiSymbols
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined._123
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 
@@ -55,12 +59,12 @@ object SystemKeyFactory {
                 KeyContent.Icon(Icons.Outlined.Language),
                 listOf(
                     KeyContent.Text(""),
-                    KeyContent.Text("行"),
-                    KeyContent.Text("A"),
-                    KeyContent.Text("1"),
                     KeyContent.Text("行ᶠ"),
-                    KeyContent.Text("&"),
-                    KeyContent.Text("😂")
+                    KeyContent.Text("行³⁰"),
+                    KeyContent.Icon(Icons.Outlined.Abc),
+                    KeyContent.Icon(Icons.Outlined.EmojiSymbols),
+                    KeyContent.Icon(Icons.Outlined.EmojiEmotions),
+                    KeyContent.Icon(Icons.Outlined._123)
                 ),
                 mapOf(
                     0 to null,
