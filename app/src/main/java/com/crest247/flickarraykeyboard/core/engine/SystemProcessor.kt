@@ -2,16 +2,16 @@ package com.crest247.flickarraykeyboard.core.engine
 
 import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.InputProcessor
-import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 import com.crest247.flickarraykeyboard.core.KeyboardState
-import com.crest247.flickarraykeyboard.core.models.RepeatableAction
+import com.crest247.flickarraykeyboard.core.models.Clickable
+import com.crest247.flickarraykeyboard.core.models.KeyboardAction
+import com.crest247.flickarraykeyboard.core.models.Repeatable
 
 sealed interface SystemAction : KeyboardAction {
-    object Backspace : SystemAction, RepeatableAction
-    object Space : SystemAction
-    object Enter : SystemAction
-
-    data class SwitchModule(val moduleId: Int) : SystemAction
+    object Backspace : SystemAction, Clickable, Repeatable
+    object Space : SystemAction, Clickable
+    object Enter : SystemAction, Clickable
+    data class SwitchModule(val moduleId: Int) : SystemAction, Clickable
 }
 
 class SystemProcessor(

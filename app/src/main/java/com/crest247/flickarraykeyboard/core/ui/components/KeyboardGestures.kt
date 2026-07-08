@@ -140,7 +140,7 @@ fun Modifier.tapWithPreview(
     keyId: Any,
     content: KeyContent,
     backgroundType: KeyBackgroundType,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
     onLongPress: (() -> Unit)? = null,
     onDown: (() -> Unit)? = null,
     onUp: (() -> Unit)? = null,
@@ -187,7 +187,7 @@ fun Modifier.tapWithPreview(
                 }
             },
             onClick = { direction ->
-                if (direction == 0) onClick()
+                if (direction == 0) onClick?.invoke()
             },
             onLongPress = onLongPress,
             onRepeat = onRepeat,
@@ -203,8 +203,8 @@ fun Modifier.flickWithPreview(
     backgroundType: KeyBackgroundType,
     onDown: (() -> Unit)? = null,
     onUp: (() -> Unit)? = null,
-    onFlick: (Int) -> Unit = {},
-    onClick: (Int) -> Unit = {},
+    onFlick: ((Int) -> Unit)? = null,
+    onClick: ((Int) -> Unit)? = null,
     onLongPress: (() -> Unit)? = null
 ): Modifier = composed {
     val density = LocalDensity.current
@@ -249,10 +249,10 @@ fun Modifier.flickWithPreview(
                         backgroundType
                     )
                 )
-                onFlick(direction)
+                onFlick?.invoke(direction)
             },
             onClick = { direction ->
-                onClick(direction)
+                onClick?.invoke(direction)
             },
             onLongPress = onLongPress,
             directionCount = popupContents.size - 1,

@@ -23,7 +23,7 @@ import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 object ArrayFlickLayoutProvider {
     fun createKeys(
         imeOptions: Int?,
-        metaState: Int
+        metaCode: Int
     ): List<List<KeyData>> {
         fun radicalKey(
             centerText: String,
@@ -36,7 +36,7 @@ object ArrayFlickLayoutProvider {
                 List(displayTexts.size) {
                     it to ArrayFlickAction.InputRadical(
                         displayTexts[it], lookupTexts[it],
-                        ArrayAction.InputRadical(centerText, centerText)
+                        it, centerText
                     )
                 }.toMap()
             )
@@ -49,54 +49,36 @@ object ArrayFlickLayoutProvider {
                 KeyContent.Text("⇧"),
                 Icon(Icons.Outlined.KeyboardControlKey)
             ),
-            directionActions = mapOf(0 to ArrayFlickAction.PhysicalModifier),
+            directionActions = (0..2).associateWith { ArrayFlickAction.PhysicalModifier(it) },
             weight = 1.0f,
             backgroundType = KeyBackgroundType.FUNCTIONAL
         )
 
-        val dpadKey = if (metaState == KeyEvent.KEYCODE_CTRL_LEFT) {
+        val dpadKey =
             FlickKeyData(
-                content = Icon(Icons.Outlined.NoteAlt),
-                popupContents = listOf(
-                    null,
-                    Icon(Icons.Outlined.SelectAll),
-                    Icon(Icons.Outlined.ContentPaste),
-                    Icon(Icons.AutoMirrored.Outlined.Redo),
-                    Icon(Icons.AutoMirrored.Outlined.Undo),
-                    Icon(Icons.Outlined.ContentCopy)
-                ),
-                directionActions = mapOf(
-                    0 to ArrayFlickAction.DirectionalPad,
-                    1 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_A, KeyEvent.META_CTRL_ON),
-                    2 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_V, KeyEvent.META_CTRL_ON),
-                    3 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_Y, KeyEvent.META_CTRL_ON),
-                    4 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_Z, KeyEvent.META_CTRL_ON),
-                    5 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_C, KeyEvent.META_CTRL_ON)
-                ),
+                content = if (metaCode == KeyEvent.KEYCODE_CTRL_LEFT) Icon(Icons.Outlined.NoteAlt)
+                else Icon(Icons.Outlined.ControlCamera),
+                popupContents =
+                    if (metaCode == KeyEvent.KEYCODE_CTRL_LEFT) listOf(
+                        null,
+                        Icon(Icons.Outlined.SelectAll),
+                        Icon(Icons.Outlined.ContentPaste),
+                        Icon(Icons.AutoMirrored.Outlined.Redo),
+                        Icon(Icons.AutoMirrored.Outlined.Undo),
+                        Icon(Icons.Outlined.ContentCopy)
+                    )
+                    else listOf(
+                        null,
+                        KeyContent.Text("↑"),
+                        KeyContent.Text("→"),
+                        KeyContent.Text("↓"),
+                        KeyContent.Text("←")
+                    ),
+                directionActions = (0..5).associateWith { ArrayFlickAction.DirectionalPad(it) },
                 weight = 1.0f,
                 backgroundType = KeyBackgroundType.FUNCTIONAL
             )
-        } else {
-            FlickKeyData(
-                content = Icon(Icons.Outlined.ControlCamera),
-                popupContents = listOf(
-                    null,
-                    KeyContent.Text("↑"),
-                    KeyContent.Text("→"),
-                    KeyContent.Text("↓"),
-                    KeyContent.Text("←")
-                ),
-                directionActions = mapOf(
-                    0 to ArrayFlickAction.DirectionalPad,
-                    1 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_DPAD_UP, 0),
-                    2 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_DPAD_RIGHT, 0),
-                    3 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_DPAD_DOWN, 0),
-                    4 to ArrayFlickAction.SendRawKey(KeyEvent.KEYCODE_DPAD_LEFT, 0)
-                ),
-                weight = 1.0f,
-                backgroundType = KeyBackgroundType.FUNCTIONAL
-            )
-        }
+
 
         return listOf(
             listOf(

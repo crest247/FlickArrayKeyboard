@@ -9,8 +9,8 @@ import androidx.compose.runtime.setValue
 import com.crest247.flickarraykeyboard.core.InputProcessor
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 
-class ArrayProcessor : InputProcessor {
-    private var inputConnection: InputConnection? = null
+open class ArrayProcessor : InputProcessor {
+    protected var inputConnection: InputConnection? = null
     var editorInfo: EditorInfo? = null; private set
     val displayTokens = mutableStateListOf<String>()
     private val lookupTokens = mutableStateListOf<String>()

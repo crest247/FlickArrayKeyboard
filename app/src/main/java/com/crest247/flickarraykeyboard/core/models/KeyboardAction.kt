@@ -1,8 +1,27 @@
 package com.crest247.flickarraykeyboard.core.models
 
 interface KeyboardAction
-interface RepeatableAction : KeyboardAction
-interface TriggerOnDownAction : KeyboardAction
-interface LongPressAction : KeyboardAction {
-    val longPressAction: KeyboardAction?
+
+interface Clickable : KeyboardAction {
+    val clickAction: KeyboardAction get() = this
+}
+
+interface Repeatable : KeyboardAction {
+    val repeatAction: KeyboardAction get() = this
+}
+
+interface DownTriggerable : KeyboardAction {
+    val downAction: KeyboardAction get() = this
+}
+
+interface UpTriggerable : KeyboardAction {
+    val upAction: KeyboardAction get() = this
+}
+
+interface LongPressable : KeyboardAction {
+    val longPressAction: KeyboardAction get() = this
+}
+
+interface Flickable : KeyboardAction {
+    val flickAction: KeyboardAction get() = this
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
+import com.crest247.flickarraykeyboard.core.executeDefault
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.VisibleKeyData
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
@@ -25,15 +26,8 @@ fun NumberKeyLayout(processor: NumberProcessor) {
     StandardKeyboard(
         keyRows = keyRows,
         rowHeight = dimens.numberKeyHeight
-    ) { keyData, direction ->
-        when (keyData) {
-            is FlickKeyData<*> -> keyData.directionActions[direction]
-            is VisibleKeyData<*> -> keyData.action
-            else -> null
-        }?.let { it as? KeyboardAction }?.let { action ->
-            if (!processor.onAction(action))
-                (action as? SystemAction)?.let { systemProcessor.onAction(it) }
-        }
+    ) { keyEvent ->
+        processor.executeDefault(keyEvent, systemProcessor)
     }
 }
 

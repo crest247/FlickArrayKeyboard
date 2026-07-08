@@ -7,7 +7,7 @@ import com.crest247.flickarraykeyboard.modes.shared.array.ArraySpellingLayout
 import com.crest247.flickarraykeyboard.modes.shared.array.ArraySuggestionLayout
 
 object ArrayFlickModule : KeyboardModule {
-    override val processor: ArrayProcessor by lazy { ArrayProcessor() }
+    override val processor: ArrayFlickProcessor by lazy { ArrayFlickProcessor() }
 
     @Composable
     override fun SpellingAreaLayout() {

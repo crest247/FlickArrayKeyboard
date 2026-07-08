@@ -9,12 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import com.crest247.flickarraykeyboard.core.models.Clickable
+import com.crest247.flickarraykeyboard.core.models.DownTriggerable
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
+import com.crest247.flickarraykeyboard.core.models.Flickable
 import com.crest247.flickarraykeyboard.core.models.KeyData
-import com.crest247.flickarraykeyboard.core.models.RepeatableAction
+import com.crest247.flickarraykeyboard.core.models.KeyboardKeyEvent
+import com.crest247.flickarraykeyboard.core.models.LongPressable
+import com.crest247.flickarraykeyboard.core.models.Repeatable
 import com.crest247.flickarraykeyboard.core.models.SpacerData
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
-import com.crest247.flickarraykeyboard.core.models.TriggerOnDownAction
+import com.crest247.flickarraykeyboard.core.models.UpTriggerable
 import com.crest247.flickarraykeyboard.core.models.VisibleKeyData
 import com.crest247.flickarraykeyboard.core.theme.resolveColor
 
@@ -22,10 +27,7 @@ import com.crest247.flickarraykeyboard.core.theme.resolveColor
 fun StandardKeyboard(
     keyRows: List<List<KeyData>>,
     rowHeight: Dp,
-    onKeyLongPress: ((KeyData, Int?) -> Unit)? = null,
-    onKeyFlick: ((KeyData, Int) -> Unit)? = null,
-    onKeyUp: ((KeyData) -> Unit)? = null,
-    onKeyAction: (KeyData, flickDirection: Int?) -> Unit
+    onKeyEvent: (KeyboardKeyEvent) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -43,11 +45,9 @@ fun StandardKeyboard(
 
                             is VisibleKeyData<*> -> {
                                 val bgColor = keyData.backgroundType.resolveColor()
-
                                 when (keyData) {
                                     is TapKeyData<*> -> {
-                                        val isRepeatable = keyData.action is RepeatableAction
-                                        val useDown = keyData.action is TriggerOnDownAction
+                                        val action = keyData.action
                                         KeyButton(
                                             content = keyData.content,
                                             backgroundColor = bgColor,
@@ -57,24 +57,37 @@ fun StandardKeyboard(
                                                     keyId = keyData.content,
                                                     content = keyData.content,
                                                     backgroundType = keyData.backgroundType,
-                                                    onClick = { onKeyAction(keyData, null) },
-                                                    onRepeat = if (isRepeatable) {
-                                                        { onKeyAction(keyData, null) }
-                                                    } else null,
-                                                    onDown = if (useDown) {
-                                                        { onKeyAction(keyData, null) }
-                                                    } else null,
+                                                    onClick = {
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Click(keyData, null)
+                                                        )
+                                                    }.takeIf { action is Clickable },
+                                                    onRepeat = {
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Repeat(keyData)
+                                                        )
+                                                    }.takeIf { action is Repeatable },
+                                                    onDown = {
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Down(keyData)
+                                                        )
+                                                    }.takeIf { action is DownTriggerable },
                                                     onLongPress = {
-                                                        onKeyLongPress?.invoke(keyData, 0)
-                                                    },
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.LongPress(keyData)
+                                                        )
+                                                    }.takeIf { action is LongPressable },
                                                     onUp = {
-                                                        onKeyUp?.invoke(keyData)
-                                                    }
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Up(keyData)
+                                                        )
+                                                    }.takeIf { action is UpTriggerable }
                                                 )
                                         )
                                     }
 
                                     is FlickKeyData<*> -> {
+                                        val actions = keyData.directionActions.values
                                         KeyButton(
                                             content = keyData.content,
                                             backgroundColor = bgColor,
@@ -84,21 +97,32 @@ fun StandardKeyboard(
                                                     keyData.content,
                                                     keyData.popupContents,
                                                     keyData.backgroundType,
-                                                    onClick = { direction ->
-                                                        onKeyAction(
-                                                            keyData,
-                                                            direction
+                                                    onClick = { direction: Int ->
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Click(
+                                                                keyData,
+                                                                direction
+                                                            )
                                                         )
-                                                    },
+                                                    }.takeIf { actions.any { it is Clickable } },
                                                     onLongPress = {
-                                                        onKeyLongPress?.invoke(keyData, 0)
-                                                    },
-                                                    onFlick = { direction ->
-                                                        onKeyFlick?.invoke(keyData, direction)
-                                                    },
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.LongPress(keyData)
+                                                        )
+                                                    }.takeIf { actions.any { it is LongPressable } },
+                                                    onFlick = { direction: Int ->
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Flick(
+                                                                keyData,
+                                                                direction
+                                                            )
+                                                        )
+                                                    }.takeIf { actions.any { it is Flickable } },
                                                     onUp = {
-                                                        onKeyUp?.invoke(keyData)
-                                                    }
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Up(keyData)
+                                                        )
+                                                    }.takeIf { actions.any { it is UpTriggerable } }
                                                 )
                                         )
                                     }
