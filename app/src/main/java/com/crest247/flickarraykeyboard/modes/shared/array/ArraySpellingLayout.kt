@@ -20,30 +20,29 @@ fun ArraySpellingLayout(processor: ArrayProcessor) {
     val dimens = LocalKeyboardDimens.current
     val colors = LocalKeyboardColors.current
 
-    if (processor.displayTokens.isNotEmpty()) {
-        val displayText = processor.displayTokens.joinToString("")
+    val displayText = processor.displayTokens.joinToString("")
+    val hasTokens = processor.displayTokens.isNotEmpty()
 
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .height(dimens.radicalHeight)
-                .wrapContentWidth()
-                .clip(
-                    RoundedCornerShape(
-                        topStart = dimens.keyRadius,
-                        topEnd = dimens.keyRadius,
-                        bottomEnd = 0.dp,
-                        bottomStart = 0.dp
-                    )
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .height(dimens.radicalHeight)
+            .wrapContentWidth()
+            .clip(
+                RoundedCornerShape(
+                    topStart = dimens.keyRadius,
+                    topEnd = dimens.keyRadius,
+                    bottomEnd = 0.dp,
+                    bottomStart = 0.dp
                 )
-                .background(colors.radicalPanelBackground)
-                .padding(horizontal = dimens.radicalPadding)
-        ) {
-            Text(
-                text = displayText,
-                fontSize = dimens.radicalTextSize,
-                color = colors.radicalText
             )
-        }
+            .background(colors.radicalPanelBackground)
+            .padding(horizontal = if (hasTokens) dimens.radicalPadding else 0.dp)
+    ) {
+        Text(
+            text = displayText,
+            fontSize = dimens.radicalTextSize,
+            color = colors.radicalText
+        )
     }
 }

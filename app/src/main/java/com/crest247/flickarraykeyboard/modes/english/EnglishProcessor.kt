@@ -38,37 +38,35 @@ class EnglishProcessor : InputProcessor {
         return if (action !is EnglishAction) false
         else when (action) {
             is EnglishAction.InputChar -> {
-                if (isShiftPressed) {
+                if (isShiftPressed)
                     hasTypedDuringHold = true
-                }
 
                 inputConnection?.commitText(action.char, 1)
 
-                if (!isShiftPressed && shiftState == ShiftState.UPPERCASE) {
+                if (!isShiftPressed && shiftState == ShiftState.UPPERCASE)
                     shiftState = ShiftState.LOWERCASE
+                true
+            }
+
+            is EnglishAction.ToggleShiftDown -> {
+                isShiftPressed = true
+                hasTypedDuringHold = false
+                shiftState = when (shiftState) {
+                    ShiftState.LOWERCASE -> ShiftState.UPPERCASE
+                    ShiftState.UPPERCASE -> ShiftState.CAPS_LOCK
+                    ShiftState.CAPS_LOCK -> ShiftState.LOWERCASE
                 }
                 true
             }
 
-            is EnglishAction.ToggleShift -> {
-                if (!isShiftPressed) {
-                    isShiftPressed = true
-                    hasTypedDuringHold = false
-
-                    shiftState = when (shiftState) {
-                        ShiftState.LOWERCASE -> ShiftState.UPPERCASE
-                        ShiftState.UPPERCASE -> ShiftState.CAPS_LOCK
-                        ShiftState.CAPS_LOCK -> ShiftState.LOWERCASE
-                    }
-                } else {
-                    isShiftPressed = false
-
-                    if (hasTypedDuringHold && shiftState == ShiftState.UPPERCASE) {
-                        shiftState = ShiftState.LOWERCASE
-                    }
-                }
+            is EnglishAction.ToggleShiftClick -> {
+                isShiftPressed = false
+                if (hasTypedDuringHold && shiftState == ShiftState.UPPERCASE)
+                    shiftState = ShiftState.LOWERCASE
                 true
             }
+
+            else -> false
         }
     }
 }
