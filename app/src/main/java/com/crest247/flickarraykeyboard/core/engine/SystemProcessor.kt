@@ -1,8 +1,10 @@
 package com.crest247.flickarraykeyboard.core.engine
 
+import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.InputProcessor
 import com.crest247.flickarraykeyboard.core.KeyboardState
+import com.crest247.flickarraykeyboard.core.extension.sendDownUpKeyEvents
 import com.crest247.flickarraykeyboard.core.models.Clickable
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 import com.crest247.flickarraykeyboard.core.models.Repeatable
@@ -11,6 +13,7 @@ sealed interface SystemAction : KeyboardAction {
     object Backspace : SystemAction, Clickable, Repeatable
     object Space : SystemAction, Clickable
     object Enter : SystemAction, Clickable
+    object Tab : SystemAction, Clickable
     data class SwitchModule(val moduleId: Int) : SystemAction, Clickable
 }
 
@@ -26,12 +29,17 @@ class SystemProcessor(
 
         return when (action) {
             is SystemAction.Backspace -> {
-                inputConnection?.deleteSurroundingText(1, 0)
+                inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
                 true
             }
 
             is SystemAction.Space -> {
-                inputConnection?.commitText(" ", 1)
+                inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
+                true
+            }
+
+            is SystemAction.Tab -> {
+                inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_TAB)
                 true
             }
 

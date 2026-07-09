@@ -55,6 +55,13 @@ object SystemKeyFactory {
                 KeyBackgroundType.FUNCTIONAL
             )
 
+            FuncType.TAB -> TapKeyData(
+                content,
+                action ?: SystemAction.Tab,
+                weight,
+                KeyBackgroundType.FUNCTIONAL
+            )
+
             FuncType.LANGUAGE -> FlickKeyData(
                 KeyContent.Icon(Icons.Outlined.Language),
                 listOf(

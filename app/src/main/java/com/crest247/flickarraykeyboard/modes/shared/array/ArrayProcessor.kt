@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.modes.shared.array
 
+import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.compose.runtime.getValue
@@ -7,6 +8,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.crest247.flickarraykeyboard.core.InputProcessor
+import com.crest247.flickarraykeyboard.core.extension.sendDownUpKeyEvents
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 
 open class ArrayProcessor : InputProcessor {
@@ -41,7 +43,7 @@ open class ArrayProcessor : InputProcessor {
                         updateCandidates()
                     }
                 } else {
-                    inputConnection?.deleteSurroundingText(1, 0)
+                    inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
                 }
                 true
             }
@@ -49,7 +51,7 @@ open class ArrayProcessor : InputProcessor {
             is ArrayAction.Space -> {
                 if (candidates.isNotEmpty()) commitCandidate(candidates.first())
                 else if (displayTokens.isEmpty()) {
-                    inputConnection?.commitText(" ", 1)
+                    inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
                 }
                 true
             }
