@@ -18,10 +18,10 @@ fun NumberKeyLayout(processor: NumberProcessor) {
     val dimens = LocalKeyboardDimens.current
     val state = LocalKeyboardState.current
     val systemProcessor = state.systemProcessor
-    val imeOptions = state.currentEditorInfo?.imeOptions
+    val editorInfo = state.currentEditorInfo
 
-    val keyRows = remember(imeOptions) {
-        NumberLayoutProvider.createKeys(imeOptions)
+    val keyRows = remember(editorInfo) {
+        NumberLayoutProvider.createKeys(editorInfo)
     }
     StandardKeyboard(
         keyRows = keyRows,

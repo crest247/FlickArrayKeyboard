@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.modes.english
 
+import android.view.inputmethod.EditorInfo
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Language
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
@@ -19,7 +20,7 @@ object EnglishLayoutProvider {
     fun createKeys(
         shiftState: ShiftState,
         variant: EnglishVariant,
-        imeOptions: Int?
+        editorInfo: EditorInfo?
     ): List<List<KeyData>> {
         val isUpper = shiftState != ShiftState.LOWERCASE
         fun charKey(lower: String, upper: String): TapKeyData<EnglishAction> {
@@ -68,7 +69,7 @@ object EnglishLayoutProvider {
                 variantKey,
                 SystemKeyFactory.create(FuncType.SPACE, 5.0f),
                 charKey(".", ">"),
-                SystemKeyFactory.createEnterKey(imeOptions, 1.5f)
+                SystemKeyFactory.createEnterKey(editorInfo, 1.5f)
             )
         )
     }

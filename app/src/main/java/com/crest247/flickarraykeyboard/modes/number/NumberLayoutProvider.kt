@@ -1,11 +1,8 @@
 package com.crest247.flickarraykeyboard.modes.number
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Language
-import com.crest247.flickarraykeyboard.core.engine.SystemAction
+import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
-import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SystemKeyFactory
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
@@ -13,7 +10,7 @@ import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 
 object NumberLayoutProvider {
-    fun createKeys(imeOptions: Int?): List<List<KeyData>> {
+    fun createKeys(editorInfo: EditorInfo?): List<List<KeyData>> {
         fun numKey(text: String): TapKeyData<NumberAction> {
             return TapKeyData(
                 text = text,
@@ -74,7 +71,7 @@ object NumberLayoutProvider {
                     "#",
                     listOf("#", "$", "%", "|", "^", "~", "&")
                 ),
-                SystemKeyFactory.createEnterKey(imeOptions, 1.0f, ArrayAction.Enter)
+                SystemKeyFactory.createEnterKey(editorInfo, 1.0f)
             )
         )
     }

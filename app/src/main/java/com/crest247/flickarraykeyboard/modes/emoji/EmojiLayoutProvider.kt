@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.modes.emoji
 
+import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
@@ -12,7 +13,7 @@ import kotlin.math.ceil
 
 object EmojiLayoutProvider {
 
-    fun createKeys(imeOptions: Int?, categoryIndex: Int, pageIndex: Int): List<List<KeyData>> {
+    fun createKeys(editorInfo: EditorInfo?, categoryIndex: Int, pageIndex: Int): List<List<KeyData>> {
         val currentCategory =
             EmojiData.categories.getOrElse(categoryIndex) { EmojiData.categories.first() }
         val allEmojis = currentCategory.emojis
@@ -84,7 +85,7 @@ object EmojiLayoutProvider {
                 backgroundType = KeyBackgroundType.FUNCTIONAL
             ),
             SystemKeyFactory.create(FuncType.BACKSPACE, 2.0f),
-            SystemKeyFactory.createEnterKey(imeOptions, 2.0f)
+            SystemKeyFactory.createEnterKey(editorInfo, 2.0f)
         )
 
         return emojiRowsData + listOf(customBottomRow)

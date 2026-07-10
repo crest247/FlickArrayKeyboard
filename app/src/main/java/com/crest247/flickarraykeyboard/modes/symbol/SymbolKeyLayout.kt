@@ -16,10 +16,10 @@ fun SymbolKeyLayout(processor: SymbolProcessor) {
     val dimens = LocalKeyboardDimens.current
     val state = LocalKeyboardState.current
     val systemProcessor = state.systemProcessor
-    val imeOptions = state.currentEditorInfo?.imeOptions
+    val editorInfo = state.currentEditorInfo
 
-    val keyRows = remember(imeOptions, processor.currentCategoryIndex) {
-        SymbolLayoutProvider.createKeys(imeOptions, processor.currentCategoryIndex)
+    val keyRows = remember(editorInfo, processor.currentCategoryIndex) {
+        SymbolLayoutProvider.createKeys(editorInfo, processor.currentCategoryIndex)
     }
 
     StandardKeyboard(

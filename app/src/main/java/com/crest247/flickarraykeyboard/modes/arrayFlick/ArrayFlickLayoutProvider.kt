@@ -1,6 +1,7 @@
 package com.crest247.flickarraykeyboard.modes.arrayFlick
 
 import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ReadMore
 import androidx.compose.material.icons.automirrored.outlined.Redo
@@ -22,7 +23,7 @@ import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 
 object ArrayFlickLayoutProvider {
     fun createKeys(
-        imeOptions: Int?,
+        editorInfo: EditorInfo?,
         metaCode: Int
     ): List<List<KeyData>> {
         fun radicalKey(
@@ -107,7 +108,7 @@ object ArrayFlickLayoutProvider {
                 modifierKey,
                 radicalKey("0", listOf("0-", "0^", "0v"), listOf(";", "p", "/")),
                 dpadKey,
-                SystemKeyFactory.createEnterKey(imeOptions, 1.0f, ArrayAction.Enter)
+                SystemKeyFactory.createEnterKey(editorInfo, 1.0f, ArrayAction.Enter)
             ),
         )
     }

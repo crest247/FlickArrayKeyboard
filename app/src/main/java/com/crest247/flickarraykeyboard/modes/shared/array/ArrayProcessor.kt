@@ -59,12 +59,14 @@ open class ArrayProcessor : InputProcessor {
             is ArrayAction.Enter -> {
                 if (candidates.isNotEmpty()) commitCandidate(candidates.first())
                 else if (displayTokens.isEmpty()) {
-                    val actionId = editorInfo?.imeOptions?.and(EditorInfo.IME_MASK_ACTION)
-                    if (actionId == EditorInfo.IME_ACTION_NONE || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+                    val options = editorInfo?.imeOptions ?: 0
+                    val noEnterAction = (options and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0
+                    val actionId =
+                        if (noEnterAction) EditorInfo.IME_ACTION_NONE else options and EditorInfo.IME_MASK_ACTION
+                    if (actionId != EditorInfo.IME_ACTION_NONE)
+                        inputConnection?.performEditorAction(actionId)
+                    else
                         inputConnection?.commitText("\n", 1)
-                    } else {
-                        actionId?.let { inputConnection?.performEditorAction(it) }
-                    }
                 }
                 true
             }

@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.modes.array30
 
+import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SystemKeyFactory
@@ -7,7 +8,7 @@ import com.crest247.flickarraykeyboard.core.models.TapKeyData
 import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 
 object Array30LayoutProvider {
-    fun createKeys(imeOptions: Int?): List<List<KeyData>> {
+    fun createKeys(editorInfo: EditorInfo?): List<List<KeyData>> {
         return listOf(
             listOf(
                 TapKeyData<ArrayAction>(
@@ -181,7 +182,7 @@ object Array30LayoutProvider {
                 SystemKeyFactory.create(FuncType.LANGUAGE, 3.0f),
                 SystemKeyFactory.create(FuncType.SPACE, 4.0f, ArrayAction.Space),
                 SystemKeyFactory.create(FuncType.BACKSPACE, 1.5f, ArrayAction.Backspace),
-                SystemKeyFactory.createEnterKey(imeOptions, 1.5f, ArrayAction.Enter)
+                SystemKeyFactory.createEnterKey(editorInfo, 1.5f, ArrayAction.Enter)
             )
         )
     }

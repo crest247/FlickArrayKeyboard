@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.modes.symbol
 
+import android.view.inputmethod.EditorInfo
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 import com.crest247.flickarraykeyboard.core.models.KeyData
@@ -48,7 +49,7 @@ object SymbolLayoutProvider {
         )
     )
 
-    fun createKeys(imeOptions: Int?, categoryIndex: Int): List<List<KeyData>> {
+    fun createKeys(editorInfo: EditorInfo?, categoryIndex: Int): List<List<KeyData>> {
         val grid = symbolGridData[categoryIndex] ?: emptyList()
         return grid.map { row ->
             row.map { sym ->
@@ -64,7 +65,7 @@ object SymbolLayoutProvider {
                 SystemKeyFactory.create(FuncType.LANGUAGE, 3.0f),
                 SystemKeyFactory.create(FuncType.SPACE, 4.0f),
                 SystemKeyFactory.create(FuncType.BACKSPACE, 1.5f),
-                SystemKeyFactory.createEnterKey(imeOptions, 1.5f)
+                SystemKeyFactory.createEnterKey(editorInfo, 1.5f)
             )
         )
     }

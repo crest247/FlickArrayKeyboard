@@ -14,12 +14,12 @@ fun EnglishKeyLayout(processor: EnglishProcessor) {
     val dimens = LocalKeyboardDimens.current
     val state = LocalKeyboardState.current
     val systemProcessor = state.systemProcessor
-    val imeOptions = state.currentEditorInfo?.imeOptions
+    val editorInfo = state.currentEditorInfo
     val shiftState = processor.shiftState
     val variant = processor.variant
 
-    val keyRows = remember(shiftState, variant, imeOptions) {
-        EnglishLayoutProvider.createKeys(shiftState, variant, imeOptions)
+    val keyRows = remember(shiftState, variant, editorInfo) {
+        EnglishLayoutProvider.createKeys(shiftState, variant, editorInfo)
     }
     StandardKeyboard(
         keyRows = keyRows,

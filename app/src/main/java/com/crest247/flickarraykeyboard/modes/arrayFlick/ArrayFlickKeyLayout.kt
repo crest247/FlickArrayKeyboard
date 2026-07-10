@@ -14,12 +14,12 @@ fun ArrayFlickKeyLayout(processor: ArrayFlickProcessor) {
     val dimens = LocalKeyboardDimens.current
     val state = LocalKeyboardState.current
     val systemProcessor = state.systemProcessor
-    val imeOptions = state.currentEditorInfo?.imeOptions
+    val editorInfo = state.currentEditorInfo
 
     val metaCode = processor.metaCode
 
-    val keyRows = remember(imeOptions, metaCode) {
-        ArrayFlickLayoutProvider.createKeys(imeOptions, metaCode)
+    val keyRows = remember(editorInfo, metaCode) {
+        ArrayFlickLayoutProvider.createKeys(editorInfo, metaCode)
     }
     StandardKeyboard(
         keyRows = keyRows,

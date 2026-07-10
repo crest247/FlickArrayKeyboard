@@ -21,10 +21,10 @@ fun Array30KeyLayout(processor: ArrayProcessor) {
     val dimens = LocalKeyboardDimens.current
     val state = LocalKeyboardState.current
     val systemProcessor = state.systemProcessor
-    val imeOptions = state.currentEditorInfo?.imeOptions
+    val editorInfo = state.currentEditorInfo
 
-    val keyRows = remember(imeOptions) {
-        Array30LayoutProvider.createKeys(imeOptions)
+    val keyRows = remember(editorInfo) {
+        Array30LayoutProvider.createKeys(editorInfo)
     }
     StandardKeyboard(
         keyRows = keyRows,
