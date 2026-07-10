@@ -1,17 +1,11 @@
 package com.crest247.flickarraykeyboard.modes.english
 
 import android.view.inputmethod.EditorInfo
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Language
-import com.crest247.flickarraykeyboard.core.engine.SystemAction
-import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
-import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
 import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SpacerData
 import com.crest247.flickarraykeyboard.core.models.SystemKeyFactory
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
-import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 
 enum class EnglishVariant { Default, Email, Url }
 

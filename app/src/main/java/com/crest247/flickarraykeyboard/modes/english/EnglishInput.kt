@@ -12,7 +12,7 @@ enum class ShiftState {
 
 sealed interface EnglishAction : KeyboardAction {
     data class InputChar(val char: String) : EnglishAction, Clickable
-    object ToggleShift : EnglishAction, DownTriggerable, Clickable {
+    object ToggleShift : KeyboardAction, DownTriggerable, Clickable {
         override val downAction: KeyboardAction = ToggleShiftDown
         override val clickAction: KeyboardAction = ToggleShiftClick
     }

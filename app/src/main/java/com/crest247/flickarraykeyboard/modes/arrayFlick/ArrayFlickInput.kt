@@ -13,7 +13,7 @@ sealed interface ArrayFlickAction : ArrayAction {
         val lookupStr: String,
         val direction: Int,
         val longPressStr: String
-    ) : ArrayFlickAction, Clickable, LongPressable {
+    ) : KeyboardAction, Clickable, LongPressable {
         override val clickAction: KeyboardAction = InputRadicalClick(displayStr, lookupStr)
         override val longPressAction: KeyboardAction =
             InputRadicalLongPress(direction, longPressStr)

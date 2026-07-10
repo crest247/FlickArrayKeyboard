@@ -63,8 +63,6 @@ class EnglishProcessor : InputProcessor {
                 if (hasTypedDuringHold && shiftState == ShiftState.UPPERCASE)
                     shiftState = ShiftState.LOWERCASE
             }
-
-            else -> {}
         }
         return null
     }
