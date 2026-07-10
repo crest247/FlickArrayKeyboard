@@ -27,6 +27,11 @@ open class ArrayProcessor : InputProcessor {
 
         when (action) {
             is ArrayAction.InputRadical -> {
+                if (lookupTokens.size > 4 ||
+                    (lookupTokens.size == 4 && action.lookupStr != "i") ||
+                    (lookupTokens.size >= 2 && lookupTokens[0] == "w" && lookupTokens[1] in "0".."9")
+                )
+                    return null
                 displayTokens.add(action.displayStr)
                 lookupTokens.add(action.lookupStr)
                 updateCandidates()

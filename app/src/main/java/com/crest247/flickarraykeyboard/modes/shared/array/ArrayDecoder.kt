@@ -32,21 +32,20 @@ object ArrayDecoder {
 
         if (lookupString.length > 5 || (lookupString.length == 5 && lookupString[4] != 'i'))
             return emptyList()
-        if (lookupString.length == 2 && lookupString[0] == 'w' && lookupString[1].code in 48..57)
-            return getValueList(150 + lookupString[1].code - 48)
+        if (lookupString.length == 2 && lookupString[0] == 'w' && lookupString[1] in '0'..'9')
+            return getValueList(150 + lookupString[1].code - '0'.code)
         val sum = calcRadicalsSum(lookupString)
         val hashValue = calcHashValue(sum)
         return getKeyValue(hashValue, sum)
     }
 
     private fun getRadicalCode(radical: Char): Int {
-        val code = radical.code
-        return when {
-            code in 97..122 -> code - 92
-            radical == ',' || radical == '.' || radical == '/' -> code - 43
-            radical == ';' || radical == ':' -> 2
-            code in 65..90 -> code - 60
-            radical == '<' || radical == '>' || radical == '?' -> code - 59
+        return when (radical) {
+            in 'A'..'Z' -> radical.code - 60
+            in 'a'..'z' -> radical.code - 92
+            ',', '.', '/' -> radical.code - 43
+            ';', ':' -> 2
+            '<', '>', '?' -> radical.code - 59
             else -> 0
         }
     }
@@ -88,18 +87,4 @@ object ArrayDecoder {
     }
 
     private val arrayAlphabet = listOf("pqwertyuio", ";asdfghjkl", "/zxcvbnm,.")
-    private fun arrayToAlphabet(arrayRadicals: String): String {
-        if (arrayRadicals.length % 2 == 1) return ""
-        val sb = StringBuilder()
-        for (i in 0 until (arrayRadicals.length / 2)) {
-            val charCode = arrayRadicals[i * 2].code - 48
-            if (charCode !in 0..9) continue
-            when (arrayRadicals[i * 2 + 1]) {
-                '^' -> sb.append(arrayAlphabet[0][charCode])
-                '-' -> sb.append(arrayAlphabet[1][charCode])
-                'v' -> sb.append(arrayAlphabet[2][charCode])
-            }
-        }
-        return sb.toString()
-    }
 }
