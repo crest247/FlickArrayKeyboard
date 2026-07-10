@@ -15,6 +15,8 @@ sealed interface SystemAction : KeyboardAction {
     object Space : SystemAction, UpTriggerable
     object Enter : SystemAction, UpTriggerable
     object Tab : SystemAction, UpTriggerable
+    object Delete : SystemAction, Clickable, Repeatable
+    data class DirectionalPad(val direction: Int) : SystemAction, UpTriggerable
     data class SwitchModule(val moduleId: Int) : SystemAction, UpTriggerable
 }
 
@@ -38,6 +40,9 @@ class SystemProcessor(
             is SystemAction.Tab ->
                 inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_TAB)
 
+            is SystemAction.Delete ->
+                inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_FORWARD_DEL)
+
             is SystemAction.Enter -> {
                 val options = editorInfo?.imeOptions ?: 0
                 val noEnterAction = (options and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0
@@ -51,6 +56,14 @@ class SystemProcessor(
 
             is SystemAction.SwitchModule ->
                 state.switchModule(state.availableModules[action.moduleId])
+
+            is SystemAction.DirectionalPad ->
+                when (action.direction) {
+                    1 -> inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_UP, 0)
+                    2 -> inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT, 0)
+                    3 -> inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN, 0)
+                    4 -> inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT, 0)
+                }
         }
         return null
     }

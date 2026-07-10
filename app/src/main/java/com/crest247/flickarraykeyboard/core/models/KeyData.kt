@@ -3,7 +3,7 @@ package com.crest247.flickarraykeyboard.core.models
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
 
 enum class FuncType {
-    ENTER, SPACE, LANGUAGE, TAB, BACKSPACE, SHIFT,
+    ENTER, SPACE, LANGUAGE, TAB, BACKSPACE, SHIFT, DELETE, DPAD
 }
 
 enum class KeyBackgroundType {

@@ -62,7 +62,8 @@ object SymbolLayoutProvider {
             }
         } + listOf(
             listOf(
-                SystemKeyFactory.create(FuncType.LANGUAGE, 3.0f),
+                SystemKeyFactory.create(FuncType.LANGUAGE, 1.5f),
+                SystemKeyFactory.create(FuncType.DPAD, 1.5f),
                 SystemKeyFactory.create(FuncType.SPACE, 4.0f),
                 SystemKeyFactory.create(FuncType.BACKSPACE, 1.5f),
                 SystemKeyFactory.createEnterKey(editorInfo, 1.5f)

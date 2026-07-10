@@ -1,6 +1,10 @@
 package com.crest247.flickarraykeyboard.modes.emoji
 
 import android.view.inputmethod.EditorInfo
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import com.crest247.flickarraykeyboard.core.models.FlickKeyData
 import com.crest247.flickarraykeyboard.core.models.FuncType
 import com.crest247.flickarraykeyboard.core.models.KeyBackgroundType
@@ -71,21 +75,22 @@ object EmojiLayoutProvider {
         }
 
         val customBottomRow = listOf(
-            SystemKeyFactory.create(FuncType.LANGUAGE, 2.0f),
+            SystemKeyFactory.create(FuncType.LANGUAGE, 1.5f),
+            SystemKeyFactory.create(FuncType.DPAD, 1.5f),
             TapKeyData(
-                content = KeyContent.Text("◀"),
+                content = KeyContent.Icon(Icons.AutoMirrored.Outlined.KeyboardArrowLeft),
                 action = EmojiAction.PrevPage,
                 weight = 2.0f,
                 backgroundType = KeyBackgroundType.FUNCTIONAL
             ),
             TapKeyData(
-                content = KeyContent.Text("▶"),
+                content = KeyContent.Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight),
                 action = EmojiAction.NextPage,
                 weight = 2.0f,
                 backgroundType = KeyBackgroundType.FUNCTIONAL
             ),
-            SystemKeyFactory.create(FuncType.BACKSPACE, 2.0f),
-            SystemKeyFactory.createEnterKey(editorInfo, 2.0f)
+            SystemKeyFactory.create(FuncType.BACKSPACE, 1.5f),
+            SystemKeyFactory.createEnterKey(editorInfo, 1.5f)
         )
 
         return emojiRowsData + listOf(customBottomRow)

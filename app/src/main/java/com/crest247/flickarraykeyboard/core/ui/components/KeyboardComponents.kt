@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,7 +33,7 @@ import com.crest247.flickarraykeyboard.core.ui.preview.ThemePreviews
 
 sealed interface KeyContent {
     data class Text(val text: String) : KeyContent
-    data class Icon(val icon: ImageVector) : KeyContent
+    data class Icon(val icon: ImageVector, val flipHorizontal: Boolean = false) : KeyContent
 }
 
 @Composable
@@ -56,6 +57,7 @@ fun KeyboardIcon(
     iconSize: Dp,
     tint: Color = LocalKeyboardColors.current.keyText
 ) {
+
     Icon(
         imageVector = icon,
         contentDescription = null,
@@ -119,7 +121,7 @@ fun KeyContent.Display(
         is KeyContent.Icon -> KeyboardIcon(
             icon = this.icon,
             iconSize = iconSize,
-            modifier = modifier,
+            modifier = if (this.flipHorizontal) modifier.graphicsLayer(scaleX = -1f) else modifier,
             tint = color
         )
     }

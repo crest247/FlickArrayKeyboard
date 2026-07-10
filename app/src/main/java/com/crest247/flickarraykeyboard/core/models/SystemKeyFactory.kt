@@ -2,25 +2,38 @@ package com.crest247.flickarraykeyboard.core.models
 
 import android.view.inputmethod.EditorInfo
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.automirrored.outlined.Backspace
 import androidx.compose.material.icons.automirrored.outlined.KeyboardReturn
 import androidx.compose.material.icons.automirrored.outlined.KeyboardTab
 import androidx.compose.material.icons.automirrored.outlined.NextPlan
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.outlined.Abc
 import androidx.compose.material.icons.outlined.ArrowCircleRight
+import androidx.compose.material.icons.outlined.ControlCamera
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.EmojiEmotions
 import androidx.compose.material.icons.outlined.EmojiSymbols
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined._123
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
+import com.crest247.flickarraykeyboard.core.ui.components.KeyContent.Icon
+import com.crest247.flickarraykeyboard.modes.arrayFlick.ArrayFlickAction
+
+fun Modifier.flipHorizontal(): Modifier = this.graphicsLayer(scaleX = -1f)
 
 object SystemKeyFactory {
     private val defaultContents = mapOf(
         FuncType.BACKSPACE to KeyContent.Icon(Icons.AutoMirrored.Outlined.Backspace),
+        FuncType.DELETE to KeyContent.Icon(Icons.AutoMirrored.Outlined.Backspace, true),
+        FuncType.DPAD to KeyContent.Icon(Icons.Outlined.ControlCamera),
         FuncType.SPACE to KeyContent.Text(" "),
         FuncType.ENTER to KeyContent.Icon(Icons.AutoMirrored.Outlined.KeyboardReturn),
         FuncType.SHIFT to KeyContent.Text("⇧"),
@@ -60,8 +73,15 @@ object SystemKeyFactory {
                 KeyBackgroundType.FUNCTIONAL
             )
 
+            FuncType.DELETE -> TapKeyData(
+                content,
+                action ?: SystemAction.Delete,
+                weight,
+                KeyBackgroundType.FUNCTIONAL
+            )
+
             FuncType.LANGUAGE -> FlickKeyData(
-                KeyContent.Icon(Icons.Outlined.Language),
+                content,
                 listOf(
                     KeyContent.Text(""),
                     KeyContent.Text("行ᶠ"),
@@ -82,6 +102,21 @@ object SystemKeyFactory {
                 ),
                 weight,
                 KeyBackgroundType.FUNCTIONAL
+            )
+
+            FuncType.DPAD -> FlickKeyData(
+                content = content,
+                popupContents =
+                    listOf(
+                        null,
+                        Icon(Icons.Default.ArrowUpward),
+                        Icon(Icons.AutoMirrored.Filled.ArrowForward),
+                        Icon(Icons.Default.ArrowDownward),
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack)
+                    ),
+                directionActions = (0..5).associateWith { SystemAction.DirectionalPad(it) },
+                weight,
+                backgroundType = KeyBackgroundType.FUNCTIONAL
             )
 
             else -> TapKeyData(

@@ -3,9 +3,15 @@ package com.crest247.flickarraykeyboard.modes.arrayFlick
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.outlined.ReadMore
 import androidx.compose.material.icons.automirrored.outlined.Redo
 import androidx.compose.material.icons.automirrored.outlined.Undo
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.ControlCamera
@@ -70,10 +76,10 @@ object ArrayFlickLayoutProvider {
                     )
                     else listOf(
                         null,
-                        KeyContent.Text("↑"),
-                        KeyContent.Text("→"),
-                        KeyContent.Text("↓"),
-                        KeyContent.Text("←")
+                        Icon(Icons.Default.ArrowUpward),
+                        Icon(Icons.AutoMirrored.Filled.ArrowForward),
+                        Icon(Icons.Default.ArrowDownward),
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack)
                     ),
                 directionActions = (0..5).associateWith { ArrayFlickAction.DirectionalPad(it) },
                 weight = 1.0f,
@@ -90,7 +96,7 @@ object ArrayFlickLayoutProvider {
                 SystemKeyFactory.create(FuncType.BACKSPACE, 1.0f, ArrayAction.Backspace),
             ),
             listOf(
-                SystemKeyFactory.create(FuncType.SPACE, 1.0f, ArrayAction.Space),
+                SystemKeyFactory.create(FuncType.DELETE, 1.0f),
                 radicalKey("4", listOf("4-", "4^", "4v"), listOf("f", "r", "v")),
                 radicalKey("5", listOf("5-", "5^", "5v"), listOf("g", "t", "b")),
                 radicalKey("6", listOf("6-", "6^", "6v"), listOf("h", "y", "n")),
