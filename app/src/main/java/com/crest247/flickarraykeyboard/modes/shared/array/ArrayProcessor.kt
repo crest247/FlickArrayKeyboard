@@ -1,6 +1,5 @@
 package com.crest247.flickarraykeyboard.modes.shared.array
 
-import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.compose.runtime.getValue
@@ -8,7 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.crest247.flickarraykeyboard.core.InputProcessor
-import com.crest247.flickarraykeyboard.core.extension.sendDownUpKeyEvents
+import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 
 open class ArrayProcessor : InputProcessor {
@@ -23,56 +22,39 @@ open class ArrayProcessor : InputProcessor {
         this.editorInfo = editorInfo
     }
 
-    override fun onAction(action: KeyboardAction): Boolean {
-        return if (action !is ArrayAction) false
-        else when (action) {
+    override fun onAction(action: KeyboardAction): KeyboardAction? {
+        if (action !is ArrayAction) return action
+
+        when (action) {
             is ArrayAction.InputRadical -> {
                 displayTokens.add(action.displayStr)
                 lookupTokens.add(action.lookupStr)
                 updateCandidates()
-                true
             }
 
             is ArrayAction.Backspace -> {
                 if (displayTokens.isNotEmpty()) {
                     displayTokens.removeAt(displayTokens.lastIndex)
                     lookupTokens.removeAt(lookupTokens.lastIndex)
-                    if (displayTokens.isEmpty()) {
+                    if (displayTokens.isEmpty())
                         candidates = emptyList()
-                    } else {
+                    else
                         updateCandidates()
-                    }
-                } else {
-                    inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
-                }
-                true
+                } else
+                    return SystemAction.Backspace
             }
 
             is ArrayAction.Space -> {
                 if (candidates.isNotEmpty()) commitCandidate(candidates.first())
-                else if (displayTokens.isEmpty()) {
-                    inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
-                }
-                true
+                else if (displayTokens.isEmpty()) return SystemAction.Space
             }
 
             is ArrayAction.Enter -> {
                 if (candidates.isNotEmpty()) commitCandidate(candidates.first())
-                else if (displayTokens.isEmpty()) {
-                    val options = editorInfo?.imeOptions ?: 0
-                    val noEnterAction = (options and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0
-                    val actionId =
-                        if (noEnterAction) EditorInfo.IME_ACTION_NONE else options and EditorInfo.IME_MASK_ACTION
-                    if (actionId != EditorInfo.IME_ACTION_NONE)
-                        inputConnection?.performEditorAction(actionId)
-                    else
-                        inputConnection?.commitText("\n", 1)
-                }
-                true
+                else if (displayTokens.isEmpty()) return SystemAction.Enter
             }
-
-            else -> false
         }
+        return null
     }
 
     private fun updateCandidates() {

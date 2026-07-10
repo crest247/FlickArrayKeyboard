@@ -14,8 +14,8 @@ import com.crest247.flickarraykeyboard.modes.shared.array.ArrayProcessor
 class ArrayFlickProcessor : ArrayProcessor() {
     var metaCode by mutableIntStateOf(0)
 
-    override fun onAction(action: KeyboardAction): Boolean {
-        return when (action) {
+    override fun onAction(action: KeyboardAction): KeyboardAction? {
+        when (action) {
             is ArrayFlickAction.InputRadicalClick ->
                 super.onAction(
                     ArrayAction.InputRadical(
@@ -32,8 +32,6 @@ class ArrayFlickProcessor : ArrayProcessor() {
                             lookupStr = action.longPressStr
                         )
                     )
-                else
-                    true
 
             is ArrayFlickAction.DirectionalPad -> {
                 if (metaCode == KeyEvent.KEYCODE_CTRL_LEFT)
@@ -64,7 +62,6 @@ class ArrayFlickProcessor : ArrayProcessor() {
                     3 -> inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN, 0)
                     4 -> inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT, 0)
                 }
-                true
             }
 
             is ArrayFlickAction.PhysicalModifierFlick -> {
@@ -78,18 +75,15 @@ class ArrayFlickProcessor : ArrayProcessor() {
                     inputConnection?.sendKeyDownEvent(newMetaCode, 0)
                     metaCode = newMetaCode
                 }
-                true
             }
 
             is ArrayFlickAction.PhysicalModifierUp -> {
                 inputConnection?.sendKeyUpEvent(metaCode, 0)
                 metaCode = 0
-                true
             }
 
-            else -> super.onAction(action)
+            else -> return super.onAction(action)
         }
+        return null
     }
-
-
 }

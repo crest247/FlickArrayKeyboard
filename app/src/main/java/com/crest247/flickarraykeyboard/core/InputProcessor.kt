@@ -15,7 +15,7 @@ import com.crest247.flickarraykeyboard.core.models.UpTriggerable
 import com.crest247.flickarraykeyboard.core.models.resolveAction
 
 interface InputProcessor {
-    fun onAction(action: KeyboardAction): Boolean
+    fun onAction(action: KeyboardAction): KeyboardAction?
     fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {}
 }
 
@@ -30,9 +30,9 @@ fun InputProcessor.executeDefault(keyEvent: KeyboardKeyEvent, systemProcessor: S
         is KeyboardKeyEvent.Up -> (baseAction as? UpTriggerable)?.upAction
         is KeyboardKeyEvent.LongPress -> (baseAction as? LongPressable)?.longPressAction
     }?.let { action ->
-        if (!this.onAction(action)) {
-            (action as? SystemAction)?.let {
-                systemProcessor.onAction(action)
+        this.onAction(action)?.let { returnAction ->
+            (returnAction as? SystemAction)?.let {
+                systemProcessor.onAction(returnAction)
             }
         }
     }

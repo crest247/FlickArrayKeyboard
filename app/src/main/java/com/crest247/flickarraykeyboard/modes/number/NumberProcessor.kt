@@ -14,13 +14,13 @@ class NumberProcessor : InputProcessor {
         this.editorInfo = editorInfo
     }
 
-    override fun onAction(action: KeyboardAction): Boolean {
-        return if (action !is NumberAction) false
-        else when (action) {
-            is NumberAction.InputChar -> {
+    override fun onAction(action: KeyboardAction): KeyboardAction? {
+        if (action !is NumberAction) return action
+
+        when (action) {
+            is NumberAction.InputChar ->
                 inputConnection?.commitText(action.char, 1)
-                true
-            }
         }
+        return null
     }
 }

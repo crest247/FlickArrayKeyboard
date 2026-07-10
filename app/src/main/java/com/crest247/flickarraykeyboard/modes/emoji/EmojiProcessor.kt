@@ -20,20 +20,18 @@ class EmojiProcessor : InputProcessor {
         this.editorInfo = editorInfo
     }
 
-    override fun onAction(action: KeyboardAction): Boolean {
-        if (action !is EmojiAction) return false
+    override fun onAction(action: KeyboardAction): KeyboardAction? {
+        if (action !is EmojiAction) return action
 
-        return when (action) {
+        when (action) {
             is EmojiAction.SwitchCategory -> {
                 currentCategoryIndex = action.index
                 currentPageIndex = 0
-                true
             }
 
             is EmojiAction.PrevPage -> {
                 if (currentPageIndex > 0)
                     currentPageIndex--
-                true
             }
 
             is EmojiAction.NextPage -> {
@@ -42,13 +40,12 @@ class EmojiProcessor : InputProcessor {
                 val maxPages = ceil(totalEmojis.toDouble() / 40.0).toInt()
                 if (currentPageIndex < maxPages - 1)
                     currentPageIndex++
-                true
             }
 
             is EmojiAction.InputEmoji -> {
                 inputConnection?.commitText(action.emoji, 1)
-                true
             }
         }
+        return null
     }
 }

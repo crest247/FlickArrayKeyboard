@@ -16,22 +16,20 @@ class SymbolProcessor : InputProcessor {
         this.inputConnection = inputConnection
         this.editorInfo = editorInfo
     }
+
     var currentCategoryIndex by mutableIntStateOf(0)
         private set
 
-    override fun onAction(action: KeyboardAction): Boolean {
-        if (action !is SymbolAction) return false
+    override fun onAction(action: KeyboardAction): KeyboardAction? {
+        if (action !is SymbolAction) return action
 
-        return when (action) {
-            is SymbolAction.SwitchCategory -> {
+        when (action) {
+            is SymbolAction.SwitchCategory ->
                 currentCategoryIndex = action.index
-                true
-            }
 
-            is SymbolAction.InputSymbol -> {
+            is SymbolAction.InputSymbol ->
                 inputConnection?.commitText(action.symbol, 1)
-                true
-            }
         }
+        return null
     }
 }

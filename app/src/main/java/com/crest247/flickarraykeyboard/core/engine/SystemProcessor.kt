@@ -21,27 +21,21 @@ class SystemProcessor(
     private val state: KeyboardState
 ) : InputProcessor {
 
-    override fun onAction(action: KeyboardAction): Boolean {
-        if (action !is SystemAction) return false
+    override fun onAction(action: KeyboardAction): KeyboardAction? {
+        if (action !is SystemAction) return action
 
         val inputConnection = state.currentInputConnection
         val editorInfo = state.currentEditorInfo
 
-        return when (action) {
-            is SystemAction.Backspace -> {
+        when (action) {
+            is SystemAction.Backspace ->
                 inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
-                true
-            }
 
-            is SystemAction.Space -> {
+            is SystemAction.Space ->
                 inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
-                true
-            }
 
-            is SystemAction.Tab -> {
+            is SystemAction.Tab ->
                 inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_TAB)
-                true
-            }
 
             is SystemAction.Enter -> {
                 val options = editorInfo?.imeOptions ?: 0
@@ -52,13 +46,11 @@ class SystemProcessor(
                     inputConnection?.performEditorAction(actionId)
                 else
                     inputConnection?.commitText("\n", 1)
-                true
             }
 
-            is SystemAction.SwitchModule -> {
+            is SystemAction.SwitchModule ->
                 state.switchModule(state.availableModules[action.moduleId])
-                true
-            }
         }
+        return null
     }
 }

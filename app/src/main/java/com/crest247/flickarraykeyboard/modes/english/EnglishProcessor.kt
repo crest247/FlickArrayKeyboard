@@ -34,9 +34,10 @@ class EnglishProcessor : InputProcessor {
             EnglishVariant.Default
     }
 
-    override fun onAction(action: KeyboardAction): Boolean {
-        return if (action !is EnglishAction) false
-        else when (action) {
+    override fun onAction(action: KeyboardAction): KeyboardAction? {
+        if (action !is EnglishAction) return action
+
+        when (action) {
             is EnglishAction.InputChar -> {
                 if (isShiftPressed)
                     hasTypedDuringHold = true
@@ -45,7 +46,6 @@ class EnglishProcessor : InputProcessor {
 
                 if (!isShiftPressed && shiftState == ShiftState.UPPERCASE)
                     shiftState = ShiftState.LOWERCASE
-                true
             }
 
             is EnglishAction.ToggleShiftDown -> {
@@ -56,17 +56,16 @@ class EnglishProcessor : InputProcessor {
                     ShiftState.UPPERCASE -> ShiftState.CAPS_LOCK
                     ShiftState.CAPS_LOCK -> ShiftState.LOWERCASE
                 }
-                true
             }
 
             is EnglishAction.ToggleShiftClick -> {
                 isShiftPressed = false
                 if (hasTypedDuringHold && shiftState == ShiftState.UPPERCASE)
                     shiftState = ShiftState.LOWERCASE
-                true
             }
 
-            else -> false
+            else -> {}
         }
+        return null
     }
 }
