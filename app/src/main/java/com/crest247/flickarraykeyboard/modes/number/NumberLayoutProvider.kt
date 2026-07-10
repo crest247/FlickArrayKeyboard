@@ -7,7 +7,6 @@ import com.crest247.flickarraykeyboard.core.models.KeyData
 import com.crest247.flickarraykeyboard.core.models.SystemKeyFactory
 import com.crest247.flickarraykeyboard.core.models.TapKeyData
 import com.crest247.flickarraykeyboard.core.ui.components.KeyContent
-import com.crest247.flickarraykeyboard.modes.shared.array.ArrayAction
 
 object NumberLayoutProvider {
     fun createKeys(editorInfo: EditorInfo?): List<List<KeyData>> {
@@ -26,8 +25,8 @@ object NumberLayoutProvider {
                     else KeyContent.Text(popupTexts[index - 1])
                 },
                 List(popupTexts.size + 1) { index ->
-                    if (index == 0) 0 to null
-                    else index to NumberAction.InputChar(popupTexts[index - 1])
+                    if (index == 0) 0 to NumberAction.InputSymbolClick(popupTexts[0])
+                    else index to NumberAction.InputSymbolUp(popupTexts[index - 1])
                 }.toMap()
             )
         }

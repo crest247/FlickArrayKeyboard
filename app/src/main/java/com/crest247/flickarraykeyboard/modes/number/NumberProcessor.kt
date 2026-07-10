@@ -20,6 +20,10 @@ class NumberProcessor : InputProcessor {
         when (action) {
             is NumberAction.InputChar ->
                 inputConnection?.commitText(action.char, 1)
+            is NumberAction.InputSymbolUp ->
+                inputConnection?.commitText(action.symbol, 1)
+            is NumberAction.InputSymbolClick ->
+                inputConnection?.commitText(action.symbol, 1)
         }
         return null
     }

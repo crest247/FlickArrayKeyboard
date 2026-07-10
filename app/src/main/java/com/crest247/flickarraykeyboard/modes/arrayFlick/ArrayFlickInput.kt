@@ -13,13 +13,13 @@ sealed interface ArrayFlickAction : ArrayAction {
         val lookupStr: String,
         val direction: Int,
         val longPressStr: String
-    ) : KeyboardAction, Clickable, LongPressable {
-        override val clickAction: KeyboardAction = InputRadicalClick(displayStr, lookupStr)
+    ) : KeyboardAction, UpTriggerable, LongPressable {
+        override val upAction: KeyboardAction = InputRadicalUp(displayStr, lookupStr)
         override val longPressAction: KeyboardAction =
             InputRadicalLongPress(direction, longPressStr)
     }
 
-    data class InputRadicalClick(
+    data class InputRadicalUp(
         val displayStr: String,
         val lookupStr: String,
     ) : ArrayFlickAction, Clickable
@@ -44,5 +44,5 @@ sealed interface ArrayFlickAction : ArrayAction {
 
     data class DirectionalPad(
         val direction: Int
-    ) : ArrayFlickAction, Clickable
+    ) : ArrayFlickAction, UpTriggerable
 }

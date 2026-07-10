@@ -14,7 +14,7 @@ open class ArrayProcessor : InputProcessor {
     protected var inputConnection: InputConnection? = null
     var editorInfo: EditorInfo? = null; private set
     val displayTokens = mutableStateListOf<String>()
-    private val lookupTokens = mutableStateListOf<String>()
+    protected val lookupTokens = mutableStateListOf<String>()
     var candidates by mutableStateOf<List<String>>(emptyList()); private set
 
     override fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {

@@ -5,11 +5,11 @@ sealed interface KeyboardKeyEvent {
     val direction: Int? get() = null
 
     data class Down(override val keyData: KeyData) : KeyboardKeyEvent
-    data class Up(override val keyData: KeyData) : KeyboardKeyEvent
     data class Click(override val keyData: KeyData, override val direction: Int? = null) : KeyboardKeyEvent
     data class Flick(override val keyData: KeyData, override val direction: Int) : KeyboardKeyEvent
-    data class LongPress(override val keyData: KeyData) : KeyboardKeyEvent
-    data class Repeat(override val keyData: KeyData) : KeyboardKeyEvent
+    data class LongPress(override val keyData: KeyData, override val direction: Int? = null) : KeyboardKeyEvent
+    data class Repeat(override val keyData: KeyData, override val direction: Int? = null) : KeyboardKeyEvent
+    data class Up(override val keyData: KeyData, override val direction: Int? = null) : KeyboardKeyEvent
 }
 
 fun KeyboardKeyEvent.resolveAction(): KeyboardAction? {

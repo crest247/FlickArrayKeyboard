@@ -23,12 +23,12 @@ fun InputProcessor.executeDefault(keyEvent: KeyboardKeyEvent, systemProcessor: S
     val baseAction = keyEvent.resolveAction() ?: return
 
     when (keyEvent) {
+        is KeyboardKeyEvent.Down -> (baseAction as? DownTriggerable)?.downAction
         is KeyboardKeyEvent.Click -> (baseAction as? Clickable)?.clickAction
         is KeyboardKeyEvent.Flick -> (baseAction as? Flickable)?.flickAction
-        is KeyboardKeyEvent.Repeat -> (baseAction as? Repeatable)?.repeatAction
-        is KeyboardKeyEvent.Down -> (baseAction as? DownTriggerable)?.downAction
-        is KeyboardKeyEvent.Up -> (baseAction as? UpTriggerable)?.upAction
         is KeyboardKeyEvent.LongPress -> (baseAction as? LongPressable)?.longPressAction
+        is KeyboardKeyEvent.Repeat -> (baseAction as? Repeatable)?.repeatAction
+        is KeyboardKeyEvent.Up -> (baseAction as? UpTriggerable)?.upAction
     }?.let { action ->
         this.onAction(action)?.let { returnAction ->
             (returnAction as? SystemAction)?.let {

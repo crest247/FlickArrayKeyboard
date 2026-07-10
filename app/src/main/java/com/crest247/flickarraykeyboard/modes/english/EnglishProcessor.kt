@@ -58,7 +58,7 @@ class EnglishProcessor : InputProcessor {
                 }
             }
 
-            is EnglishAction.ToggleShiftClick -> {
+            is EnglishAction.ToggleShiftUp -> {
                 isShiftPressed = false
                 if (hasTypedDuringHold && shiftState == ShiftState.UPPERCASE)
                     shiftState = ShiftState.LOWERCASE

@@ -31,34 +31,38 @@ val LocalKeyboardLayoutCoordinates = compositionLocalOf<LayoutCoordinates?> { nu
 
 fun Modifier.keyGestures(
     onDown: (() -> Unit)? = null,
-    onUp: (() -> Unit)? = null,
     onClick: ((Int) -> Unit)? = null,
-    onLongPress: (() -> Unit)? = null,
-    onRepeat: (() -> Unit)? = null,
     onFlick: ((Int) -> Unit)? = null,
+    onLongPress: ((Int) -> Unit)? = null,
+    onRepeat: ((Int) -> Unit)? = null,
+    onUp: ((Int) -> Unit)? = null,
     longPressTimeout: Long = 500L,
     repeatInterval: Long = 50L,
     directionCount: Int,
     flickThresholdPx: Float
 ): Modifier = composed {
     val currentOnDown by rememberUpdatedState(onDown)
-    val currentOnUp by rememberUpdatedState(onUp)
     val currentOnClick by rememberUpdatedState(onClick)
+    val currentOnFlick by rememberUpdatedState(onFlick)
     val currentOnLongPress by rememberUpdatedState(onLongPress)
     val currentOnRepeat by rememberUpdatedState(onRepeat)
-    val currentOnFlick by rememberUpdatedState(onFlick)
+    val currentOnUp by rememberUpdatedState(onUp)
 
+    var timerTrigger by remember { mutableStateOf(false) }
     var isTimerRunning by remember { mutableStateOf(false) }
     var isLongPressTriggered by remember { mutableStateOf(false) }
 
-    LaunchedEffect(isTimerRunning) {
+    var trackedDirection by remember { mutableStateOf(0) }
+
+    LaunchedEffect(isTimerRunning, timerTrigger) {
         if (isTimerRunning) {
             delay(longPressTimeout)
             isLongPressTriggered = true
-            currentOnLongPress?.invoke()
+            currentOnLongPress?.invoke(trackedDirection)
+
             if (currentOnRepeat != null) {
                 while (isTimerRunning) {
-                    currentOnRepeat?.invoke()
+                    currentOnRepeat?.invoke(trackedDirection)
                     delay(repeatInterval)
                 }
             }
@@ -72,38 +76,47 @@ fun Modifier.keyGestures(
 
             val startPosition = down.position
             var currentDirection = 0
+            trackedDirection = 0
 
             isLongPressTriggered = false
             currentOnDown?.invoke()
+
             isTimerRunning = true
+            timerTrigger = !timerTrigger
+
             var keepGoing = true
 
             while (keepGoing) {
                 val event = awaitPointerEvent()
                 val change = event.changes.firstOrNull { it.id == targetPointerId }
 
-                if (change == null || !change.pressed)
+                if (change == null || !change.pressed) {
                     keepGoing = false
-                else {
+                } else {
                     val newDirection = calculateFlickDirection(
                         startPosition, change.position, directionCount, flickThresholdPx
                     )
 
                     if (newDirection != currentDirection) {
                         currentDirection = newDirection
+                        trackedDirection = newDirection
+
                         currentOnFlick?.invoke(newDirection)
                         change.consume()
-                        isTimerRunning = false
+
+                        isLongPressTriggered = false
+                        timerTrigger = !timerTrigger
                     }
                 }
             }
 
             isTimerRunning = false
 
-            if (!(isLongPressTriggered && currentOnLongPress != null && currentDirection == 0)) {
+            if (!isLongPressTriggered) {
                 currentOnClick?.invoke(currentDirection)
             }
-            currentOnUp?.invoke()
+
+            currentOnUp?.invoke(currentDirection)
         }
     }
 }
@@ -140,11 +153,11 @@ fun Modifier.tapWithPreview(
     keyId: Any,
     content: KeyContent,
     backgroundType: KeyBackgroundType,
+    onDown: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
     onLongPress: (() -> Unit)? = null,
-    onDown: (() -> Unit)? = null,
-    onUp: (() -> Unit)? = null,
-    onRepeat: (() -> Unit)? = null
+    onRepeat: (() -> Unit)? = null,
+    onUp: (() -> Unit)? = null
 ): Modifier = composed {
     val density = LocalDensity.current
     val dimens = LocalKeyboardDimens.current
@@ -172,25 +185,28 @@ fun Modifier.tapWithPreview(
                 )
                 onDown?.invoke()
             },
-            onUp = {
-                previewHandler.hide(keyId)
-                onUp?.invoke()
+            onClick = { direction ->
+                if (direction == 0) onClick?.invoke()
             },
             onFlick = { direction ->
-                if (direction == 1) {
-                    previewHandler.hide(keyId)
-                } else if (direction == 0) {
+                if (direction == 0)
                     previewHandler.show(
                         keyId,
                         TapPreview(content, keyPosition, keyWidth, keyHeight, backgroundType)
                     )
-                }
+                else
+                    previewHandler.hide(keyId)
             },
-            onClick = { direction ->
-                if (direction == 0) onClick?.invoke()
+            onLongPress = { direction ->
+                if (direction == 0) onLongPress?.invoke()
             },
-            onLongPress = onLongPress,
-            onRepeat = onRepeat,
+            onRepeat = { direction ->
+                if (direction == 0) onRepeat?.invoke()
+            },
+            onUp = { direction ->
+                previewHandler.hide(keyId)
+                if (direction == 0) onUp?.invoke()
+            },
             directionCount = 1,
             flickThresholdPx = threshold
         )
@@ -202,10 +218,11 @@ fun Modifier.flickWithPreview(
     popupContents: List<KeyContent?>,
     backgroundType: KeyBackgroundType,
     onDown: (() -> Unit)? = null,
-    onUp: (() -> Unit)? = null,
-    onFlick: ((Int) -> Unit)? = null,
     onClick: ((Int) -> Unit)? = null,
-    onLongPress: (() -> Unit)? = null
+    onFlick: ((Int) -> Unit)? = null,
+    onLongPress: ((Int) -> Unit)? = null,
+    onRepeat: ((Int) -> Unit)? = null,
+    onUp: ((Int) -> Unit)? = null
 ): Modifier = composed {
     val density = LocalDensity.current
     val dimens = LocalKeyboardDimens.current
@@ -233,9 +250,8 @@ fun Modifier.flickWithPreview(
                 )
                 onDown?.invoke()
             },
-            onUp = {
-                previewHandler.hide(keyId)
-                onUp?.invoke()
+            onClick = { direction ->
+                onClick?.invoke(direction)
             },
             onFlick = { direction ->
                 previewHandler.show(
@@ -251,10 +267,16 @@ fun Modifier.flickWithPreview(
                 )
                 onFlick?.invoke(direction)
             },
-            onClick = { direction ->
-                onClick?.invoke(direction)
+            onLongPress = { direction ->
+                onLongPress?.invoke(direction)
             },
-            onLongPress = onLongPress,
+            onRepeat = { direction ->
+                onRepeat?.invoke(direction)
+            },
+            onUp = { direction ->
+                previewHandler.hide(keyId)
+                onUp?.invoke(direction)
+            },
             directionCount = popupContents.size - 1,
             flickThresholdPx = threshold
         )

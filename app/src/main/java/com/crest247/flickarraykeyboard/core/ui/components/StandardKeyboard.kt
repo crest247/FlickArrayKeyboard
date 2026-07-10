@@ -57,26 +57,26 @@ fun StandardKeyboard(
                                                     keyId = keyData.content,
                                                     content = keyData.content,
                                                     backgroundType = keyData.backgroundType,
-                                                    onClick = {
-                                                        onKeyEvent(
-                                                            KeyboardKeyEvent.Click(keyData, null)
-                                                        )
-                                                    }.takeIf { action is Clickable },
-                                                    onRepeat = {
-                                                        onKeyEvent(
-                                                            KeyboardKeyEvent.Repeat(keyData)
-                                                        )
-                                                    }.takeIf { action is Repeatable },
                                                     onDown = {
                                                         onKeyEvent(
                                                             KeyboardKeyEvent.Down(keyData)
                                                         )
                                                     }.takeIf { action is DownTriggerable },
+                                                    onClick = {
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Click(keyData, null)
+                                                        )
+                                                    }.takeIf { action is Clickable },
                                                     onLongPress = {
                                                         onKeyEvent(
                                                             KeyboardKeyEvent.LongPress(keyData)
                                                         )
                                                     }.takeIf { action is LongPressable },
+                                                    onRepeat = {
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Repeat(keyData)
+                                                        )
+                                                    }.takeIf { action is Repeatable },
                                                     onUp = {
                                                         onKeyEvent(
                                                             KeyboardKeyEvent.Up(keyData)
@@ -97,6 +97,11 @@ fun StandardKeyboard(
                                                     keyData.content,
                                                     keyData.popupContents,
                                                     keyData.backgroundType,
+                                                    onDown = {
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Down(keyData)
+                                                        )
+                                                    }.takeIf { actions.any { it is DownTriggerable } },
                                                     onClick = { direction: Int ->
                                                         onKeyEvent(
                                                             KeyboardKeyEvent.Click(
@@ -105,11 +110,6 @@ fun StandardKeyboard(
                                                             )
                                                         )
                                                     }.takeIf { actions.any { it is Clickable } },
-                                                    onLongPress = {
-                                                        onKeyEvent(
-                                                            KeyboardKeyEvent.LongPress(keyData)
-                                                        )
-                                                    }.takeIf { actions.any { it is LongPressable } },
                                                     onFlick = { direction: Int ->
                                                         onKeyEvent(
                                                             KeyboardKeyEvent.Flick(
@@ -118,9 +118,28 @@ fun StandardKeyboard(
                                                             )
                                                         )
                                                     }.takeIf { actions.any { it is Flickable } },
-                                                    onUp = {
+                                                    onLongPress = { direction: Int ->
                                                         onKeyEvent(
-                                                            KeyboardKeyEvent.Up(keyData)
+                                                            KeyboardKeyEvent.LongPress(
+                                                                keyData,
+                                                                direction
+                                                            )
+                                                        )
+                                                    }.takeIf { actions.any { it is LongPressable } },
+                                                    onRepeat = { direction: Int ->
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Repeat(
+                                                                keyData,
+                                                                direction
+                                                            )
+                                                        )
+                                                    }.takeIf { actions.any { it is Repeatable } },
+                                                    onUp = { direction: Int ->
+                                                        onKeyEvent(
+                                                            KeyboardKeyEvent.Up(
+                                                                keyData,
+                                                                direction
+                                                            )
                                                         )
                                                     }.takeIf { actions.any { it is UpTriggerable } }
                                                 )

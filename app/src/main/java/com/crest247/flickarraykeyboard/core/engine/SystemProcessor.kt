@@ -8,13 +8,14 @@ import com.crest247.flickarraykeyboard.core.extension.sendDownUpKeyEvents
 import com.crest247.flickarraykeyboard.core.models.Clickable
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 import com.crest247.flickarraykeyboard.core.models.Repeatable
+import com.crest247.flickarraykeyboard.core.models.UpTriggerable
 
 sealed interface SystemAction : KeyboardAction {
     object Backspace : SystemAction, Clickable, Repeatable
-    object Space : SystemAction, Clickable
-    object Enter : SystemAction, Clickable
-    object Tab : SystemAction, Clickable
-    data class SwitchModule(val moduleId: Int) : SystemAction, Clickable
+    object Space : SystemAction, UpTriggerable
+    object Enter : SystemAction, UpTriggerable
+    object Tab : SystemAction, UpTriggerable
+    data class SwitchModule(val moduleId: Int) : SystemAction, UpTriggerable
 }
 
 class SystemProcessor(

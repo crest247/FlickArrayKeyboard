@@ -16,7 +16,7 @@ class ArrayFlickProcessor : ArrayProcessor() {
 
     override fun onAction(action: KeyboardAction): KeyboardAction? {
         when (action) {
-            is ArrayFlickAction.InputRadicalClick ->
+            is ArrayFlickAction.InputRadicalUp ->
                 super.onAction(
                     ArrayAction.InputRadical(
                         displayStr = action.displayStr,
@@ -25,7 +25,7 @@ class ArrayFlickProcessor : ArrayProcessor() {
                 )
 
             is ArrayFlickAction.InputRadicalLongPress ->
-                if (action.direction == 0)
+                if (lookupTokens.size == 1 && lookupTokens[0] == "w" && action.direction == 0)
                     super.onAction(
                         ArrayAction.InputRadical(
                             displayStr = action.longPressStr,
