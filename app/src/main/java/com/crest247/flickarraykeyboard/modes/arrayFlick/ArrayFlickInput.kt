@@ -45,4 +45,6 @@ sealed interface ArrayFlickAction : ArrayAction {
     data class DirectionalPad(
         val direction: Int
     ) : ArrayFlickAction, UpTriggerable
+
+    object Enter : ArrayFlickAction, UpTriggerable
 }

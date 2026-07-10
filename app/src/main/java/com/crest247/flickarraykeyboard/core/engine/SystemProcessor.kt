@@ -51,7 +51,7 @@ class SystemProcessor(
                 if (actionId != EditorInfo.IME_ACTION_NONE)
                     inputConnection?.performEditorAction(actionId)
                 else
-                    inputConnection?.commitText("\n", 1)
+                    inputConnection?.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
             }
 
             is SystemAction.SwitchModule ->

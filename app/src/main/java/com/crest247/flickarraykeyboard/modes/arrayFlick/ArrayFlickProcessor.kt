@@ -4,6 +4,7 @@ import android.view.KeyEvent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
+import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.extension.sendDownUpKeyEvents
 import com.crest247.flickarraykeyboard.core.extension.sendKeyDownEvent
 import com.crest247.flickarraykeyboard.core.extension.sendKeyUpEvent
@@ -80,6 +81,25 @@ class ArrayFlickProcessor : ArrayProcessor() {
             is ArrayFlickAction.PhysicalModifierUp -> {
                 inputConnection?.sendKeyUpEvent(metaCode, 0)
                 metaCode = 0
+            }
+
+            is ArrayFlickAction.Enter -> {
+                if (candidates.isNotEmpty()) commitCandidate(candidates.first())
+                else if (displayTokens.isEmpty())
+                    when (metaCode) {
+                        KeyEvent.KEYCODE_CTRL_LEFT -> {
+                            inputConnection?.sendDownUpKeyEvents(
+                                KeyEvent.KEYCODE_ENTER, KeyEvent.META_CTRL_ON
+                            )
+                        }
+
+                        KeyEvent.KEYCODE_SHIFT_LEFT ->
+                            inputConnection?.sendDownUpKeyEvents(
+                                KeyEvent.KEYCODE_ENTER, KeyEvent.META_SHIFT_ON
+                            )
+
+                        else -> return SystemAction.Enter
+                    }
             }
 
             else -> return super.onAction(action)

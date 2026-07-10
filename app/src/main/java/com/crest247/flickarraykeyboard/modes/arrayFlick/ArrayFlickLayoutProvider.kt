@@ -114,7 +114,7 @@ object ArrayFlickLayoutProvider {
                 modifierKey,
                 radicalKey("0", listOf("0-", "0^", "0v"), listOf(";", "p", "/")),
                 dpadKey,
-                SystemKeyFactory.createEnterKey(editorInfo, 1.0f, ArrayAction.Enter)
+                SystemKeyFactory.createEnterKey(editorInfo, 1.0f, ArrayFlickAction.Enter)
             ),
         )
     }
