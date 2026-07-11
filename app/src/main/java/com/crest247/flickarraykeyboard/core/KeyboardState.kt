@@ -48,22 +48,14 @@ class KeyboardState {
         }
     }
 
-    fun onHardwareKeyDown(event: KeyEvent): Boolean {
-        val keyCode = event.keyCode
-        isPhysicalKeyboardActive = keyCode != KeyEvent.KEYCODE_BACK
-        val handled = currentModule.processor.onHardwareKeyDown(event) ||
-                systemProcessor.onHardwareKeyDown(event)
-        if (handled)
-            consumedPhysicalKeyCodes.add(keyCode)
-        return handled
-    }
-
-    fun onHardwareKeyUp(event: KeyEvent): Boolean {
-        val keyCode = event.keyCode
-        val wasConsumedOnDown = consumedPhysicalKeyCodes.remove(keyCode)
-        val handledByProcessor = currentModule.processor.onHardwareKeyUp(event) ||
-                systemProcessor.onHardwareKeyUp(event)
-        return wasConsumedOnDown || handledByProcessor
+    fun switchToNextModule() {
+        val currentIndex = availableModules.indexOf(currentModule)
+        val nextIndex = when(currentIndex)
+        {
+            0, 1 -> 2
+            else -> 1
+        }
+        switchModule(availableModules[nextIndex])
     }
 }
 

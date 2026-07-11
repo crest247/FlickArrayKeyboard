@@ -1,6 +1,7 @@
 package com.crest247.flickarraykeyboard.modes.english
 
 import androidx.compose.runtime.Composable
+import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.models.KeyboardModule
 
 object EnglishModule : KeyboardModule {
@@ -16,6 +17,9 @@ object EnglishModule : KeyboardModule {
 
     @Composable
     override fun KeyAreaLayout() {
-        EnglishKeyLayout(processor = processor)
+        val state = LocalKeyboardState.current
+
+        if (!state.isPhysicalKeyboardActive)
+            EnglishKeyLayout(processor = processor)
     }
 }

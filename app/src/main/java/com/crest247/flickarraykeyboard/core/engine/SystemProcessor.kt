@@ -67,4 +67,13 @@ class SystemProcessor(
         }
         return null
     }
+
+    override fun onHardwareKeyDown(event: KeyEvent): Boolean {
+        val keyCode = event.keyCode
+        if (keyCode == KeyEvent.KEYCODE_SPACE && event.isCtrlPressed) {
+            state.switchToNextModule()
+            return true
+        }
+        return false
+    }
 }

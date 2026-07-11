@@ -197,8 +197,4 @@ open class ArrayProcessor : InputProcessor {
 
         return false
     }
-
-    override fun onHardwareKeyUp(event: KeyEvent): Boolean {
-        return false
-    }
 }

@@ -11,8 +11,10 @@ import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import com.crest247.flickarraykeyboard.core.HardwareKeyRouter
 import com.crest247.flickarraykeyboard.core.KeyboardState
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
+import com.crest247.flickarraykeyboard.core.engine.SystemProcessor
 import com.crest247.flickarraykeyboard.core.theme.KeyboardTheme
 import com.crest247.flickarraykeyboard.core.ui.areas.MainKeyboardContainer
 import com.crest247.flickarraykeyboard.core.ui.components.LocalPreviewHandler
@@ -24,6 +26,7 @@ import kotlinx.coroutines.launch
 
 class MainInputMethodService : ComposedInputMethodService() {
     private lateinit var keyboardState: KeyboardState
+    private lateinit var hardwareKeyRouter: HardwareKeyRouter
     private lateinit var composeView: ComposeView
     private var keyboardBounds: Rect? = null
     private var radicalBounds: Rect? = null
@@ -37,6 +40,7 @@ class MainInputMethodService : ComposedInputMethodService() {
     override fun onCreate() {
         super.onCreate()
         keyboardState = KeyboardState()
+        hardwareKeyRouter = HardwareKeyRouter(keyboardState)
     }
 
     override fun onCreateInputComposeView(): AbstractComposeView {
@@ -120,12 +124,12 @@ class MainInputMethodService : ComposedInputMethodService() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        return if (keyboardState.onHardwareKeyDown(event)) true
+        return if (hardwareKeyRouter.dispatchKeyDown(event)) true
         else super.onKeyDown(keyCode, event)
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        return if (keyboardState.onHardwareKeyUp(event)) true
+        return if (hardwareKeyRouter.dispatchKeyUp(event)) true
         else super.onKeyUp(keyCode, event)
     }
 
