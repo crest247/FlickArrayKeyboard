@@ -1,6 +1,7 @@
 package com.crest247.flickarraykeyboard.modes.array30
 
 import androidx.compose.runtime.Composable
+import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.models.KeyboardModule
 import com.crest247.flickarraykeyboard.modes.shared.array.ArrayProcessor
 import com.crest247.flickarraykeyboard.modes.shared.array.ArraySpellingLayout
@@ -21,6 +22,9 @@ object Array30Module : KeyboardModule {
 
     @Composable
     override fun KeyAreaLayout() {
-        Array30KeyLayout(processor = processor)
+        val state = LocalKeyboardState.current
+
+        if (!state.isPhysicalKeyboardActive)
+            Array30KeyLayout(processor = processor)
     }
 }

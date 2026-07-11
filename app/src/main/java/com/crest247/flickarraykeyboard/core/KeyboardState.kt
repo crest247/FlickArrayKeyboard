@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.core
 
+import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.compose.runtime.compositionLocalOf
@@ -28,6 +29,8 @@ class KeyboardState {
     var currentInputConnection by mutableStateOf<InputConnection?>(null); private set
     var currentEditorInfo by mutableStateOf<EditorInfo?>(null); private set
     val systemProcessor = SystemProcessor(this)
+    var isPhysicalKeyboardActive by mutableStateOf(false)
+    private val consumedPhysicalKeyCodes = mutableSetOf<Int>()
 
     fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {
         this.currentInputConnection = inputConnection
@@ -43,6 +46,24 @@ class KeyboardState {
                 currentModule.processor.updateConnection(inputConnection, editorInfo)
             }
         }
+    }
+
+    fun onHardwareKeyDown(event: KeyEvent): Boolean {
+        val keyCode = event.keyCode
+        isPhysicalKeyboardActive = keyCode != KeyEvent.KEYCODE_BACK
+        val handled = currentModule.processor.onHardwareKeyDown(event) ||
+                systemProcessor.onHardwareKeyDown(event)
+        if (handled)
+            consumedPhysicalKeyCodes.add(keyCode)
+        return handled
+    }
+
+    fun onHardwareKeyUp(event: KeyEvent): Boolean {
+        val keyCode = event.keyCode
+        val wasConsumedOnDown = consumedPhysicalKeyCodes.remove(keyCode)
+        val handledByProcessor = currentModule.processor.onHardwareKeyUp(event) ||
+                systemProcessor.onHardwareKeyUp(event)
+        return wasConsumedOnDown || handledByProcessor
     }
 }
 

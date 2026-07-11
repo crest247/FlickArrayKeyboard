@@ -1,8 +1,8 @@
 package com.crest247.flickarraykeyboard.modes.arrayFlick
 
 import androidx.compose.runtime.Composable
+import com.crest247.flickarraykeyboard.core.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.models.KeyboardModule
-import com.crest247.flickarraykeyboard.modes.shared.array.ArrayProcessor
 import com.crest247.flickarraykeyboard.modes.shared.array.ArraySpellingLayout
 import com.crest247.flickarraykeyboard.modes.shared.array.ArraySuggestionLayout
 
@@ -21,6 +21,9 @@ object ArrayFlickModule : KeyboardModule {
 
     @Composable
     override fun KeyAreaLayout() {
-        ArrayFlickKeyLayout(processor = processor)
+        val state = LocalKeyboardState.current
+
+        if (!state.isPhysicalKeyboardActive)
+            ArrayFlickKeyLayout(processor = processor)
     }
 }

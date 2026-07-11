@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.core
 
+import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
@@ -17,6 +18,8 @@ import com.crest247.flickarraykeyboard.core.models.resolveAction
 interface InputProcessor {
     fun onAction(action: KeyboardAction): KeyboardAction?
     fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {}
+    fun onHardwareKeyDown(event: KeyEvent): Boolean = false
+    fun onHardwareKeyUp(event: KeyEvent): Boolean = false
 }
 
 fun InputProcessor.executeDefault(keyEvent: KeyboardKeyEvent, systemProcessor: SystemProcessor) {

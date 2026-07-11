@@ -2,6 +2,7 @@ package com.crest247.flickarraykeyboard.service
 
 import android.graphics.Rect
 import android.graphics.Region
+import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -118,9 +119,24 @@ class MainInputMethodService : ComposedInputMethodService() {
         outInsets.visibleTopInsets = bounds.top
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return if (keyboardState.onHardwareKeyDown(event)) true
+        else super.onKeyDown(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        return if (keyboardState.onHardwareKeyUp(event)) true
+        else super.onKeyUp(keyCode, event)
+    }
+
+    override fun onEvaluateInputViewShown(): Boolean {
+        super.onEvaluateInputViewShown()
+        return true
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        if(this::composeView.isInitialized) {
+        if (this::composeView.isInitialized) {
             composeView.disposeComposition()
         }
     }
