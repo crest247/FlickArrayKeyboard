@@ -91,6 +91,7 @@ fun StandardKeyboard(
                                         KeyButton(
                                             content = keyData.content,
                                             backgroundColor = bgColor,
+                                            showIndicator = true,
                                             modifier = Modifier
                                                 .weight(keyData.weight)
                                                 .flickWithPreview(

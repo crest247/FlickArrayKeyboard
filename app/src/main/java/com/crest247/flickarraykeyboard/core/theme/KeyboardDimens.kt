@@ -36,7 +36,9 @@ data class KeyboardDimens(
     val tapCancelThreshold: Dp,
     val mainScreenPadding: Dp,
     val mainScreenButtonSpacing: Dp,
-    val mainScreenBlockSpacing: Dp
+    val mainScreenBlockSpacing: Dp,
+    val flickIndicatorSize: Dp,
+    val flickIndicatorPadding: Dp
 )
 
 val LocalKeyboardDimens = staticCompositionLocalOf<KeyboardDimens> {

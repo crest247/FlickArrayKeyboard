@@ -2,6 +2,7 @@ package com.crest247.flickarraykeyboard.core.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Backspace
@@ -26,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.crest247.flickarraykeyboard.core.theme.KeyboardTheme
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardColors
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.preview.KeyboardPreviewWrapper
@@ -44,7 +47,6 @@ fun Modifier.keyboardBackgroundStyle(): Modifier {
 
 @Composable
 fun Modifier.keyboardRowStyle(rowHeight: Dp): Modifier {
-    val dimens = LocalKeyboardDimens.current
     return this
         .fillMaxWidth()
         .height(rowHeight)
@@ -57,7 +59,6 @@ fun KeyboardIcon(
     iconSize: Dp,
     tint: Color = LocalKeyboardColors.current.keyText
 ) {
-
     Icon(
         imageVector = icon,
         contentDescription = null,
@@ -88,7 +89,7 @@ fun KeyboardText(
 fun KeyBox(
     modifier: Modifier = Modifier,
     backgroundColor: Color = LocalKeyboardColors.current.keyBackground,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     val dimens = LocalKeyboardDimens.current
     Box(
@@ -132,7 +133,8 @@ fun KeyButton(
     content: KeyContent,
     modifier: Modifier = Modifier,
     backgroundColor: Color = LocalKeyboardColors.current.keyBackground,
-    contentColor: Color = LocalKeyboardColors.current.keyText
+    contentColor: Color = LocalKeyboardColors.current.keyText,
+    showIndicator: Boolean = false
 ) {
     val dimens = LocalKeyboardDimens.current
 
@@ -145,25 +147,37 @@ fun KeyButton(
             iconSize = dimens.keyIconSize,
             color = contentColor
         )
+
+        if (showIndicator) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(start = dimens.flickIndicatorPadding, top = dimens.flickIndicatorPadding)
+                    .size(dimens.flickIndicatorSize)
+                    .background(color = contentColor.copy(alpha = 0.4f), shape = CircleShape)
+            )
+        }
     }
 }
 
 @ThemePreviews
 @Composable
 fun PreviewKeyButton() {
-    val dimens = LocalKeyboardDimens.current
-    KeyboardPreviewWrapper {
-        Row(modifier = Modifier.keyboardRowStyle(dimens.englishKeyHeight)) {
-            KeyButton(
-                content = KeyContent.Text("Q"),
-                modifier = Modifier.width(40.dp)
-            )
+    KeyboardTheme {
+        val dimens = LocalKeyboardDimens.current
+        KeyboardPreviewWrapper {
+            Row(modifier = Modifier.keyboardRowStyle(dimens.englishKeyHeight)) {
+                KeyButton(
+                    content = KeyContent.Text("Q"),
+                    modifier = Modifier.width(40.dp)
+                )
 
-            KeyButton(
-                content = KeyContent.Icon(Icons.AutoMirrored.Outlined.Backspace),
-                backgroundColor = LocalKeyboardColors.current.funcKeyBackground,
-                modifier = Modifier.width(80.dp)
-            )
+                KeyButton(
+                    content = KeyContent.Icon(Icons.AutoMirrored.Outlined.Backspace),
+                    backgroundColor = LocalKeyboardColors.current.funcKeyBackground,
+                    modifier = Modifier.width(80.dp)
+                )
+            }
         }
     }
 }

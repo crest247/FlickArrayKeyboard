@@ -63,7 +63,9 @@ fun rememberResponsiveDimens(): KeyboardDimens {
             tapCancelThreshold = 50.dp,
             mainScreenPadding = 16.dp,
             mainScreenButtonSpacing = 8.dp,
-            mainScreenBlockSpacing = 48.dp
+            mainScreenBlockSpacing = 48.dp,
+            flickIndicatorSize = if (isTablet) 6.dp else 4.dp,
+            flickIndicatorPadding = if (isTablet) 8.dp else 5.dp
         )
     }
 }
