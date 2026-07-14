@@ -9,85 +9,74 @@ object SkinToneProcessor {
     private const val SKIN_MEDIUM = "\uD83C\uDFFD"
     private const val SKIN_MEDIUM_DARK = "\uD83C\uDFFE"
     private const val SKIN_DARK = "\uD83C\uDFFF"
-    private const val VS16 = 0xFE0F
+    private const val VS16 = "\uFE0F"
 
     private val SKIN_VARIANTS = listOf(
-        SKIN_LIGHT,
-        SKIN_MEDIUM_LIGHT,
-        SKIN_MEDIUM,
-        SKIN_MEDIUM_DARK,
-        SKIN_DARK
+        SKIN_LIGHT, SKIN_MEDIUM_LIGHT, SKIN_MEDIUM, SKIN_MEDIUM_DARK, SKIN_DARK
     )
 
-    fun hasSkinToneVariants(emoji: String): Boolean {
-        return humanTypeMap.contains(emoji)
-    }
+    fun hasSkinToneVariants(emoji: String): Boolean = humanTypeMap.containsKey(emoji)
 
     private fun applySkinTone(baseEmoji: String, skinTone: String): String {
-        val length = baseEmoji.length
-        val sb = StringBuilder(length + 2)
-        sb.append(baseEmoji)
+        if (baseEmoji.isEmpty()) return ""
 
-        val firstCodePoint = Character.codePointAt(baseEmoji, 0)
-        val firstCharCount = Character.charCount(firstCodePoint)
+        val firstLen = Character.charCount(baseEmoji.codePointAt(0))
+        val head = baseEmoji.substring(0, firstLen)
+        val tail = baseEmoji.substring(firstLen).removePrefix(VS16)
 
-        if (length > firstCharCount) {
-            val secondCodePoint = Character.codePointAt(baseEmoji, firstCharCount)
-            if (secondCodePoint == VS16) {
-                sb.replace(firstCharCount, firstCharCount + 1, skinTone)
-                return sb.toString()
-            }
-        }
-        sb.insert(firstCharCount, skinTone)
-        return sb.toString()
+        return "$head$skinTone$tail"
     }
 
-    private fun getCodePointCount(text: String): Int {
-        return text.codePointCount(0, text.length)
-    }
+    private fun getCodePointCount(text: String): Int = text.codePointCount(0, text.length)
 
     private fun getSecondCodePointString(text: String): String? {
-        val count = getCodePointCount(text)
-        if (count < 2) return null
-        val offset = text.offsetByCodePoints(0, 1)
-        val codePoint = Character.codePointAt(text, offset)
-        return String(Character.toChars(codePoint))
+        if (text.isEmpty()) return null
+
+        val firstLen = Character.charCount(text.codePointAt(0))
+        if (firstLen >= text.length) return null
+
+        val secondLen = Character.charCount(text.codePointAt(firstLen))
+        return text.substring(firstLen, firstLen + secondLen)
     }
 
     fun generateVariants(emoji: String): List<String> {
-        val type = humanTypeMap[emoji]
+        val type = humanTypeMap[emoji] ?: return emptyList()
 
-        if (type == "One") {
-            return SKIN_VARIANTS.map { skinTone ->
-                applySkinTone(emoji, skinTone)
-            }
-        }
+        return SKIN_VARIANTS.map { skinTone ->
+            when (type) {
+                "One" -> applySkinTone(emoji, skinTone)
 
-        if (type == "Same") {
-            val directKey = emoji + SKIN_LIGHT
-            val canAppendDirectly = humanPrefixMap.containsKey(directKey)
+                "Same" -> {
+                    val directKey = emoji + SKIN_LIGHT
+                    if (humanPrefixMap.containsKey(directKey))
+                        emoji + skinTone
+                    else {
+                        val stripped = emoji.removeSuffix(VS16)
+                        val endsWithGender = if (stripped.isNotEmpty()) {
+                            val lastCodePoint = stripped.codePointBefore(stripped.length)
+                            lastCodePoint == 0x2640 || lastCodePoint == 0x2642
+                        } else false
 
-            return SKIN_VARIANTS.map { skinTone ->
-                if (canAppendDirectly) {
-                    emoji + skinTone
-                } else {
-                    applySkinTone(emoji, skinTone) + skinTone
+                        if (endsWithGender)
+                            applySkinTone(emoji, skinTone)
+                        else
+                            applySkinTone(emoji, skinTone) + skinTone
+                    }
+
                 }
-            }
-        }
 
-        val emojiPrefix = humanPrefixMap[emoji]!!
-        val countPrefix = getCodePointCount(emojiPrefix)
-        val countEmoji = getCodePointCount(emoji)
+                else -> {
+                    val emojiPrefix = humanPrefixMap[emoji] ?: return@map emoji
+                    val countPrefix = getCodePointCount(emojiPrefix)
+                    val countEmoji = getCodePointCount(emoji)
 
-        if (countPrefix + 1 == countEmoji) {
-            return SKIN_VARIANTS.map { skinTone ->
-                emojiPrefix + skinTone
-            }
-        } else {
-            val secondChar = getSecondCodePointString(emoji)
-            return SKIN_VARIANTS.map { skinTone ->
-                if (secondChar == skinTone) emoji else emojiPrefix + skinTone
+                    if (countPrefix + 1 == countEmoji)
+                        emojiPrefix + skinTone
+                    else {
+                        val secondChar = getSecondCodePointString(emoji)
+                        if (secondChar == skinTone) emoji else emojiPrefix + skinTone
+                    }
+                }
             }
         }
     }
