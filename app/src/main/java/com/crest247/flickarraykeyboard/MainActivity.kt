@@ -3,6 +3,7 @@ package com.crest247.flickarraykeyboard
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,15 +11,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
+import androidx.core.content.getSystemService
 import com.crest247.flickarraykeyboard.core.theme.KeyboardTheme
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 
@@ -37,23 +38,43 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     val context = LocalContext.current
+    val dimens = LocalKeyboardDimens.current
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .padding(dimens.mainScreenPadding),
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "輸入法設置", fontSize = LocalKeyboardDimens.current.previewTextSize
+            text = "步驟1：啟用輸入法",
+            fontSize = dimens.previewTextSize
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-        }) {
-            Text("啟用輸入法")
+        Text(
+            text = "在鍵盤設定中，將「Flick行列輸入法」的開關打開"
+        )
+        Spacer(modifier = Modifier.height(dimens.mainScreenButtonSpacing))
+        Button(
+            onClick = { context.startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("開啟鍵盤設定")
+        }
+
+        Spacer(modifier = Modifier.height(dimens.mainScreenBlockSpacing))
+
+        Text(
+            text = "步驟2：選擇輸入法",
+            fontSize = dimens.previewTextSize
+        )
+        Text(
+            text = "選擇「Flick行列輸入法」"
+        )
+        Spacer(modifier = Modifier.height(dimens.mainScreenButtonSpacing))
+        Button(
+            onClick = { context.getSystemService<InputMethodManager>()?.showInputMethodPicker() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("選擇輸入法")
         }
     }
 }

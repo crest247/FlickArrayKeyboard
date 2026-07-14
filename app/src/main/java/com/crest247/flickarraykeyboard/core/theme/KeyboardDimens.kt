@@ -33,7 +33,10 @@ data class KeyboardDimens(
     val symbolKeyHeight: Dp,
     val emojiKeyHeight: Dp,
     val flickThreshold: Dp,
-    val tapCancelThreshold: Dp
+    val tapCancelThreshold: Dp,
+    val mainScreenPadding: Dp,
+    val mainScreenButtonSpacing: Dp,
+    val mainScreenBlockSpacing: Dp
 )
 
 val LocalKeyboardDimens = staticCompositionLocalOf<KeyboardDimens> {

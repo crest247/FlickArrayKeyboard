@@ -60,7 +60,10 @@ fun rememberResponsiveDimens(): KeyboardDimens {
             symbolKeyHeight = baseKeyHeight,
             emojiKeyHeight = baseKeyHeight,
             flickThreshold = 10.dp,
-            tapCancelThreshold = 50.dp
+            tapCancelThreshold = 50.dp,
+            mainScreenPadding = 16.dp,
+            mainScreenButtonSpacing = 8.dp,
+            mainScreenBlockSpacing = 48.dp
         )
     }
 }
