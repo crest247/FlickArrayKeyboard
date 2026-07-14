@@ -39,7 +39,12 @@ class MainInputMethodService : ComposedInputMethodService() {
 
     override fun onCreate() {
         super.onCreate()
-        keyboardState = KeyboardState()
+        val config = resources.configuration
+        val isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val isTablet = config.smallestScreenWidthDp >= 600
+        keyboardState = KeyboardState().apply {
+            updateScreenConfig(isLandscape, isTablet, isInitial = true)
+        }
         hardwareKeyRouter = HardwareKeyRouter(keyboardState)
     }
 
@@ -84,6 +89,10 @@ class MainInputMethodService : ComposedInputMethodService() {
 
         if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES)
             keyboardState.isPhysicalKeyboardActive = false
+
+        val isLandscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val isTablet = newConfig.smallestScreenWidthDp >= 600
+        keyboardState.updateScreenConfig(isLandscape, isTablet, isInitial = false)
     }
 
     private fun updateKeyboardLayout(coordinates: LayoutCoordinates) {

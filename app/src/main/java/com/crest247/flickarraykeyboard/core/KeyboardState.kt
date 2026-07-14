@@ -24,12 +24,21 @@ class KeyboardState {
         EmojiModule,
         NumberModule
     )
-    var currentModule by mutableStateOf(availableModules.first()); private set
+    var currentModule by mutableStateOf(ArrayFlickModule as KeyboardModule); private set
     var currentInputConnection by mutableStateOf<InputConnection?>(null); private set
     var currentEditorInfo by mutableStateOf<EditorInfo?>(null); private set
     val systemProcessor = SystemProcessor(this)
     var isPhysicalKeyboardActive by mutableStateOf(false)
-    private val consumedPhysicalKeyCodes = mutableSetOf<Int>()
+
+    var isLandscape by mutableStateOf(false); private set
+    var isTablet by mutableStateOf(false); private set
+
+    fun updateScreenConfig(isLandscape: Boolean, isTablet: Boolean, isInitial: Boolean = false) {
+        this.isLandscape = isLandscape
+        this.isTablet = isTablet
+        if (isInitial)
+            currentModule = if (isTablet || isLandscape) Array30Module else ArrayFlickModule
+    }
 
     fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {
         this.currentInputConnection = inputConnection
