@@ -12,14 +12,17 @@ class HardwareKeyRouter(
     private val consumedKeyCodes = mutableSetOf<Int>()
 
     fun dispatchKeyDown(event: KeyEvent): Boolean {
-        when(keyboardState.currentModule)
-        {
-            EnglishModule, Array30Module -> {}
-            ArrayFlickModule -> keyboardState.switchModule(Array30Module)
+        when (keyboardState.currentModule) {
+            EnglishModule, ArrayFlickModule -> {}
+            Array30Module -> keyboardState.switchModule(ArrayFlickModule)
             else -> keyboardState.switchModule(EnglishModule)
         }
         val keyCode = event.keyCode
-        keyboardState.isPhysicalKeyboardActive = keyCode != KeyEvent.KEYCODE_BACK
+        keyboardState.isPhysicalKeyboardActive =
+            keyCode != KeyEvent.KEYCODE_BACK
+                    && keyCode != KeyEvent.KEYCODE_VOLUME_UP
+                    && keyCode != KeyEvent.KEYCODE_VOLUME_DOWN
+                    && keyCode != KeyEvent.KEYCODE_VOLUME_MUTE
         val handled = keyboardState.currentModule.processor.onHardwareKeyDown(event) ||
                 systemProcessor.onHardwareKeyDown(event)
         if (handled)

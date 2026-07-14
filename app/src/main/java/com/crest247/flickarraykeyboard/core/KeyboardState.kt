@@ -1,6 +1,5 @@
 package com.crest247.flickarraykeyboard.core
 
-import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.compose.runtime.compositionLocalOf
@@ -40,22 +39,19 @@ class KeyboardState {
 
     fun switchModule(module: KeyboardModule) {
         currentModule = module
-
-        currentInputConnection?.let { inputConnection ->
-            currentEditorInfo?.let { editorInfo ->
-                currentModule.processor.updateConnection(inputConnection, editorInfo)
-            }
-        }
+        currentModule.processor.updateConnection(
+            currentInputConnection ?: return,
+            currentEditorInfo ?: return
+        )
     }
 
     fun switchToNextModule() {
-        val currentIndex = availableModules.indexOf(currentModule)
-        val nextIndex = when(currentIndex)
-        {
-            0, 1 -> 2
-            else -> 1
+        when (currentModule) {
+            ArrayFlickModule, Array30Module -> EnglishModule
+            else -> ArrayFlickModule
+        }.let { nextModule ->
+            switchModule(nextModule)
         }
-        switchModule(availableModules[nextIndex])
     }
 }
 

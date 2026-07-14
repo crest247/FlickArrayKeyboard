@@ -1,5 +1,6 @@
 package com.crest247.flickarraykeyboard.service
 
+import android.content.res.Configuration
 import android.graphics.Rect
 import android.graphics.Region
 import android.view.KeyEvent
@@ -14,7 +15,6 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import com.crest247.flickarraykeyboard.core.HardwareKeyRouter
 import com.crest247.flickarraykeyboard.core.KeyboardState
 import com.crest247.flickarraykeyboard.core.LocalKeyboardState
-import com.crest247.flickarraykeyboard.core.engine.SystemProcessor
 import com.crest247.flickarraykeyboard.core.theme.KeyboardTheme
 import com.crest247.flickarraykeyboard.core.ui.areas.MainKeyboardContainer
 import com.crest247.flickarraykeyboard.core.ui.components.LocalPreviewHandler
@@ -69,11 +69,21 @@ class MainInputMethodService : ComposedInputMethodService() {
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
 
-        val inputConnection = currentInputConnection
+        val isHardwareHidden =
+            resources.configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES
+        if (isHardwareHidden)
+            keyboardState.isPhysicalKeyboardActive = false
 
-        if (inputConnection != null) {
+        currentInputConnection?.let { inputConnection ->
             keyboardState.updateConnection(inputConnection, info)
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES)
+            keyboardState.isPhysicalKeyboardActive = false
     }
 
     private fun updateKeyboardLayout(coordinates: LayoutCoordinates) {
