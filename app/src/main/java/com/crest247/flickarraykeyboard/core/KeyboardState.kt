@@ -43,12 +43,13 @@ class KeyboardState {
     fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {
         this.currentInputConnection = inputConnection
         this.currentEditorInfo = editorInfo
+        currentModule.processor.resetStates()
         currentModule.processor.updateConnection(inputConnection, editorInfo)
     }
 
     fun switchModule(module: KeyboardModule) {
         currentModule = module
-        currentModule.processor.updateConnection(
+        this.updateConnection(
             currentInputConnection ?: return,
             currentEditorInfo ?: return
         )

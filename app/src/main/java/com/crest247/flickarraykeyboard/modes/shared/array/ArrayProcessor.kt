@@ -30,6 +30,13 @@ open class ArrayProcessor : InputProcessor {
         if (count > 0) visibleCandidateCount = count
     }
 
+    override fun resetStates() {
+        displayTokens.clear()
+        lookupTokens.clear()
+        candidates = emptyList()
+        selectedCandidateIndex = 0
+    }
+
     override fun onAction(action: KeyboardAction): KeyboardAction? {
         if (action !is ArrayAction) return action
 
@@ -95,7 +102,8 @@ open class ArrayProcessor : InputProcessor {
         when (val keyCode = event.keyCode) {
             KeyEvent.KEYCODE_DPAD_UP -> {
                 if (candidates.isNotEmpty()) {
-                    selectedCandidateIndex = (selectedCandidateIndex - visibleCandidateCount).coerceAtLeast(0)
+                    selectedCandidateIndex =
+                        (selectedCandidateIndex - visibleCandidateCount).coerceAtLeast(0)
                     return true
                 }
                 return false
@@ -103,7 +111,8 @@ open class ArrayProcessor : InputProcessor {
 
             KeyEvent.KEYCODE_DPAD_DOWN -> {
                 if (candidates.isNotEmpty()) {
-                    selectedCandidateIndex = (selectedCandidateIndex + visibleCandidateCount).coerceAtMost(candidates.lastIndex)
+                    selectedCandidateIndex =
+                        (selectedCandidateIndex + visibleCandidateCount).coerceAtMost(candidates.lastIndex)
                     return true
                 }
                 return false
@@ -127,8 +136,10 @@ open class ArrayProcessor : InputProcessor {
 
             in KeyEvent.KEYCODE_0..KeyEvent.KEYCODE_9 ->
                 if (candidates.isNotEmpty() && !(lookupTokens.size == 1 && lookupTokens[0] == "w")) {
-                    val pageStart = (selectedCandidateIndex / visibleCandidateCount) * visibleCandidateCount
-                    val relativeIndex = if (keyCode == KeyEvent.KEYCODE_0) 9 else keyCode - KeyEvent.KEYCODE_1
+                    val pageStart =
+                        (selectedCandidateIndex / visibleCandidateCount) * visibleCandidateCount
+                    val relativeIndex =
+                        if (keyCode == KeyEvent.KEYCODE_0) 9 else keyCode - KeyEvent.KEYCODE_1
                     val targetIndex = pageStart + relativeIndex
 
                     if (targetIndex in candidates.indices) {
@@ -139,8 +150,10 @@ open class ArrayProcessor : InputProcessor {
 
             in KeyEvent.KEYCODE_NUMPAD_0..KeyEvent.KEYCODE_NUMPAD_9 ->
                 if (candidates.isNotEmpty() && !(lookupTokens.size == 1 && lookupTokens[0] == "w")) {
-                    val pageStart = (selectedCandidateIndex / visibleCandidateCount) * visibleCandidateCount
-                    val relativeIndex = if (keyCode == KeyEvent.KEYCODE_NUMPAD_0) 9 else keyCode - KeyEvent.KEYCODE_NUMPAD_1
+                    val pageStart =
+                        (selectedCandidateIndex / visibleCandidateCount) * visibleCandidateCount
+                    val relativeIndex =
+                        if (keyCode == KeyEvent.KEYCODE_NUMPAD_0) 9 else keyCode - KeyEvent.KEYCODE_NUMPAD_1
                     val targetIndex = pageStart + relativeIndex
 
                     if (targetIndex in candidates.indices) {

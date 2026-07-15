@@ -20,6 +20,7 @@ interface InputProcessor {
     fun updateConnection(inputConnection: InputConnection, editorInfo: EditorInfo) {}
     fun onHardwareKeyDown(event: KeyEvent): Boolean = false
     fun onHardwareKeyUp(event: KeyEvent): Boolean = false
+    fun resetStates() {}
 }
 
 fun InputProcessor.executeDefault(keyEvent: KeyboardKeyEvent, systemProcessor: SystemProcessor) {

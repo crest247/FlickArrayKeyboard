@@ -34,6 +34,12 @@ class EnglishProcessor : InputProcessor {
             EnglishVariant.Default
     }
 
+    override fun resetStates() {
+        shiftState = ShiftState.LOWERCASE
+        isShiftPressed = false
+        hasTypedDuringHold = false
+    }
+
     override fun onAction(action: KeyboardAction): KeyboardAction? {
         if (action !is EnglishAction) return action
 
