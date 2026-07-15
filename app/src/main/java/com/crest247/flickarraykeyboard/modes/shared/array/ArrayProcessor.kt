@@ -8,7 +8,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.crest247.flickarraykeyboard.core.InputProcessor
+import com.crest247.flickarraykeyboard.core.engine.InputProcessor
 import com.crest247.flickarraykeyboard.core.engine.SystemAction
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 

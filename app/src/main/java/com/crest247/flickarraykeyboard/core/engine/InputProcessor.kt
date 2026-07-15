@@ -1,10 +1,8 @@
-package com.crest247.flickarraykeyboard.core
+package com.crest247.flickarraykeyboard.core.engine
 
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
-import com.crest247.flickarraykeyboard.core.engine.SystemAction
-import com.crest247.flickarraykeyboard.core.engine.SystemProcessor
 import com.crest247.flickarraykeyboard.core.models.Clickable
 import com.crest247.flickarraykeyboard.core.models.DownTriggerable
 import com.crest247.flickarraykeyboard.core.models.Flickable

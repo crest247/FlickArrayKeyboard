@@ -1,7 +1,7 @@
 package com.crest247.flickarraykeyboard.core.models
 
 import androidx.compose.runtime.Composable
-import com.crest247.flickarraykeyboard.core.InputProcessor
+import com.crest247.flickarraykeyboard.core.engine.InputProcessor
 
 interface KeyboardModule {
     val processor: InputProcessor

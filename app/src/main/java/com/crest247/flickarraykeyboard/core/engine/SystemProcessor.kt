@@ -2,8 +2,7 @@ package com.crest247.flickarraykeyboard.core.engine
 
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
-import com.crest247.flickarraykeyboard.core.InputProcessor
-import com.crest247.flickarraykeyboard.core.KeyboardState
+import com.crest247.flickarraykeyboard.core.state.KeyboardState
 import com.crest247.flickarraykeyboard.core.extension.sendDownUpKeyEvents
 import com.crest247.flickarraykeyboard.core.models.Clickable
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction

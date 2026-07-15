@@ -19,7 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
-import com.crest247.flickarraykeyboard.core.KeyboardState
+import com.crest247.flickarraykeyboard.core.state.KeyboardState
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.components.KeyPreviewOverlay
 import com.crest247.flickarraykeyboard.core.ui.components.LocalKeyboardLayoutCoordinates

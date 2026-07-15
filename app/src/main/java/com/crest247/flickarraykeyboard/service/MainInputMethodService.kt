@@ -12,9 +12,9 @@ import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import com.crest247.flickarraykeyboard.core.HardwareKeyRouter
-import com.crest247.flickarraykeyboard.core.KeyboardState
-import com.crest247.flickarraykeyboard.core.LocalKeyboardState
+import com.crest247.flickarraykeyboard.core.engine.HardwareKeyRouter
+import com.crest247.flickarraykeyboard.core.state.KeyboardState
+import com.crest247.flickarraykeyboard.core.state.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.theme.KeyboardTheme
 import com.crest247.flickarraykeyboard.core.ui.areas.MainKeyboardContainer
 import com.crest247.flickarraykeyboard.core.ui.components.LocalPreviewHandler

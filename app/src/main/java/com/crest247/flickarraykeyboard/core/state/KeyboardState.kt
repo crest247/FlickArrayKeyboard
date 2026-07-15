@@ -1,4 +1,4 @@
-package com.crest247.flickarraykeyboard.core
+package com.crest247.flickarraykeyboard.core.state
 
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection

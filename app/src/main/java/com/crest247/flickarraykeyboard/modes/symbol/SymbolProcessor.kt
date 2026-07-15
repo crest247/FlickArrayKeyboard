@@ -5,7 +5,7 @@ import android.view.inputmethod.InputConnection
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
-import com.crest247.flickarraykeyboard.core.InputProcessor
+import com.crest247.flickarraykeyboard.core.engine.InputProcessor
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 
 class SymbolProcessor : InputProcessor {

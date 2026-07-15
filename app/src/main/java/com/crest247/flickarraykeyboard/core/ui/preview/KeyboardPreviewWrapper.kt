@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.crest247.flickarraykeyboard.core.KeyboardState
-import com.crest247.flickarraykeyboard.core.LocalKeyboardState
+import com.crest247.flickarraykeyboard.core.state.KeyboardState
+import com.crest247.flickarraykeyboard.core.state.LocalKeyboardState
 import com.crest247.flickarraykeyboard.core.theme.KeyboardTheme
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardColors
 import com.crest247.flickarraykeyboard.core.ui.components.LocalPreviewHandler

@@ -1,6 +1,7 @@
-package com.crest247.flickarraykeyboard.core
+package com.crest247.flickarraykeyboard.core.engine
 
 import android.view.KeyEvent
+import com.crest247.flickarraykeyboard.core.state.KeyboardState
 import com.crest247.flickarraykeyboard.modes.array30.Array30Module
 import com.crest247.flickarraykeyboard.modes.arrayFlick.ArrayFlickModule
 import com.crest247.flickarraykeyboard.modes.english.EnglishModule

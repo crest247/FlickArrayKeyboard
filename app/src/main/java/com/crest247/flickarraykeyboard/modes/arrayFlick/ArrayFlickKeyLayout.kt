@@ -2,8 +2,8 @@ package com.crest247.flickarraykeyboard.modes.arrayFlick
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.crest247.flickarraykeyboard.core.LocalKeyboardState
-import com.crest247.flickarraykeyboard.core.executeDefault
+import com.crest247.flickarraykeyboard.core.state.LocalKeyboardState
+import com.crest247.flickarraykeyboard.core.engine.executeDefault
 import com.crest247.flickarraykeyboard.core.theme.LocalKeyboardDimens
 import com.crest247.flickarraykeyboard.core.ui.components.StandardKeyboard
 import com.crest247.flickarraykeyboard.core.ui.preview.KeyboardPreviewWrapper

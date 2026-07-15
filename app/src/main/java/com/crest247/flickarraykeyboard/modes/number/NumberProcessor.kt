@@ -2,7 +2,7 @@ package com.crest247.flickarraykeyboard.modes.number
 
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
-import com.crest247.flickarraykeyboard.core.InputProcessor
+import com.crest247.flickarraykeyboard.core.engine.InputProcessor
 import com.crest247.flickarraykeyboard.core.models.KeyboardAction
 
 class NumberProcessor : InputProcessor {
