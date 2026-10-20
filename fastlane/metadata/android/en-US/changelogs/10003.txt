@@ -1,0 +1,1 @@
+Enable R8 minification and resource shrinking for F-Droid
